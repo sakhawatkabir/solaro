@@ -6,53 +6,41 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-primary relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 opacity-10">
-        <svg
-          viewBox="0 0 400 400"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="200" cy="100" r="150" stroke="black" strokeWidth="2" />
-          <circle cx="200" cy="100" r="180" stroke="black" strokeWidth="2" />
-          <circle cx="200" cy="100" r="210" stroke="black" strokeWidth="2" />
-          <path
-            d="M50 100 Q100 50, 150 100 T250 100 T350 100"
-            stroke="black"
-            strokeWidth="2"
-            fill="none"
-          />
-          <path
-            d="M50 130 Q100 80, 150 130 T250 130 T350 130"
-            stroke="black"
-            strokeWidth="2"
-            fill="none"
-          />
-          <path
-            d="M50 160 Q100 110, 150 160 T250 160 T350 160"
-            stroke="black"
-            strokeWidth="2"
-            fill="none"
-          />
-        </svg>
-      </div>
-
-      <div className="container mx-auto px-8 py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-16">
+    <footer className="bg-cream border-t border-ink/10 pt-24 pb-12 px-8 lg:px-16 font-body">
+      <div className="max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-24">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="text-black font-semibold text-lg mb-4">
+            <div className="flex items-center gap-2 mb-6 cursor-pointer">
+              <div className="w-6 h-6 rounded-full bg-primary"></div>
+              <span className="text-2xl font-heading font-bold text-ink tracking-tight">
+                Solaro.
+              </span>
+            </div>
+            <p className="text-ink-mid text-sm leading-relaxed max-w-xs">
+              Transitioning to clean, renewable energy. Lock in your energy
+              rates and increase your home's value instantly.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <h3 className="text-ink font-heading font-bold text-lg mb-6">
               Quick Links
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-4">
               <li>
                 <a
                   href="#"
-                  className="text-gray-800 hover:text-black transition-colors"
+                  className="text-ink-mid hover:text-ink transition-colors"
                 >
                   Home
                 </a>
@@ -60,7 +48,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-800 hover:text-black transition-colors"
+                  className="text-ink-mid hover:text-ink transition-colors"
                 >
                   About Us
                 </a>
@@ -68,7 +56,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-800 hover:text-black transition-colors"
+                  className="text-ink-mid hover:text-ink transition-colors"
                 >
                   Services
                 </a>
@@ -76,7 +64,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-800 hover:text-black transition-colors"
+                  className="text-ink-mid hover:text-ink transition-colors"
                 >
                   How It Works
                 </a>
@@ -85,49 +73,39 @@ export default function Footer() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <h3 className="text-black font-semibold text-lg mb-4">Contact</h3>
-            <div className="space-y-2 text-gray-800">
-              <p>45 Greenfield Street,</p>
-              <p>Dhaka, Bangladesh</p>
-              <p className="pt-2">Mobile : +880 17</p>
-              <p>Gmail: zipsoft.contact@gmail.com</p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="text-black font-semibold text-lg mb-4">
-              Office Hours
+            <h3 className="text-ink font-heading font-bold text-lg mb-6">
+              Contact
             </h3>
-            <div className="space-y-2 text-gray-800">
-              <p>Mon - Fri: 9:00 AM - 6:00 PM</p>
-              <p>Sat - Sun: Closed</p>
+            <div className="space-y-4 text-ink-mid">
+              <p>
+                45 Greenfield Street,
+                <br />
+                Dhaka, Bangladesh
+              </p>
+              <p>+880 17 0000 0000</p>
+              <p>zipsoft.contact@gmail.com</p>
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h3 className="text-black font-semibold text-lg mb-4">
-              Social Media
+            <h3 className="text-ink font-heading font-bold text-lg mb-6">
+              Social
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-4">
               <li>
                 <a
                   href="#"
-                  className="text-gray-800 hover:text-black transition-colors"
+                  className="text-ink-mid hover:text-ink transition-colors"
                 >
                   Instagram
                 </a>
@@ -135,15 +113,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-800 hover:text-black transition-colors"
-                >
-                  Facebook
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-800 hover:text-black transition-colors"
+                  className="text-ink-mid hover:text-ink transition-colors"
                 >
                   LinkedIn
                 </a>
@@ -151,37 +121,25 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-800 hover:text-black transition-colors"
+                  className="text-ink-mid hover:text-ink transition-colors"
                 >
-                  Dribbble
+                  Twitter
                 </a>
               </li>
             </ul>
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-7xl lg:text-8xl xl:text-9xl font-heading font-bold text-black tracking-tight">
-            SOLARO
-          </h2>
-        </motion.div>
-
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-black/10">
-          <p className="text-gray-800 text-sm">
-            © {currentYear} solaro Energy. All rights reserved.
-          </p>
-          <a
-            href="#"
-            className="text-gray-800 hover:text-black text-sm transition-colors"
-          >
-            Privacy & Policy
-          </a>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-ink/10 text-ink-mid text-sm">
+          <p>© {currentYear} Solaro Energy. All rights reserved.</p>
+          <div className="flex gap-8">
+            <a href="#" className="hover:text-ink transition-colors">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:text-ink transition-colors">
+              Terms of Service
+            </a>
+          </div>
         </div>
       </div>
     </footer>

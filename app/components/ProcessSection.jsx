@@ -1,89 +1,91 @@
-import { Handshake, Settings, Activity, Headset } from "lucide-react";
-import Badge from "./Badge";
+"use client";
+
+import { motion } from "framer-motion";
 
 export default function ProcessSection() {
   const steps = [
     {
-      icon: Handshake,
-      title: "Consultation",
-      description: "Schedule a free consultation to assess your energy needs.",
-    },
-    {
-      icon: Settings,
-      title: "Custom Design & Quote",
-      description: "We create a tailored solar plan for your property.",
-    },
-    {
-      icon: Activity,
-      title: "Professional Installation",
+      title: "Calculate Your Needs",
       description:
-        "Our certified team installs your solar system safely and efficiently.",
+        "Use our online calculator to determine how many panels and batteries you need for your home.",
     },
     {
-      icon: Headset,
-      title: "Monitoring & Support",
+      title: "Select Your Equipment",
       description:
-        "Track your power generation in real-time and enjoy continuous support.",
+        "Choose from our premium selection of monocrystalline panels, inverters, and complete kits.",
+    },
+    {
+      title: "Fast, Free Freight",
+      description:
+        "We carefully package your solar equipment and ship it directly to your residence via free freight.",
+    },
+    {
+      title: "DIY or Hire a Pro",
+      description:
+        "Install it yourself with our comprehensive guides, or hire a local contractor to mount your new system.",
     },
   ];
 
   return (
-    <section className="bg-white dark:bg-gray-950 py-20 px-8 transition-colors duration-300">
-      <div className="container mx-auto max-w-7xl">
-        {/* Header */}
-        <div className="flex justify-between items-start mb-16">
-          <div>
-            <h2 className="text-5xl lg:text-6xl font-heading font-normal text-black dark:text-white mb-2">
-              A Simple Process,
-            </h2>
-            <p className="text-5xl lg:text-6xl font-heading font-normal text-gray-300 dark:text-gray-600">
-              From Start to Shine
-            </p>
-          </div>
-
-          <Badge
-            variant="default"
-            className="inline-flex bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+    <section className="bg-cream py-32 px-8 lg:px-16" id="process">
+      <div className="max-w-[1400px] mx-auto">
+        <div className="flex flex-col lg:flex-row gap-24 items-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex-1 w-full"
           >
-            <span className="w-2 h-2 bg-primary rounded-full"></span>
-            HOW IT WORKS
-          </Badge>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <div className="rounded-3xl overflow-hidden">
+            <div className="aspect-square lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1700529289398-dd313f11c9cc?crop=entropy&cs=srgb&fm=jpg&q=85&w=800"
-                alt="Worker installing solar panels by David Clode on Unsplash"
+                src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2000&auto=format&fit=crop"
+                alt="Solar Panel Installation"
                 className="w-full h-full object-cover"
               />
             </div>
-          </div>
+          </motion.div>
 
-          <div className="space-y-8">
-            {steps.map((step, index) => {
-              const Icon = step.icon;
-              return (
-                <div key={index} className="flex gap-6 items-start">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                    <Icon
-                      className="w-8 h-8 text-gray-800 dark:text-gray-200"
-                      strokeWidth={1.5}
-                    />
+          <div className="flex-1 space-y-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-6">
+                How It Works
+              </div>
+              <h2 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight">
+                From our warehouse, <br />
+                <span className="text-accent italic">to your roof.</span>
+              </h2>
+            </motion.div>
+
+            <div className="space-y-12">
+              {steps.map((step, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="flex gap-8 items-start group cursor-pointer"
+                >
+                  <div className="text-3xl font-heading font-bold text-ink-mid group-hover:text-accent transition-colors">
+                    0{index + 1}
                   </div>
-
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-heading font-semibold text-black dark:text-white mb-2">
+                  <div>
+                    <h3 className="text-2xl font-heading font-bold text-ink mb-3 group-hover:text-accent transition-colors">
                       {step.title}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-base leading-relaxed">
+                    <p className="text-ink-mid text-base leading-relaxed font-body">
                       {step.description}
                     </p>
                   </div>
-                </div>
-              );
-            })}
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

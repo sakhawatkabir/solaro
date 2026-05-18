@@ -1,125 +1,90 @@
 "use client";
 
-import { useState } from "react";
-import { HiArrowRight } from "react-icons/hi";
-import Badge from "./Badge";
+import { motion } from "framer-motion";
 
 export default function ServicesSection() {
-  const [currentService, setCurrentService] = useState(2); // 03 out of 05
-  const totalServices = 5;
-
-  const services = [
+  const products = [
     {
-      title: "Commercial Solar",
-      subtitle: "Solutions",
+      title: "Monocrystalline Panels",
+      price: "From $249",
       description:
-        "Large-scale solar installations for businesses, warehouses, and commercial properties.",
+        "High-efficiency 400W premium solar panels. Perfect for residential installations with limited roof space.",
       image:
-        "https://images.unsplash.com/photo-1700529289398-dd313f11c9cc?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
+        "https://images.unsplash.com/photo-1592833159155-c62df1b65634?q=80&w=1200&auto=format&fit=crop",
     },
     {
-      title: "Solar Panel",
-      subtitle: "Maintenance",
+      title: "Complete Home Kits",
+      price: "From $4,999",
       description:
-        "Professional cleaning and maintenance services to keep your solar panels operating at peak efficiency.",
+        "Everything you need to take your home off-grid. Includes panels, inverter, mounting hardware, and wiring.",
       image:
-        "https://images.unsplash.com/photo-1566821594226-cdc9cb42a4c8?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
+        "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1200&auto=format&fit=crop",
     },
     {
-      title: "Residential Solar",
-      subtitle: "Installation",
+      title: "Lithium Battery Storage",
+      price: "From $3,499",
       description:
-        "Custom solar panel systems for homes of all sizes. Large-scale solar setups for offices, factories, and institutions.",
+        "Store excess energy for nighttime use or grid outages. Compatible with all our solar kits.",
       image:
-        "https://images.unsplash.com/photo-1700529289398-dd313f11c9cc?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-    },
-    {
-      title: "Energy Storage",
-      subtitle: "Systems",
-      description:
-        "Battery backup solutions to store excess solar energy for use during peak hours or outages.",
-      image:
-        "https://images.unsplash.com/photo-1705579605238-24a90c8799c5?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-    },
-    {
-      title: "Solar",
-      subtitle: "Consultation",
-      description:
-        "Expert advice on solar feasibility, system design, and return on investment calculations.",
-      image:
-        "https://images.unsplash.com/photo-1705579604902-eb832f58bf85?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
+        "https://images.unsplash.com/photo-1705579605238-24a90c8799c5?q=80&w=1200&auto=format&fit=crop",
     },
   ];
 
-  const currentServiceData = services[currentService];
-  const progress = ((currentService + 1) / totalServices) * 100;
-
-  const handleNext = () => {
-    setCurrentService((prev) => (prev < totalServices - 1 ? prev + 1 : 0));
-  };
-
   return (
-    <section className="bg-gray-100 dark:bg-gray-900 py-20 px-8 transition-colors duration-300">
-      <div className="container mx-auto max-w-7xl">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 min-h-[500px]">
-          <div className="absolute inset-0">
-            <img
-              src={currentServiceData.image}
-              alt={`${currentServiceData.title} ${currentServiceData.subtitle}`}
-              className="w-full h-full object-cover opacity-80"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-800/60 to-transparent"></div>
+    <section
+      className="bg-white py-32 px-8 lg:px-16 border-t border-ink/5"
+      id="products"
+    >
+      <div className="max-w-[1400px] mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-24"
+        >
+          <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-6">
+            Featured Products
           </div>
+          <h2 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight">
+            Industry-leading{" "}
+            <span className="text-accent italic">solar technology</span>
+          </h2>
+        </motion.div>
 
-          <div className="relative z-10 p-12 h-full flex flex-col justify-between min-h-[500px]">
-            <div className="space-y-6 max-w-xl">
-              <Badge
-                variant="default"
-                className="inline-flex bg-white/20 text-white backdrop-blur-sm border border-white/30"
-              >
-                <span className="w-2 h-2 bg-primary rounded-full"></span>
-                SERVICES
-              </Badge>
-
-              <h2 className="text-5xl lg:text-6xl font-heading font-bold leading-tight">
-                <span className="text-white">{currentServiceData.title}</span>
-                <br />
-                <span className="text-primary">
-                  {currentServiceData.subtitle}
-                </span>
-              </h2>
-
-              <p className="text-white/90 text-lg leading-relaxed max-w-md">
-                {currentServiceData.description}
-              </p>
-            </div>
-
-            <div className="flex items-end justify-between">
-              <div className="space-y-4">
-                <div className="text-6xl font-heading font-bold text-white">
-                  0{currentService + 1}
-                  <span className="text-2xl text-white/60 ml-1">
-                    /0{totalServices}
-                  </span>
-                </div>
-
-                <div className="w-64 h-1 bg-white/30 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-primary transition-all duration-500 rounded-full"
-                    style={{ width: `${progress}%` }}
-                  ></div>
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {products.map((product, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="flex flex-col group cursor-pointer"
+            >
+              <div className="overflow-hidden rounded mb-8 aspect-[4/3] bg-cream">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
               </div>
-
-              <button
-                onClick={handleNext}
-                className="w-16 h-16 rounded-full bg-primary hover:bg-primary/90 flex items-center justify-center transition-all shadow-lg shadow-primary/30 hover:scale-105"
-                aria-label="Next service"
-              >
-                <HiArrowRight className="w-7 h-7 text-black" />
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="font-heading text-2xl font-bold text-ink">
+                  {product.title}
+                </h3>
+              </div>
+              <div className="text-accent font-semibold font-body mb-4">
+                {product.price}
+              </div>
+              <p className="font-body text-ink-mid leading-relaxed text-base mb-6">
+                {product.description}
+              </p>
+              <button className="mt-auto px-6 py-3 border border-ink hover:bg-ink hover:text-white transition-colors font-body font-semibold rounded">
+                Add to Cart
               </button>
-            </div>
-          </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
