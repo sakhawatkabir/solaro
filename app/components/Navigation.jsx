@@ -76,7 +76,7 @@ export default function Navigation() {
             className="text-ink hover:text-accent transition-colors flex items-center gap-2 font-medium relative"
           >
             <ShoppingCart size={20} />
-            <span>Cart ({totalItems})</span>
+
             {totalItems > 0 && (
               <span className="absolute -top-1 -right-3 w-5 h-5 bg-accent text-white text-xs rounded-full flex items-center justify-center font-bold">
                 {totalItems}
@@ -91,10 +91,7 @@ export default function Navigation() {
         </div>
 
         <div className="flex items-center gap-4 lg:hidden">
-          <button
-            onClick={() => setIsOpen(true)}
-            className="text-ink relative"
-          >
+          <button onClick={() => setIsOpen(true)} className="text-ink relative">
             <ShoppingCart size={24} />
             {totalItems > 0 && (
               <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-[10px] rounded-full flex items-center justify-center font-bold">

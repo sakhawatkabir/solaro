@@ -135,7 +135,7 @@ export default function CartDrawer() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="border-t border-ink/10 px-6 py-5 space-y-4 bg-white">
+              <div className="border-t border-ink/10 px-6 py-6 space-y-5 bg-white">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm text-ink-mid">
                     <span>Subtotal</span>
@@ -145,23 +145,19 @@ export default function CartDrawer() {
                     <span>Delivery & Installation</span>
                     <span className="text-accent font-semibold">FREE</span>
                   </div>
-                  <div className="flex justify-between text-lg font-heading font-bold text-ink pt-2 border-t border-ink/10">
+                  <div className="flex justify-between text-lg font-heading font-bold text-ink pt-3 border-t border-ink/10">
                     <span>Total</span>
                     <span>{formatPrice(totalPrice)}</span>
                   </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Link href="/checkout" onClick={() => setIsOpen(false)}>
-                    <span className="block w-full py-4 bg-accent hover:bg-accent-mid text-white text-center rounded font-semibold transition-colors cursor-pointer">
+                    <span className="block w-full py-3.5 bg-accent hover:bg-accent-mid text-white text-center rounded-full font-semibold transition-colors cursor-pointer">
                       Proceed to Checkout
                     </span>
                   </Link>
-                  <Link href="/quote" onClick={() => setIsOpen(false)}>
-                    <span className="block w-full py-3 bg-transparent text-ink text-center border border-ink/20 rounded font-semibold hover:bg-black/5 transition-colors cursor-pointer text-sm">
-                      Or Request a Free Quote
-                    </span>
-                  </Link>
+                 
                 </div>
               </div>
             )}
