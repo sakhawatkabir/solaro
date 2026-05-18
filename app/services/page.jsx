@@ -1,195 +1,238 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import {
+  Home,
+  Building2,
+  Wrench,
+  Battery,
+  ClipboardCheck,
+  Monitor,
+  Sun,
+  Shield,
+  Clock,
+  Phone,
+  CheckCircle,
+  ArrowRight,
+  Zap,
+  FileText,
+} from "lucide-react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
-import Badge from "../components/Badge";
+import Link from "next/link";
+
+const services = [
+  {
+    icon: Home,
+    title: "Residential Solar Installation",
+    description:
+      "Complete home solar systems from 1KW to 10KW. We handle everything — site survey, custom design, installation, and DESA/DESCO net metering paperwork.",
+    features: [
+      "Free home energy assessment",
+      "Custom system design for your roof",
+      "Professional installation in 1-3 days",
+      "Net metering setup & paperwork",
+      "25-year panel warranty included",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=1200&auto=format&fit=crop",
+    price: "From ৳85,000",
+  },
+  {
+    icon: Building2,
+    title: "Commercial Solar Solutions",
+    description:
+      "Large-scale solar for factories, warehouses, offices, and commercial buildings across Bangladesh. Reduce operational costs by 40-60%.",
+    features: [
+      "Industrial-grade Tier-1 equipment",
+      "Scalable systems from 20KW to 1MW+",
+      "ROI analysis & financial planning",
+      "Minimal business disruption during install",
+      "Tax incentive & SREDA guidance",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1700529289398-dd313f11c9cc?q=80&w=1200&auto=format&fit=crop",
+    price: "Custom quote",
+  },
+  {
+    icon: Wrench,
+    title: "Solar Panel Maintenance",
+    description:
+      "Keep your panels at peak efficiency with professional cleaning, inspection, and repair services. Essential for Bangladesh's dusty and monsoon climate.",
+    features: [
+      "Quarterly panel cleaning",
+      "Performance monitoring & reporting",
+      "Inverter & battery health checks",
+      "Wiring & connection inspection",
+      "Annual maintenance plans from ৳5,000/year",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1566821594226-cdc9cb42a4c8?q=80&w=1200&auto=format&fit=crop",
+    price: "From ৳5,000/year",
+  },
+  {
+    icon: Battery,
+    title: "Battery Storage Systems",
+    description:
+      "LiFePO4 battery backup for complete load shedding protection. Store solar energy for evening use and power outages.",
+    features: [
+      "LiFePO4 batteries (6000+ cycles)",
+      "5kWh to 20kWh capacity options",
+      "Smart BMS with app monitoring",
+      "Seamless grid-to-battery switching",
+      "Expandable battery banks",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1705579605238-24a90c8799c5?q=80&w=1200&auto=format&fit=crop",
+    price: "From ৳95,000",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Free Solar Consultation",
+    description:
+      "Not sure which system is right for you? Our solar experts will assess your home, analyze your electricity bill, and recommend the perfect solution.",
+    features: [
+      "In-person or video consultation",
+      "Electricity bill analysis",
+      "Roof suitability assessment",
+      "Custom savings projection",
+      "No obligation, no pressure",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1705579604902-eb832f58bf85?q=80&w=1200&auto=format&fit=crop",
+    price: "FREE",
+  },
+  {
+    icon: Monitor,
+    title: "24/7 Monitoring & Support",
+    description:
+      "Real-time system monitoring with instant alerts. Our technical support team is available around the clock for troubleshooting and maintenance.",
+    features: [
+      "Real-time performance dashboard",
+      "Instant mobile alerts for issues",
+      "Remote diagnostics & troubleshooting",
+      "Dedicated support hotline",
+      "Lifetime technical support",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1630672607721-48e0a0187a92?q=80&w=1200&auto=format&fit=crop",
+    price: "Included with installation",
+  },
+];
+
+const processSteps = [
+  {
+    icon: Phone,
+    title: "1. Free Consultation",
+    desc: "Call us or fill out the form. We discuss your energy needs and budget.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "2. Site Survey",
+    desc: "Our team visits your home within 48 hours for a thorough assessment.",
+  },
+  {
+    icon: FileText,
+    title: "3. Custom Proposal",
+    desc: "Receive a detailed system design, savings estimate, and transparent pricing.",
+  },
+  {
+    icon: Sun,
+    title: "4. Installation",
+    desc: "Professional installation by certified technicians in 1-3 days.",
+  },
+  {
+    icon: Zap,
+    title: "5. Commissioning",
+    desc: "System tested, net metering activated, and you start saving immediately.",
+  },
+  {
+    icon: Shield,
+    title: "6. Lifetime Support",
+    desc: "Ongoing monitoring, maintenance, and 24/7 technical support.",
+  },
+];
 
 export default function ServicesPage() {
-  const services = [
-    {
-      title: "Residential Solar Installation",
-      description:
-        "Custom solar panel systems designed for homes of all sizes. We handle everything from consultation to installation and maintenance.",
-      features: [
-        "Free home energy assessment",
-        "Custom system design",
-        "Professional installation",
-        "Warranty and support",
-        "Financing options available",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1509391366360-2e959784a276?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
-    },
-    {
-      title: "Commercial Solar Solutions",
-      description:
-        "Large-scale solar installations for businesses, warehouses, and commercial properties. Reduce operational costs and boost your sustainability profile.",
-      features: [
-        "Commercial-grade equipment",
-        "Scalable solutions",
-        "ROI analysis and planning",
-        "Minimal business disruption",
-        "Tax incentive assistance",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1700529289398-dd313f11c9cc?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
-    },
-    {
-      title: "Solar Panel Maintenance",
-      description:
-        "Keep your solar panels operating at peak efficiency with our professional cleaning and maintenance services.",
-      features: [
-        "Regular cleaning and inspection",
-        "Performance monitoring",
-        "Panel repair and replacement",
-        "System optimization",
-        "Annual maintenance plans",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1566821594226-cdc9cb42a4c8?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
-    },
-    {
-      title: "Energy Storage Systems",
-      description:
-        "Battery backup solutions to store excess solar energy for use during peak hours or power outages.",
-      features: [
-        "Tesla Powerwall installation",
-        "Backup power solutions",
-        "Grid independence options",
-        "Smart energy management",
-        "Emergency power supply",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1705579605238-24a90c8799c5?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
-    },
-    {
-      title: "Solar Consultation",
-      description:
-        "Expert advice on solar feasibility, system design, and return on investment calculations for your property.",
-      features: [
-        "Site assessment",
-        "Energy usage analysis",
-        "ROI calculations",
-        "Incentive guidance",
-        "Custom recommendations",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1705579604902-eb832f58bf85?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
-    },
-    {
-      title: "Solar Monitoring & Support",
-      description:
-        "24/7 system monitoring and technical support to ensure your solar installation performs optimally year-round.",
-      features: [
-        "Real-time monitoring",
-        "24/7 technical support",
-        "Performance alerts",
-        "Remote diagnostics",
-        "Lifetime support",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1630672607721-48e0a0187a92?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
+    <div className="min-h-screen bg-cream font-body">
       <Navigation />
 
-      <section className="relative bg-gradient-to-br from-gray-900 to-gray-800 text-white py-32 px-8 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <img
-            src="https://images.unsplash.com/photo-1700529289398-dd313f11c9cc?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920"
-            alt="Solar services background"
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        <div className="container mx-auto max-w-4xl relative z-10">
+      {/* Hero */}
+      <section className="pt-32 pb-16 px-8 lg:px-16">
+        <div className="max-w-[1400px] mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Badge variant="primary" className="inline-flex mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full"></span>
-              OUR SERVICES
-            </Badge>
+            <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-4">
+              Our Services
+            </div>
+            <h1 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight mb-6">
+              Complete solar{" "}
+              <span className="text-accent italic">
+                solutions for Bangladesh
+              </span>
+            </h1>
+            <p className="text-ink-mid text-lg max-w-2xl leading-relaxed">
+              From free consultation to lifetime support, we handle everything
+              so you can enjoy clean, reliable electricity without the hassle.
+            </p>
           </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-5xl lg:text-6xl font-heading font-bold mb-6"
-          >
-            Complete Solar <span className="text-primary">Solutions</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-xl text-gray-300 leading-relaxed"
-          >
-            From consultation to installation and ongoing support, we provide
-            comprehensive solar energy services tailored to your needs.
-          </motion.p>
         </div>
       </section>
 
-      <section className="py-20 px-8">
-        <div className="container mx-auto max-w-7xl">
-          <div className="space-y-20">
+      {/* Services Grid */}
+      <section className="px-8 lg:px-16 pb-20">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
-                  index % 2 === 1 ? "lg:flex-row-reverse" : ""
-                }`}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="bg-white rounded-2xl overflow-hidden border border-ink/5 hover:shadow-xl transition-all group"
               >
-                <div className={index % 2 === 1 ? "lg:order-2" : ""}>
-                  <h2 className="text-3xl lg:text-4xl font-heading font-bold text-black dark:text-white mb-4">
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute top-4 right-4 px-3 py-1 bg-accent text-white text-sm font-bold rounded-full">
+                    {service.price}
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
+                    <service.icon size={24} className="text-accent" />
+                  </div>
+                  <h3 className="text-xl font-heading font-bold text-ink mb-3">
                     {service.title}
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                  </h3>
+                  <p className="text-ink-mid text-sm leading-relaxed mb-4">
                     {service.description}
                   </p>
-                  <ul className="space-y-3">
+                  <ul className="space-y-2 mb-6">
                     {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
-                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Check className="w-4 h-4 text-primary" />
-                        </div>
-                        <span className="text-gray-700 dark:text-gray-300">
-                          {feature}
-                        </span>
+                      <li key={idx} className="flex items-start gap-2 text-sm">
+                        <CheckCircle
+                          size={14}
+                          className="text-accent flex-shrink-0 mt-0.5"
+                        />
+                        <span className="text-ink-mid">{feature}</span>
                       </li>
                     ))}
                   </ul>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="mt-8 px-8 py-4 bg-primary hover:bg-primary/90 text-black dark:text-black font-semibold rounded-full transition-all shadow-lg shadow-primary/20"
-                  >
-                    Learn More
-                  </motion.button>
-                </div>
-
-                <div className={index % 2 === 1 ? "lg:order-1" : ""}>
-                  <div className="rounded-3xl overflow-hidden shadow-xl">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-full object-cover aspect-[4/3]"
-                    />
-                  </div>
+                  <Link href="/contact">
+                    <span className="inline-flex items-center gap-2 text-accent font-semibold text-sm hover:gap-3 transition-all">
+                      Get Started
+                      <ArrowRight size={16} />
+                    </span>
+                  </Link>
                 </div>
               </motion.div>
             ))}
@@ -197,29 +240,101 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="py-20 px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div className="container mx-auto max-w-4xl text-center">
+      {/* Process */}
+      <section className="px-8 lg:px-16 pb-20">
+        <div className="max-w-[1400px] mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl lg:text-5xl font-heading font-bold text-black dark:text-white mb-6">
-              Ready to Get Started?
+            <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
+              How It Works
+            </div>
+            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
+              From inquiry to solar power in 6 steps
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-              Contact us today for a free consultation and discover how solar
-              energy can transform your property.
+            <p className="text-ink-mid max-w-xl mx-auto">
+              Our streamlined process makes going solar simple and stress-free.
             </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-10 py-5 bg-primary hover:bg-primary/90 text-black dark:text-black font-semibold rounded-full transition-all shadow-lg shadow-primary/20 text-lg"
-            >
-              Get Free Quote
-            </motion.button>
           </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {processSteps.map((step, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="bg-white rounded-xl p-6 border border-ink/5 relative"
+              >
+                <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center mb-4">
+                  <step.icon size={22} className="text-white" />
+                </div>
+                <h3 className="font-heading font-bold text-ink text-lg mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-ink-mid text-sm leading-relaxed">
+                  {step.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="px-8 lg:px-16 pb-20">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="bg-gradient-to-br from-accent to-accent-mid rounded-2xl p-8 lg:p-12 text-white">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl lg:text-4xl font-heading font-bold mb-6">
+                  Why 45,500+ homes trust SOLARO
+                </h2>
+                <div className="space-y-4">
+                  {[
+                    "Tier-1 solar panels with 25-year warranty",
+                    "Certified installation teams across all 64 districts",
+                    "Free home survey and custom system design",
+                    "DESA/DESCO net metering paperwork handled for you",
+                    "24/7 monitoring and lifetime technical support",
+                    "Flexible financing and EMI options available",
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex items-start gap-3">
+                      <CheckCircle size={20} className="flex-shrink-0 mt-0.5" />
+                      <span className="text-white/90">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
+                <h3 className="font-heading font-bold text-xl mb-4">
+                  Need a custom solution?
+                </h3>
+                <p className="text-white/80 mb-6">
+                  Every home is different. Tell us about your electricity usage,
+                  roof space, and budget — we will design the perfect system for
+                  you.
+                </p>
+                <div className="space-y-3">
+                  <Link href="/contact">
+                    <span className="block w-full py-4 bg-white text-accent rounded-full font-semibold text-center hover:bg-cream transition-colors">
+                      Get Free Quote
+                    </span>
+                  </Link>
+                  <Link href="/calculator">
+                    <span className="block w-full py-4 bg-white/10 text-white rounded-full font-semibold text-center hover:bg-white/20 transition-colors">
+                      Calculate Your Savings
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
