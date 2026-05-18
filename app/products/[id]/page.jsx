@@ -19,13 +19,12 @@ import {
   Phone,
   Calculator,
 } from "lucide-react";
-import { products, formatPrice, getProductById } from "../../../data/products";
-import { useCart } from "../../../context/CartContext";
-import Navigation from "../../../components/Navigation";
-import Footer from "../../../components/Footer";
+import { products, formatPrice, getProductById } from "@/app/data/products";
+import { useCart } from "@/app/context/CartContext";
+import Navigation from "@/app/components/Navigation";
+import Footer from "@/app/components/Footer";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 
 const specIcons = {
   panels: Sun,
@@ -85,9 +84,7 @@ export default function ProductDetailPage({ params }) {
   }
 
   const relatedProducts = products
-    .filter(
-      (p) => p.category === product.category && p.id !== product.id
-    )
+    .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 3);
 
   const images = [
@@ -125,7 +122,10 @@ export default function ProductDetailPage({ params }) {
               Home
             </Link>
             <ChevronRight size={14} />
-            <Link href="/products" className="hover:text-accent transition-colors">
+            <Link
+              href="/products"
+              className="hover:text-accent transition-colors"
+            >
               Products
             </Link>
             <ChevronRight size={14} />
@@ -161,7 +161,7 @@ export default function ProductDetailPage({ params }) {
                     {Math.round(
                       ((product.originalPrice - product.price) /
                         product.originalPrice) *
-                        100
+                        100,
                     )}
                     %
                   </span>
@@ -201,10 +201,10 @@ export default function ProductDetailPage({ params }) {
                 {product.category === "home-kit"
                   ? "Complete Home Kit"
                   : product.category === "panel"
-                  ? "Solar Panel"
-                  : product.category === "battery"
-                  ? "Battery Storage"
-                  : "Inverter"}
+                    ? "Solar Panel"
+                    : product.category === "battery"
+                      ? "Battery Storage"
+                      : "Inverter"}
               </div>
 
               <h1 className="text-4xl lg:text-5xl font-heading font-bold text-ink leading-tight mb-4">
@@ -227,9 +227,7 @@ export default function ProductDetailPage({ params }) {
                     />
                   ))}
                 </div>
-                <span className="text-ink-mid text-sm">
-                  4.9 (127 reviews)
-                </span>
+                <span className="text-ink-mid text-sm">4.9 (127 reviews)</span>
               </div>
 
               {/* Price */}
@@ -346,7 +344,10 @@ export default function ProductDetailPage({ params }) {
                   </div>
                 </div>
                 <div className="flex items-center gap-3 bg-white rounded-lg p-4 border border-ink/5">
-                  <CheckCircle size={20} className="text-accent flex-shrink-0" />
+                  <CheckCircle
+                    size={20}
+                    className="text-accent flex-shrink-0"
+                  />
                   <div>
                     <div className="text-sm font-semibold text-ink">
                       Net Metering
@@ -485,10 +486,7 @@ export default function ProductDetailPage({ params }) {
                           />
                         </div>
                         <span className="font-semibold text-accent">
-                          ৳
-                          {(
-                            product.savings.yearly * year
-                          ).toLocaleString()}
+                          ৳{(product.savings.yearly * year).toLocaleString()}
                         </span>
                       </div>
                     ))}
