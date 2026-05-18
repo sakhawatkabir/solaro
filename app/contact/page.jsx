@@ -1,284 +1,454 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Send,
+  MessageSquare,
+  Headphones,
+  Building2,
+  CheckCircle,
+} from "lucide-react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
-import Badge from "../components/Badge";
+import { useState } from "react";
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    service: "",
+    message: "",
+    district: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 5000);
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      service: "",
+      message: "",
+      district: "",
+    });
+  };
+
   const contactInfo = [
     {
       icon: Phone,
-      title: "Phone",
-      details: ["+880 17", "+880 17"],
+      title: "Call Us",
+      details: ["+880 1700-000000", "+880 1800-000000"],
+      sub: "Mon-Sat, 9AM-6PM",
     },
     {
       icon: Mail,
-      title: "Email",
-      details: ["zipsoft.contact@gmail.com", "support@solaro.com"],
+      title: "Email Us",
+      details: ["info@solaro.com.bd", "support@solaro.com.bd"],
+      sub: "We reply within 24 hours",
     },
     {
       icon: MapPin,
-      title: "Address",
-      details: ["45 Greenfield Street", "Dhaka, Bangladesh"],
+      title: "Visit Us",
+      details: ["45 Greenfield Street", "Dhaka 1212, Bangladesh"],
+      sub: "Head office — open to walk-ins",
     },
     {
-      icon: Clock,
-      title: "Office Hours",
-      details: ["Mon - Fri: 9:00 AM - 6:00 PM", "Sat - Sun: Closed"],
+      icon: Headphones,
+      title: "24/7 Support",
+      details: ["Emergency hotline for existing customers"],
+      sub: "For installations under warranty",
     },
   ];
 
+  const services = [
+    { value: "residential", label: "Residential Solar Installation" },
+    { value: "commercial", label: "Commercial Solar Solutions" },
+    { value: "maintenance", label: "Solar Panel Maintenance" },
+    { value: "battery", label: "Battery Storage Systems" },
+    { value: "consultation", label: "Free Solar Consultation" },
+    { value: "net-metering", label: "Net Metering Assistance" },
+    { value: "other", label: "Other" },
+  ];
+
+  const districts = [
+    "Dhaka",
+    "Gazipur",
+    "Narayanganj",
+    "Chittagong",
+    "Comilla",
+    "Sylhet",
+    "Rajshahi",
+    "Khulna",
+    "Rangpur",
+    "Barisal",
+    "Mymensingh",
+    "Cox's Bazar",
+    "Other",
+  ];
+
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
+    <div className="min-h-screen bg-cream font-body">
       <Navigation />
 
-      <section className="relative bg-gradient-to-br from-gray-900 to-gray-800 text-white py-32 px-8 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <img
-            src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920"
-            alt="Contact background"
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        <div className="container mx-auto max-w-4xl relative z-10">
+      {/* Hero */}
+      <section className="pt-32 pb-16 px-8 lg:px-16">
+        <div className="max-w-[1400px] mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Badge variant="primary" className="inline-flex mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full"></span>
-              CONTACT US
-            </Badge>
+            <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-4">
+              Contact Us
+            </div>
+            <h1 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight mb-6">
+              Let's start your{" "}
+              <span className="text-accent italic">solar journey</span>
+            </h1>
+            <p className="text-ink-mid text-lg max-w-2xl leading-relaxed">
+              Have questions about solar? Need a free home survey? Our team is
+              ready to help you switch to clean energy. Reach out and we will
+              respond within 24 hours.
+            </p>
           </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-5xl lg:text-6xl font-heading font-bold mb-6"
-          >
-            Let's Start Your <span className="text-primary">Solar Journey</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-xl text-gray-300 leading-relaxed"
-          >
-            Have questions? We're here to help. Reach out to our team and we'll
-            get back to you as soon as possible.
-          </motion.p>
         </div>
       </section>
 
-      <section className="py-20 px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Contact Info Cards */}
+      <section className="px-8 lg:px-16 pb-16">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {contactInfo.map((info, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="bg-white rounded-xl p-6 border border-ink/5 hover:shadow-lg transition-shadow"
               >
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                  <info.icon className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-4">
+                  <info.icon className="w-5 h-5 text-accent" />
                 </div>
-                <h3 className="text-lg font-heading font-bold text-black dark:text-white mb-3">
+                <h3 className="font-heading font-bold text-ink mb-3">
                   {info.title}
                 </h3>
-                <div className="space-y-1">
-                  {info.details.map((detail, idx) => (
-                    <p
-                      key={idx}
-                      className="text-gray-600 dark:text-gray-400 text-sm"
-                    >
-                      {detail}
-                    </p>
-                  ))}
-                </div>
+                {info.details.map((detail, idx) => (
+                  <p key={idx} className="text-ink-mid text-sm">
+                    {detail}
+                  </p>
+                ))}
+                <p className="text-ink-light text-xs mt-2">{info.sub}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-20 px-8">
-        <div className="container mx-auto max-w-6xl">
+      {/* Contact Form + Map */}
+      <section className="px-8 lg:px-16 pb-20">
+        <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Form */}
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl font-heading font-bold text-black dark:text-white mb-6">
-                Send Us a Message
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-8">
-                Fill out the form below and our team will get back to you within
-                24 hours.
+              <div className="flex items-center gap-2 mb-2">
+                <MessageSquare size={20} className="text-accent" />
+                <h2 className="text-2xl font-heading font-bold text-ink">
+                  Send Us a Message
+                </h2>
+              </div>
+              <p className="text-ink-mid mb-8">
+                Fill out the form below and our solar experts will get back to
+                you within 24 hours.
               </p>
 
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {submitted && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-accent/10 border border-accent/20 rounded-xl p-4 mb-6 flex items-center gap-3"
+                >
+                  <CheckCircle size={20} className="text-accent flex-shrink-0" />
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <div className="font-semibold text-accent">
+                      Message Sent!
+                    </div>
+                    <div className="text-sm text-ink-mid">
+                      We will contact you within 24 hours.
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-sm font-semibold text-ink mb-2">
                       First Name
                     </label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                      placeholder="John"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
+                      placeholder="Rahim"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-semibold text-ink mb-2">
                       Last Name
                     </label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                      placeholder="Doe"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
+                      placeholder="Ahmed"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                    placeholder="john.doe@example.com"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-sm font-semibold text-ink mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
+                      placeholder="rahim@email.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-ink mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
+                      placeholder="+880 17XX-XXXXXX"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-sm font-semibold text-ink mb-2">
+                      Service Interested In
+                    </label>
+                    <select
+                      name="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all appearance-none"
+                    >
+                      <option value="">Select a service</option>
+                      {services.map((s) => (
+                        <option key={s.value} value={s.value}>
+                          {s.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-ink mb-2">
+                      Your District
+                    </label>
+                    <select
+                      name="district"
+                      value={formData.district}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all appearance-none"
+                    >
+                      <option value="">Select district</option>
+                      {districts.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                    placeholder="+880 1234-567890"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Service Interested In
-                  </label>
-                  <select className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800">
-                    <option value="" className="text-gray-900">
-                      Select a service
-                    </option>
-                    <option value="residential" className="text-gray-900">
-                      Residential Solar Installation
-                    </option>
-                    <option value="commercial" className="text-gray-900">
-                      Commercial Solar Solutions
-                    </option>
-                    <option value="maintenance" className="text-gray-900">
-                      Solar Panel Maintenance
-                    </option>
-                    <option value="storage" className="text-gray-900">
-                      Energy Storage Systems
-                    </option>
-                    <option value="consultation" className="text-gray-900">
-                      Solar Consultation
-                    </option>
-                    <option value="other" className="text-gray-900">
-                      Other
-                    </option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-semibold text-ink mb-2">
                     Message
                   </label>
                   <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     rows="5"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                    placeholder="Tell us about your project..."
-                  ></textarea>
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all resize-none"
+                    placeholder="Tell us about your home, electricity bill, or any questions..."
+                  />
                 </div>
 
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full px-8 py-4 bg-primary hover:bg-primary/90 text-black dark:text-black font-semibold rounded-full transition-all shadow-lg shadow-primary/20"
+                  className="w-full py-4 bg-accent hover:bg-accent-mid text-white font-semibold rounded-full transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2"
                 >
+                  <Send size={18} />
                   Send Message
                 </motion.button>
               </form>
             </motion.div>
 
+            {/* Map / Image */}
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="rounded-3xl overflow-hidden h-full min-h-[600px]"
+              className="space-y-6"
             >
-              <img
-                src="https://images.unsplash.com/photo-1509391366360-2e959784a276?crop=entropy&cs=srgb&fm=jpg&q=85&w=800"
-                alt="Solar installation"
-                className="w-full h-full object-cover"
-              />
+              <div className="rounded-2xl overflow-hidden aspect-[4/3]">
+                <img
+                  src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=1200&auto=format&fit=crop"
+                  alt="SOLARO office Dhaka"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Office Info */}
+              <div className="bg-white rounded-2xl p-6 border border-ink/5">
+                <div className="flex items-center gap-2 mb-4">
+                  <Building2 size={20} className="text-accent" />
+                  <h3 className="font-heading font-bold text-ink">
+                    Head Office — Dhaka
+                  </h3>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-start gap-3">
+                    <MapPin size={16} className="text-accent flex-shrink-0 mt-0.5" />
+                    <div>
+                      <div className="text-ink font-medium">
+                        45 Greenfield Street
+                      </div>
+                      <div className="text-ink-mid">
+                        Dhaka 1212, Bangladesh
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Clock size={16} className="text-accent flex-shrink-0 mt-0.5" />
+                    <div>
+                      <div className="text-ink font-medium">Office Hours</div>
+                      <div className="text-ink-mid">
+                        Saturday - Thursday: 9:00 AM - 6:00 PM
+                      </div>
+                      <div className="text-ink-mid">Friday: Closed</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Why Contact Us */}
+              <div className="bg-accent/5 rounded-2xl p-6 border border-accent/10">
+                <h3 className="font-heading font-bold text-ink mb-4">
+                  Why Talk to Us?
+                </h3>
+                <div className="space-y-3">
+                  {[
+                    "Free home energy assessment",
+                    "Custom system design for your roof",
+                    "No obligation, no pressure",
+                    "Honest savings estimates",
+                    "Net metering guidance included",
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-3">
+                      <CheckCircle size={16} className="text-accent flex-shrink-0" />
+                      <span className="text-ink-mid text-sm">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      <section className="py-20 px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div className="container mx-auto max-w-4xl">
+      {/* FAQ */}
+      <section className="px-8 lg:px-16 pb-20">
+        <div className="max-w-[1400px] mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl lg:text-5xl font-heading font-bold text-black dark:text-white mb-4">
+            <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
+              FAQ
+            </div>
+            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
               Frequently Asked Questions
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              Quick answers to common questions about our services.
+            <p className="text-ink-mid max-w-xl mx-auto">
+              Quick answers to common questions about going solar in Bangladesh.
             </p>
           </motion.div>
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
             {[
               {
-                question: "How long does installation take?",
-                answer:
-                  "Most residential installations are completed within 1-3 days, depending on system size and complexity.",
+                q: "How long does installation take?",
+                a: "Most residential installations are completed in 1-3 days depending on system size. Commercial projects may take 1-2 weeks.",
               },
               {
-                question: "What warranties do you offer?",
-                answer:
-                  "We provide a 25-year panel warranty, 10-year workmanship warranty, and lifetime support.",
+                q: "What warranties do you offer?",
+                a: "25-year panel performance warranty, 5-year battery warranty, 5-year inverter warranty, and lifetime technical support.",
               },
               {
-                question: "Do you offer financing options?",
-                answer:
-                  "Yes, we partner with leading financial institutions to offer flexible financing plans with competitive rates.",
+                q: "Do you help with net metering?",
+                a: "Yes. We handle all DESA/DESCO net metering paperwork so you can sell excess power back to the grid.",
               },
               {
-                question: "How much can I save with solar?",
-                answer:
-                  "Savings vary by location and energy usage, but most customers see 40-70% reduction in electricity bills.",
+                q: "How much can I save monthly?",
+                a: "Most customers save 40-70% on their electricity bill. A 3KW system typically saves ৳3,500/month.",
+              },
+              {
+                q: "Do you serve rural areas?",
+                a: "Yes. We cover all 64 districts including remote areas. Delivery timeline may be 7-14 days for remote locations.",
+              },
+              {
+                q: "Are financing options available?",
+                a: "Yes. We partner with several banks offering solar loans with competitive interest rates and flexible EMI plans.",
               },
             ].map((faq, index) => (
               <motion.div
@@ -286,13 +456,15 @@ export default function ContactPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm transition-colors"
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                className="bg-white rounded-xl p-6 border border-ink/5 hover:shadow-md transition-shadow"
               >
-                <h3 className="text-lg font-heading font-bold text-black dark:text-white mb-2">
-                  {faq.question}
+                <h3 className="font-heading font-bold text-ink mb-2">
+                  {faq.q}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">{faq.answer}</p>
+                <p className="text-ink-mid text-sm leading-relaxed">
+                  {faq.a}
+                </p>
               </motion.div>
             ))}
           </div>
