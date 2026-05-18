@@ -13,8 +13,8 @@ import {
   CheckCircle,
   ChevronDown,
 } from "lucide-react";
-import Navigation from "../../components/Navigation";
-import Footer from "../../components/Footer";
+import Navigation from "../components/Navigation";
+import Footer from "../components/Footer";
 import { useState } from "react";
 
 const divisions = [
