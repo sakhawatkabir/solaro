@@ -1,179 +1,228 @@
 "use client";
 
 import { motion } from "framer-motion";
+import {
+  Sun,
+  Users,
+  Award,
+  Zap,
+  Target,
+  Shield,
+  Heart,
+  Lightbulb,
+  TrendingUp,
+  MapPin,
+  Calendar,
+} from "lucide-react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
-import Badge from "../components/Badge";
+import Link from "next/link";
 
 export default function AboutPage() {
   const stats = [
-    { number: "10+", label: "Years Experience" },
-    { number: "5000+", label: "Happy Customers" },
-    { number: "15000+", label: "Solar Panels Installed" },
-    { number: "99%", label: "Customer Satisfaction" },
-  ];
-
-  const team = [
-    {
-      name: "John Anderson",
-      role: "CEO & Founder",
-      image: "https://i.pravatar.cc/400?u=john-anderson",
-    },
-    {
-      name: "Sarah Mitchell",
-      role: "Chief Technology Officer",
-      image: "https://i.pravatar.cc/400?u=sarah-mitchell",
-    },
-    {
-      name: "Michael Chen",
-      role: "Head of Operations",
-      image: "https://i.pravatar.cc/400?u=michael-chen",
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "Customer Success Manager",
-      image: "https://i.pravatar.cc/400?u=emily-rodriguez",
-    },
+    { number: "10+", label: "Years in Bangladesh", icon: Calendar },
+    { number: "45,500+", label: "Installations Completed", icon: Zap },
+    { number: "64", label: "Districts Covered", icon: MapPin },
+    { number: "4.9/5", label: "Customer Rating", icon: Award },
   ];
 
   const values = [
     {
-      title: "Innovation",
+      icon: Sun,
+      title: "Clean Energy for All",
       description:
-        "We constantly push the boundaries of solar technology to deliver cutting-edge solutions.",
+        "We believe every Bangladeshi home deserves reliable, affordable electricity. Solar is the answer to load shedding and rising DESA/DESCO bills.",
     },
     {
-      title: "Sustainability",
+      icon: Shield,
+      title: "Quality You Can Trust",
       description:
-        "Our commitment to the environment drives everything we do, from product design to installation.",
+        "Tier-1 panels, certified installers, 25-year warranties. We never compromise on equipment quality or installation standards.",
     },
     {
-      title: "Customer First",
+      icon: Heart,
+      title: "Customer First Always",
       description:
-        "Your satisfaction is our priority. We provide personalized service and ongoing support.",
+        "From free home surveys to lifetime support, we are with you at every step. Your satisfaction drives everything we do.",
     },
     {
-      title: "Quality",
+      icon: Lightbulb,
+      title: "Innovation Driven",
       description:
-        "We use only premium materials and employ certified professionals for every installation.",
+        "Latest MPPT inverters, LiFePO4 batteries, smart monitoring apps. We bring cutting-edge solar technology to Bangladesh.",
+    },
+  ];
+
+  const milestones = [
+    {
+      year: "2014",
+      title: "Founded in Dhaka",
+      desc: "Started with a team of 5 engineers passionate about renewable energy in Bangladesh.",
+    },
+    {
+      year: "2016",
+      title: "1,000 Installations",
+      desc: "Reached our first thousand homes across Dhaka, Gazipur, and Narayanganj.",
+    },
+    {
+      year: "2018",
+      title: "Nationwide Coverage",
+      desc: "Expanded to all 8 divisions, covering all 64 districts of Bangladesh.",
+    },
+    {
+      year: "2020",
+      title: "Battery Storage Launch",
+      desc: "Introduced LiFePO4 battery systems for complete load shedding protection.",
+    },
+    {
+      year: "2023",
+      title: "45,000+ Homes Powered",
+      desc: "Became one of the largest residential solar providers in Bangladesh.",
+    },
+    {
+      year: "2026",
+      title: "Net Metering Pioneer",
+      desc: "Helped thousands of customers sell excess power back to the grid through net metering.",
+    },
+  ];
+
+  const team = [
+    {
+      name: "Rahim Ahmed",
+      role: "Founder & CEO",
+      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop",
+      bio: "15+ years in renewable energy. IIT Dhaka alum.",
+    },
+    {
+      name: "Fatima Khan",
+      role: "Chief Technology Officer",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop",
+      bio: "Solar engineering expert. 200+ system designs.",
+    },
+    {
+      name: "Kamal Hossain",
+      role: "Head of Operations",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
+      bio: "Manages 120+ installation teams across BD.",
+    },
+    {
+      name: "Nusrat Jahan",
+      role: "Customer Success Lead",
+      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop",
+      bio: "Ensures every customer gets lifetime support.",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
+    <div className="min-h-screen bg-cream font-body">
       <Navigation />
 
-      <section className="relative bg-gradient-to-br from-gray-900 to-gray-800 text-white py-32 px-8 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <img
-            src="https://images.unsplash.com/photo-1509391366360-2e959784a276?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920"
-            alt="Solar panels background"
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        <div className="container mx-auto max-w-4xl relative z-10">
+      {/* Hero */}
+      <section className="pt-32 pb-16 px-8 lg:px-16">
+        <div className="max-w-[1400px] mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Badge variant="primary" className="inline-flex mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full"></span>
-              ABOUT US
-            </Badge>
+            <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-4">
+              About SOLARO
+            </div>
+            <h1 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight mb-6">
+              Powering Bangladesh{" "}
+              <span className="text-accent italic">with sunshine</span>
+            </h1>
+            <p className="text-ink-mid text-lg max-w-2xl leading-relaxed">
+              Since 2014, we have helped over 45,000 homes and businesses across
+              all 64 districts switch to clean, reliable solar energy. Our
+              mission is simple: end load shedding and make electricity affordable
+              for every Bangladeshi family.
+            </p>
           </motion.div>
+        </div>
+      </section>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+      {/* Stats */}
+      <section className="px-8 lg:px-16 pb-20">
+        <div className="max-w-[1400px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-5xl lg:text-6xl font-heading font-bold mb-6"
+            className="bg-white rounded-2xl p-8 border border-ink/5 shadow-sm"
           >
-            Powering a Sustainable <span className="text-primary">Future</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-xl text-gray-300 leading-relaxed"
-          >
-            Since 2014, we've been helping homeowners and businesses transition
-            to clean, renewable energy. Our mission is to make solar power
-            accessible, affordable, and reliable for everyone.
-          </motion.p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="text-center"
+                >
+                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-3">
+                    <stat.icon size={22} className="text-accent" />
+                  </div>
+                  <div className="text-4xl font-heading font-bold text-accent mb-1">
+                    {stat.number}
+                  </div>
+                  <div className="text-ink-mid text-sm">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      <section className="py-20 px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-center"
-              >
-                <div className="text-5xl lg:text-6xl font-heading font-bold text-primary mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-gray-600 dark:text-gray-400 font-medium">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 px-8">
-        <div className="container mx-auto max-w-6xl">
+      {/* Our Story */}
+      <section className="px-8 lg:px-16 pb-20">
+        <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-4xl lg:text-5xl font-heading font-bold text-black dark:text-white mb-6">
+              <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
                 Our Story
+              </div>
+              <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-6">
+                Born from the frustration of load shedding
               </h2>
-              <div className="space-y-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+              <div className="space-y-4 text-ink-mid leading-relaxed">
                 <p>
-                  Founded in 2014, Solaro Energy began with a simple vision: to
-                  make clean energy accessible to everyone. What started as a
-                  small team of passionate engineers has grown into a leading
-                  solar energy provider.
+                  In 2014, our founder Rahim Ahmed sat through yet another
+                  8-hour load shedding blackout in Dhaka. His children could not
+                  study, his wife could not cook, and his home office came to a
+                  halt. He knew there had to be a better way.
                 </p>
                 <p>
-                  Over the years, we've installed thousands of solar systems,
-                  helping families and businesses reduce their carbon footprint
-                  while saving money on energy costs. Our commitment to quality,
-                  innovation, and customer satisfaction has made us a trusted
-                  name in the industry.
+                  With a team of 5 engineers, he started SOLARO from a small
+                  office in Greenfield, Dhaka. The vision was clear: make solar
+                  energy accessible, affordable, and reliable for every
+                  Bangladeshi home — not just the wealthy.
                 </p>
                 <p>
-                  Today, we continue to push the boundaries of solar technology,
-                  offering cutting-edge solutions that are efficient, reliable,
-                  and built to last.
+                  Today, over a decade later, we have powered 45,500+ homes
+                  across all 64 districts. We handle everything from free home
+                  surveys to DESA/DESCO net metering paperwork. Our customers
+                  save an average of ৳3,500 per month on electricity bills.
                 </p>
               </div>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="rounded-3xl overflow-hidden"
+              className="rounded-2xl overflow-hidden aspect-[4/3]"
             >
               <img
-                src="https://images.unsplash.com/photo-1509391366360-2e959784a276?crop=entropy&cs=srgb&fm=jpg&q=85&w=800"
-                alt="Solar installation team"
+                src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=1200&auto=format&fit=crop"
+                alt="SOLARO installation team"
                 className="w-full h-full object-cover"
               />
             </motion.div>
@@ -181,38 +230,45 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-20 px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div className="container mx-auto max-w-6xl">
+      {/* Values */}
+      <section className="px-8 lg:px-16 pb-20">
+        <div className="max-w-[1400px] mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl lg:text-5xl font-heading font-bold text-black dark:text-white mb-4">
+            <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
               Our Values
+            </div>
+            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
+              What drives us every day
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              These core principles guide everything we do and shape our
-              commitment to excellence.
+            <p className="text-ink-mid max-w-2xl mx-auto">
+              These core principles guide every decision we make and every system
+              we install.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {values.map((value, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm hover:shadow-md transition-all"
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="bg-white rounded-2xl p-8 border border-ink/5 hover:shadow-lg transition-shadow"
               >
-                <h3 className="text-2xl font-heading font-bold text-black dark:text-white mb-3">
+                <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-5">
+                  <value.icon size={26} className="text-accent" />
+                </div>
+                <h3 className="text-xl font-heading font-bold text-ink mb-3">
                   {value.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-ink-mid leading-relaxed">
                   {value.description}
                 </p>
               </motion.div>
@@ -221,48 +277,134 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-20 px-8">
-        <div className="container mx-auto max-w-6xl">
+      {/* Timeline */}
+      <section className="px-8 lg:px-16 pb-20">
+        <div className="max-w-[1400px] mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl lg:text-5xl font-heading font-bold text-black dark:text-white mb-4">
-              Meet Our Team
+            <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
+              Our Journey
+            </div>
+            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
+              Milestones that define us
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              The passionate professionals driving our mission forward.
+          </motion.div>
+
+          <div className="relative">
+            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-accent/20" />
+            <div className="space-y-8">
+              {milestones.map((milestone, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="flex gap-6 relative"
+                >
+                  <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0 z-10">
+                    <TrendingUp size={20} className="text-white" />
+                  </div>
+                  <div className="bg-white rounded-xl p-6 border border-ink/5 flex-1">
+                    <div className="text-accent font-bold text-sm mb-1">
+                      {milestone.year}
+                    </div>
+                    <h3 className="font-heading font-bold text-ink text-lg mb-2">
+                      {milestone.title}
+                    </h3>
+                    <p className="text-ink-mid text-sm leading-relaxed">
+                      {milestone.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section className="px-8 lg:px-16 pb-20">
+        <div className="max-w-[1400px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
+              Our Team
+            </div>
+            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
+              The people behind SOLARO
+            </h2>
+            <p className="text-ink-mid max-w-2xl mx-auto">
+              Passionate professionals dedicated to bringing solar energy to
+              every corner of Bangladesh.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {team.map((member, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-center"
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="bg-white rounded-2xl overflow-hidden border border-ink/5 group hover:shadow-lg transition-shadow"
               >
-                <div className="w-full aspect-square rounded-2xl overflow-hidden mb-4">
+                <div className="aspect-[3/4] overflow-hidden">
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <h3 className="text-xl font-heading font-bold text-black dark:text-white mb-1">
-                  {member.name}
-                </h3>
-                <p className="text-gray-500 dark:text-gray-400">
-                  {member.role}
-                </p>
+                <div className="p-5">
+                  <h3 className="font-heading font-bold text-ink text-lg">
+                    {member.name}
+                  </h3>
+                  <div className="text-accent text-sm font-semibold mb-2">
+                    {member.role}
+                  </div>
+                  <p className="text-ink-light text-sm">{member.bio}</p>
+                </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="px-8 lg:px-16 pb-20">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="bg-gradient-to-br from-accent to-accent-mid rounded-2xl p-8 lg:p-12 text-center text-white">
+            <h3 className="text-2xl lg:text-4xl font-heading font-bold mb-4">
+              Ready to Join 45,500+ Solar Homes?
+            </h3>
+            <p className="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
+              Get a free home survey and custom quote. No obligation, no pressure
+              — just honest advice about solar for your home.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/contact">
+                <span className="px-8 py-4 bg-white text-accent rounded-full font-semibold hover:bg-cream transition-colors inline-block">
+                  Get Free Quote
+                </span>
+              </Link>
+              <Link href="/calculator">
+                <span className="px-8 py-4 bg-white/10 text-white rounded-full font-semibold hover:bg-white/20 transition-colors inline-block">
+                  Calculate Your Savings
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
