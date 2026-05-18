@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import { ShoppingCart, Filter, Search, ChevronRight, Star } from "lucide-react";
-import { products, formatPrice } from "../../data/products";
-import { useCart } from "../../context/CartContext";
-import Navigation from "../../components/Navigation";
-import Footer from "../../components/Footer";
-import CartDrawer from "../../components/CartDrawer";
+import { products, formatPrice } from "../data/products";
+import { useCart } from "../context/CartContext";
+import Navigation from "../components/Navigation";
+import Footer from "../components/Footer";
+import CartDrawer from "../components/CartDrawer";
 import { useState } from "react";
 import Link from "next/link";
 
