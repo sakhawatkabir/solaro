@@ -1,6 +1,6 @@
 export default function SavingsCard() {
   return (
-    <div className="bg-gradient-to-br from-primary to-green-400 rounded-3xl p-8 text-white relative overflow-hidden min-h-[400px] flex flex-col justify-between">
+    <div className="bg-gradient-to-br from-cream-dark to-accent rounded-3xl p-8 text-white relative overflow-hidden min-h-[400px] flex flex-col justify-between">
       <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
 
       <div>

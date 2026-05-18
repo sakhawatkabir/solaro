@@ -17,8 +17,6 @@ import {
   Zap,
   FileText,
 } from "lucide-react";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
 import Link from "next/link";
 
 const services = [
@@ -155,9 +153,7 @@ const processSteps = [
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-cream font-body">
-      <Navigation />
-
+    <>
       {/* Hero */}
       <section className="pt-32 pb-16 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
@@ -337,8 +333,6 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </>
   );
 }

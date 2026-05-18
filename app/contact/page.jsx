@@ -12,8 +12,6 @@ import {
   Building2,
   CheckCircle,
 } from "lucide-react";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
 import { useState } from "react";
 
 export default function ContactPage() {
@@ -101,9 +99,7 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-cream font-body">
-      <Navigation />
-
+    <>
       {/* Hero */}
       <section className="pt-32 pb-16 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
@@ -186,7 +182,10 @@ export default function ContactPage() {
                   animate={{ opacity: 1, y: 0 }}
                   className="bg-accent/10 border border-accent/20 rounded-xl p-4 mb-6 flex items-center gap-3"
                 >
-                  <CheckCircle size={20} className="text-accent flex-shrink-0" />
+                  <CheckCircle
+                    size={20}
+                    className="text-accent flex-shrink-0"
+                  />
                   <div>
                     <div className="font-semibold text-accent">
                       Message Sent!
@@ -355,18 +354,22 @@ export default function ContactPage() {
                 </div>
                 <div className="space-y-3 text-sm">
                   <div className="flex items-start gap-3">
-                    <MapPin size={16} className="text-accent flex-shrink-0 mt-0.5" />
+                    <MapPin
+                      size={16}
+                      className="text-accent flex-shrink-0 mt-0.5"
+                    />
                     <div>
                       <div className="text-ink font-medium">
                         45 Greenfield Street
                       </div>
-                      <div className="text-ink-mid">
-                        Dhaka 1212, Bangladesh
-                      </div>
+                      <div className="text-ink-mid">Dhaka 1212, Bangladesh</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Clock size={16} className="text-accent flex-shrink-0 mt-0.5" />
+                    <Clock
+                      size={16}
+                      className="text-accent flex-shrink-0 mt-0.5"
+                    />
                     <div>
                       <div className="text-ink font-medium">Office Hours</div>
                       <div className="text-ink-mid">
@@ -392,7 +395,10 @@ export default function ContactPage() {
                     "Net metering guidance included",
                   ].map((item, idx) => (
                     <div key={idx} className="flex items-center gap-3">
-                      <CheckCircle size={16} className="text-accent flex-shrink-0" />
+                      <CheckCircle
+                        size={16}
+                        className="text-accent flex-shrink-0"
+                      />
                       <span className="text-ink-mid text-sm">{item}</span>
                     </div>
                   ))}
@@ -462,16 +468,12 @@ export default function ContactPage() {
                 <h3 className="font-heading font-bold text-ink mb-2">
                   {faq.q}
                 </h3>
-                <p className="text-ink-mid text-sm leading-relaxed">
-                  {faq.a}
-                </p>
+                <p className="text-ink-mid text-sm leading-relaxed">{faq.a}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </>
   );
 }

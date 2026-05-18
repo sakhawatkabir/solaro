@@ -1,6 +1,6 @@
 export default function EnvironmentCard() {
   return (
-    <div className="bg-gradient-to-br from-emerald-600 to-teal-500 rounded-3xl p-8 text-white relative overflow-hidden min-h-[400px] flex flex-col justify-between">
+    <div className="bg-gradient-to-br from-accent to-accent-mid rounded-3xl p-8 text-white relative overflow-hidden min-h-[400px] flex flex-col justify-between">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full"></div>
         <div className="absolute bottom-10 right-10 w-24 h-24 border-4 border-white rounded-full"></div>

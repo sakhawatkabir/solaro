@@ -13,8 +13,6 @@ import {
   CheckCircle,
   ChevronDown,
 } from "lucide-react";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
 import { useState } from "react";
 
 const divisions = [
@@ -144,28 +142,32 @@ const allDistricts = divisions.flatMap((d) =>
     division: d.name,
     timeline: d.timeline,
     installations: d.installations,
-  }))
+  })),
 );
 
 export default function DistrictsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedDivision, setExpandedDivision] = useState(null);
 
-  const filteredDivisions = divisions.map((div) => ({
-    ...div,
-    districts: div.districts.filter((d) =>
-      d.toLowerCase().includes(searchQuery.toLowerCase())
-    ),
-  })).filter((div) => div.districts.length > 0 || div.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredDivisions = divisions
+    .map((div) => ({
+      ...div,
+      districts: div.districts.filter((d) =>
+        d.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
+    }))
+    .filter(
+      (div) =>
+        div.districts.length > 0 ||
+        div.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
 
   const totalInstallations = "45,500+";
   const totalDistricts = 64;
   const avgRating = "4.9";
 
   return (
-    <div className="min-h-screen bg-cream font-body">
-      <Navigation />
-
+    <>
       {/* Hero */}
       <section className="pt-32 pb-16 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
@@ -270,7 +272,7 @@ export default function DistrictsPage() {
                 <button
                   onClick={() =>
                     setExpandedDivision(
-                      expandedDivision === div.name ? null : div.name
+                      expandedDivision === div.name ? null : div.name,
                     )
                   }
                   className="w-full flex items-center justify-between p-6 hover:bg-cream/50 transition-colors"
@@ -342,7 +344,8 @@ export default function DistrictsPage() {
                             {div.name} Regional Office
                           </div>
                           <div className="text-ink-mid text-sm">
-                            Call: +880 1XXX-XXXXXX | Email: {div.name.toLowerCase()}@solaro.com.bd
+                            Call: +880 1XXX-XXXXXX | Email:{" "}
+                            {div.name.toLowerCase()}@solaro.com.bd
                           </div>
                           <div className="text-ink-light text-xs mt-1">
                             Installation timeline: {div.timeline} from order
@@ -455,8 +458,6 @@ export default function DistrictsPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </>
   );
 }

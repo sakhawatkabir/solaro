@@ -5,9 +5,10 @@ export default function Badge({
 }) {
   const variants = {
     default:
-      "bg-black/10 dark:bg-white/10 text-black dark:text-white backdrop-blur-sm",
-    primary: "bg-primary/20 text-primary backdrop-blur-sm",
-    tag: "bg-black/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 backdrop-blur-sm border border-black/10 dark:border-white/10",
+      "bg-ink/10 text-ink backdrop-blur-sm",
+    primary: "bg-accent/10 text-accent backdrop-blur-sm",
+    accent: "bg-accent/10 text-accent backdrop-blur-sm",
+    tag: "bg-ink/5 text-ink-mid backdrop-blur-sm border border-ink/10",
   };
 
   return (

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -15,15 +16,18 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex items-center gap-2 mb-6 cursor-pointer">
-              <div className="w-6 h-6 rounded-full bg-primary"></div>
+            <Link
+              href="/"
+              className="flex items-center gap-2 mb-6 cursor-pointer"
+            >
+              <div className="w-6 h-6 rounded-full bg-accent"></div>
               <span className="text-2xl font-heading font-bold text-ink tracking-tight">
                 Solaro.
               </span>
-            </div>
+            </Link>
             <p className="text-ink-mid text-sm leading-relaxed max-w-xs">
-              Transitioning to clean, renewable energy. Lock in your energy
-              rates and increase your home's value instantly.
+              Transitioning Bangladesh to clean, renewable energy. Lock in your
+              energy rates and beat load shedding for good.
             </p>
           </motion.div>
 
@@ -38,36 +42,36 @@ export default function Footer() {
             </h3>
             <ul className="space-y-4">
               <li>
-                <a
-                  href="#panels"
+                <Link
+                  href="/products"
                   className="text-ink-mid hover:text-ink transition-colors"
                 >
-                  Solar Panels
-                </a>
+                  Products
+                </Link>
               </li>
               <li>
-                <a
-                  href="#kits"
+                <Link
+                  href="/services"
                   className="text-ink-mid hover:text-ink transition-colors"
                 >
-                  Home Kits
-                </a>
+                  Services
+                </Link>
               </li>
               <li>
-                <a
-                  href="#process"
+                <Link
+                  href="/calculator"
                   className="text-ink-mid hover:text-ink transition-colors"
                 >
-                  How It Works
-                </a>
+                  Savings Calculator
+                </Link>
               </li>
               <li>
-                <a
-                  href="#reviews"
+                <Link
+                  href="/districts"
                   className="text-ink-mid hover:text-ink transition-colors"
                 >
-                  Customer Reviews
-                </a>
+                  Coverage Area
+                </Link>
               </li>
             </ul>
           </motion.div>
@@ -85,10 +89,10 @@ export default function Footer() {
               <p>
                 45 Greenfield Street,
                 <br />
-                Dhaka, Bangladesh
+                Dhaka 1212, Bangladesh
               </p>
-              <p>+880 17 0000 0000</p>
-              <p>zipsoft.contact@gmail.com</p>
+              <p>+880 1700-000000</p>
+              <p>info@solaro.com.bd</p>
             </div>
           </motion.div>
 
@@ -99,9 +103,25 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <h3 className="text-ink font-heading font-bold text-lg mb-6">
-              Social
+              Company
             </h3>
             <ul className="space-y-4">
+              <li>
+                <Link
+                  href="/about"
+                  className="text-ink-mid hover:text-ink transition-colors"
+                >
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-ink-mid hover:text-ink transition-colors"
+                >
+                  Contact
+                </Link>
+              </li>
               <li>
                 <a
                   href="#"
@@ -115,15 +135,7 @@ export default function Footer() {
                   href="#"
                   className="text-ink-mid hover:text-ink transition-colors"
                 >
-                  LinkedIn
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-ink-mid hover:text-ink transition-colors"
-                >
-                  Twitter
+                  Facebook
                 </a>
               </li>
             </ul>
@@ -131,7 +143,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-ink/10 text-ink-mid text-sm">
-          <p>© {currentYear} Solaro Energy. All rights reserved.</p>
+          <p>© {currentYear} SOLARO Energy. All rights reserved.</p>
           <div className="flex gap-8">
             <a href="#" className="hover:text-ink transition-colors">
               Privacy Policy

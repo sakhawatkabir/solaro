@@ -3,11 +3,11 @@ export default function PropertyValueCard() {
     <div className="relative rounded-3xl overflow-hidden h-full min-h-[400px]">
       <img
         src="https://images.unsplash.com/photo-1700529289398-dd313f11c9cc?crop=entropy&cs=srgb&fm=jpg&q=85&w=800"
-        alt="Worker installing solar panels on roof by David Clode on Unsplash"
+        alt="Worker installing solar panels on roof"
         className="absolute inset-0 w-full h-full object-cover"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/60 via-blue-500/50 to-blue-400/40"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-accent/80 via-accent-mid/60 to-accent/40"></div>
 
       <div className="relative h-full flex flex-col justify-between p-8 text-white">
         <div className="text-sm font-medium">
@@ -28,7 +28,7 @@ export default function PropertyValueCard() {
               >
                 <path
                   d="M2 6C50 2 150 2 198 6"
-                  stroke="#0BDA51"
+                  stroke="#F59E0B"
                   strokeWidth="4"
                   strokeLinecap="round"
                 />

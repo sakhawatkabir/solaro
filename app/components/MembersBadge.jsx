@@ -15,15 +15,13 @@ export default function MembersBadge() {
             key={index}
             src={avatar}
             alt={`Member ${index + 1}`}
-            className="w-8 h-8 rounded-full border-2 border-black dark:border-white object-cover"
+            className="w-8 h-8 rounded-full border-2 border-cream object-cover"
           />
         ))}
       </div>
       <div className="flex flex-col items-start">
-        <span className="text-primary font-bold text-base">1500+</span>
-        <span className="text-xs text-gray-400 dark:text-gray-500">
-          Active Members
-        </span>
+        <span className="text-accent font-bold text-base">1500+</span>
+        <span className="text-xs text-ink-light">Active Members</span>
       </div>
     </Badge>
   );

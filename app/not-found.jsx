@@ -1,16 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sun, ArrowLeft, Home, Search } from "lucide-react";
+import { Sun, Home, Search } from "lucide-react";
 import Link from "next/link";
-import Navigation from "./components/Navigation";
-import Footer from "./components/Footer";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-cream font-body">
-      <Navigation />
-
+    <>
       <section className="pt-32 pb-20 px-8">
         <div className="max-w-2xl mx-auto text-center">
           <motion.div
@@ -109,8 +105,6 @@ export default function NotFound() {
           </motion.div>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </>
   );
 }

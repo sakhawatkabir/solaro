@@ -4,6 +4,7 @@ import { ThemeProvider } from "./providers/ThemeProvider";
 import { CartProvider } from "./context/CartContext";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
+import CartDrawer from "./components/CartDrawer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,16 +25,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
           <CartProvider>
             <Navigation />
-            <main className="min-h-screen bg-cream font-body">
-              {children}
-            </main>
+            <CartDrawer />
+            <main>{children}</main>
             <Footer />
           </CartProvider>
         </ThemeProvider>

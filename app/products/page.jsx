@@ -4,9 +4,6 @@ import { motion } from "framer-motion";
 import { ShoppingCart, Filter, Search, ChevronRight, Star } from "lucide-react";
 import { products, formatPrice } from "../data/products";
 import { useCart } from "../context/CartContext";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
-import CartDrawer from "../components/CartDrawer";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -45,10 +42,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-cream font-body">
-      <Navigation />
-      <CartDrawer />
-
+    <>
       {/* Header */}
       <section className="pt-32 pb-16 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
@@ -134,11 +128,11 @@ export default function ProductsPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
-                  className="bg-white rounded-2xl overflow-hidden border border-ink/5 group hover:shadow-xl transition-shadow duration-300 flex flex-col"
+                  className="bg-white rounded-2xl border border-ink/5 group hover:shadow-xl transition-shadow duration-300 flex flex-col h-full"
                 >
                   {/* Image */}
                   <Link href={`/products/${product.id}`}>
-                    <div className="relative aspect-[4/3] overflow-hidden bg-cream cursor-pointer">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-cream rounded-t-2xl cursor-pointer">
                       <img
                         src={product.image}
                         alt={product.title}
@@ -164,7 +158,7 @@ export default function ProductsPage() {
                   </Link>
 
                   {/* Content */}
-                  <div className="p-6 flex-1 flex flex-col">
+                  <div className="p-6 flex flex-col flex-1">
                     <div className="text-xs text-ink-light uppercase tracking-wider mb-2">
                       {categories.find((c) => c.id === product.category)
                         ?.label || product.category}
@@ -174,10 +168,10 @@ export default function ProductsPage() {
                         {product.title}
                       </h3>
                     </Link>
-                    <p className="text-ink-mid text-sm mb-4">
+                    <p className="text-ink-mid text-sm mb-3">
                       {product.subtitle}
                     </p>
-                    <p className="text-ink-mid text-sm leading-relaxed mb-4 flex-1 line-clamp-2">
+                    <p className="text-ink-mid text-sm leading-relaxed mb-4 line-clamp-2">
                       {product.description}
                     </p>
 
@@ -192,9 +186,9 @@ export default function ProductsPage() {
                     )}
 
                     {/* Price & CTA */}
-                    <div className="flex items-end justify-between mt-auto pt-4 border-t border-ink/5">
+                    <div className="flex items-center justify-between mt-auto pt-4 border-t border-ink/5">
                       <div>
-                        <div className="text-2xl font-heading font-bold text-accent">
+                        <div className="text-xl font-heading font-bold text-accent">
                           {formatPrice(product.price)}
                         </div>
                         {product.originalPrice > product.price && (
@@ -205,20 +199,20 @@ export default function ProductsPage() {
                       </div>
                       <div className="flex gap-2">
                         <Link href={`/products/${product.id}`}>
-                          <span className="px-4 py-2.5 bg-transparent text-ink border border-ink/20 hover:bg-ink hover:text-white rounded-full text-sm font-semibold transition-colors cursor-pointer flex items-center gap-1">
+                          <span className="px-3 py-2 bg-transparent text-ink border border-ink/20 hover:bg-ink hover:text-white rounded-full text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1">
                             Details
                             <ChevronRight size={14} />
                           </span>
                         </Link>
                         <button
                           onClick={() => handleAddToCart(product)}
-                          className={`px-4 py-2.5 rounded-full text-sm font-semibold transition-all flex items-center gap-2 ${
+                          className={`px-4 py-2 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${
                             addedId === product.id
                               ? "bg-green-500 text-white"
                               : "bg-accent hover:bg-accent-mid text-white"
                           }`}
                         >
-                          <ShoppingCart size={16} />
+                          <ShoppingCart size={14} />
                           {addedId === product.id ? "Added!" : "Add"}
                         </button>
                       </div>
@@ -230,8 +224,6 @@ export default function ProductsPage() {
           )}
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </>
   );
 }

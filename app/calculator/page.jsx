@@ -15,8 +15,6 @@ import {
   Battery,
   Leaf,
 } from "lucide-react";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
@@ -133,9 +131,7 @@ export default function CalculatorPage() {
   );
 
   return (
-    <div className="min-h-screen bg-cream font-body">
-      <Navigation />
-
+    <>
       {/* Hero */}
       <section className="pt-32 pb-12 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
@@ -485,9 +481,7 @@ export default function CalculatorPage() {
           </div>
         </section>
       )}
-
-      <Footer />
-    </div>
+    </>
   );
 }
 

@@ -21,8 +21,6 @@ import {
 } from "lucide-react";
 import { products, formatPrice, getProductById } from "@/app/data/products";
 import { useCart } from "@/app/context/CartContext";
-import Navigation from "@/app/components/Navigation";
-import Footer from "@/app/components/Footer";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
@@ -63,22 +61,18 @@ export default function ProductDetailPage({ params }) {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-cream">
-        <Navigation />
-        <div className="pt-32 pb-20 px-8 text-center">
-          <h1 className="text-4xl font-heading font-bold text-ink mb-4">
-            Product Not Found
-          </h1>
-          <p className="text-ink-mid mb-8">
-            The product you are looking for does not exist.
-          </p>
-          <Link href="/products">
-            <span className="px-6 py-3 bg-accent text-white rounded-full font-semibold hover:bg-accent-mid transition-colors">
-              Browse All Products
-            </span>
-          </Link>
-        </div>
-        <Footer />
+      <div className="pt-32 pb-20 px-8 text-center">
+        <h1 className="text-4xl font-heading font-bold text-ink mb-4">
+          Product Not Found
+        </h1>
+        <p className="text-ink-mid mb-8">
+          The product you are looking for does not exist.
+        </p>
+        <Link href="/products">
+          <span className="px-6 py-3 bg-accent text-white rounded-full font-semibold hover:bg-accent-mid transition-colors">
+            Browse All Products
+          </span>
+        </Link>
       </div>
     );
   }
@@ -111,9 +105,7 @@ export default function ProductDetailPage({ params }) {
   ];
 
   return (
-    <div className="min-h-screen bg-cream font-body">
-      <Navigation />
-
+    <>
       {/* Breadcrumb */}
       <section className="pt-28 pb-4 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
@@ -623,8 +615,6 @@ export default function ProductDetailPage({ params }) {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </>
   );
 }
