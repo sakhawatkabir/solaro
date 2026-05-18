@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function CTASection() {
   return (
@@ -31,13 +32,17 @@ export default function CTASection() {
                 Get a free site survey and custom quote for your home. Serving
                 all 64 districts with free delivery and professional installation.
               </p>
-              <div className="flex gap-4">
-                <button className="px-8 py-4 bg-primary hover:bg-primary/90 text-ink font-semibold rounded font-body text-base transition-colors cursor-pointer shadow-lg">
-                  Get Free Quote
-                </button>
-                <button className="px-8 py-4 bg-transparent text-white border border-white/30 hover:bg-white/10 font-semibold rounded font-body text-base transition-colors cursor-pointer">
-                  Call: +880 17 0000 0000
-                </button>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/contact">
+                  <span className="px-8 py-4 bg-primary hover:bg-primary/90 text-ink font-semibold rounded font-body text-base transition-colors cursor-pointer shadow-lg inline-block">
+                    Get Free Quote
+                  </span>
+                </Link>
+                <Link href="/calculator">
+                  <span className="px-8 py-4 bg-transparent text-white border border-white/30 hover:bg-white/10 font-semibold rounded font-body text-base transition-colors cursor-pointer inline-block">
+                    Calculate Savings
+                  </span>
+                </Link>
               </div>
             </motion.div>
           </div>
