@@ -25,7 +25,7 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-  
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -36,8 +36,32 @@ body {
       transform: translateY(0);
     }
   }
-  
+
   .animate-fadeIn {
     animation: fadeIn 0.5s ease-out;
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(circle, rgba(11, 218, 81, 0.12) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-20px, 15px) scale(0.95); }
+  }
+
+  .animate-float {
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .animate-float-slow {
+    animation: float 25s ease-in-out infinite reverse;
+  }
+
+  .animate-float-delayed {
+    animation: float 22s ease-in-out infinite;
+    animation-delay: -7s;
   }
 }
