@@ -6,25 +6,25 @@ export default function ServicesSection() {
   const products = [
     {
       title: "Monocrystalline Panels",
-      price: "From $249",
+      price: "From ৳28,000",
       description:
-        "High-efficiency 400W premium solar panels. Perfect for residential installations with limited roof space.",
+        "High-efficiency 400W premium solar panels. Perfect for Bangladeshi homes with limited roof space. Tier-1 grade.",
       image:
         "https://images.unsplash.com/photo-1592833159155-c62df1b65634?q=80&w=1200&auto=format&fit=crop",
     },
     {
       title: "Complete Home Kits",
-      price: "From $4,999",
+      price: "From ৳1,85,000",
       description:
-        "Everything you need to take your home off-grid. Includes panels, inverter, mounting hardware, and wiring.",
+        "Everything you need to power your home — panels, hybrid inverter, batteries, mounting hardware, and wiring. Installation included.",
       image:
         "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1200&auto=format&fit=crop",
     },
     {
       title: "Lithium Battery Storage",
-      price: "From $3,499",
+      price: "From ৳95,000",
       description:
-        "Store excess energy for nighttime use or grid outages. Compatible with all our solar kits.",
+        "Store excess energy for nighttime use or during load shedding. Powers fans, lights, and routers for 8+ hours.",
       image:
         "https://images.unsplash.com/photo-1705579605238-24a90c8799c5?q=80&w=1200&auto=format&fit=crop",
     },
@@ -47,8 +47,8 @@ export default function ServicesSection() {
             Featured Products
           </div>
           <h2 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight">
-            Industry-leading{" "}
-            <span className="text-accent italic">solar technology</span>
+            Power your home with{" "}
+            <span className="text-accent italic">Bangladesh's sun</span>
           </h2>
         </motion.div>
 

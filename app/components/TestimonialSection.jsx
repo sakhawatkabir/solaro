@@ -6,15 +6,15 @@ export default function TestimonialSection() {
   const testimonials = [
     {
       quote:
-        "We were tired of the rising electricity bills every month. After switching to solar with Solaro, our bills dropped by nearly 70% within just three months.",
-      name: "Amit Deb",
-      location: "Homeowner, California",
+        "Our DESA bill used to be ৳8,000 every month. After installing Solaro's 5kW kit, it dropped to under ৳2,000. During load shedding, we're the only house on the block with fans still running.",
+      name: "Rahim Uddin",
+      location: "Homeowner, Gulshan, Dhaka",
     },
     {
       quote:
-        "The freight shipping was incredibly fast and everything was packaged perfectly. The DIY instructions in their kit made it so easy to get our off-grid cabin running.",
-      name: "Sarah Johnson",
-      location: "Off-Grid Enthusiast, Texas",
+        "I was skeptical about solar in Bangladesh, but the Solaro team handled everything — survey, installation, net metering. Their after-sales support in Dhaka is genuinely excellent.",
+      name: "Farzana Akter",
+      location: "Homeowner, Agrabad, Chattogram",
     },
   ];
 
@@ -36,8 +36,8 @@ export default function TestimonialSection() {
               Testimonials
             </div>
             <h2 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight tracking-tight max-w-2xl">
-              Join thousands who{" "}
-              <span className="text-accent italic">switched to solar.</span>
+              Join thousands of Bangladeshi families who{" "}
+              <span className="text-accent italic">went solar.</span>
             </h2>
           </motion.div>
 
@@ -49,9 +49,9 @@ export default function TestimonialSection() {
             className="flex-1 lg:max-w-md pt-2 lg:pt-12"
           >
             <p className="text-ink-mid text-lg leading-relaxed font-body">
-              We've helped homeowners and businesses transform their energy
-              usage — saving money and protecting the environment at the same
-              time.
+              From Dhaka to Sylhet, Chattogram to Khulna — homeowners across
+              Bangladesh are cutting their electricity costs and living
+              load-shedding free with Solaro.
             </p>
           </motion.div>
         </div>

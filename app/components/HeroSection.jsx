@@ -15,7 +15,7 @@ export default function HeroSection() {
               transition={{ duration: 0.6 }}
               className="text-accent font-semibold text-sm tracking-widest uppercase mb-6"
             >
-              Premium Grade Equipment
+              Bangladesh's Trusted Solar Partner
             </motion.div>
 
             <motion.h1
@@ -24,8 +24,8 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="font-heading text-5xl md:text-6xl lg:text-7xl leading-[1.1] text-ink mb-8 tracking-tight"
             >
-              High-efficiency <br className="hidden lg:block" />
-              <span className="text-accent italic">solar panels.</span>
+              Cut your <br className="hidden lg:block" />
+              <span className="text-accent italic">electricity bill</span> by 70%.
             </motion.h1>
 
             <motion.p
@@ -34,8 +34,9 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="font-body text-lg md:text-xl text-ink-mid leading-relaxed mb-12 max-w-[500px] mx-auto lg:mx-0"
             >
-              Shop industry-leading monocrystalline solar panels and complete
-              DIY kits. Direct from the manufacturer to your door.
+              Premium monocrystalline solar panels and complete home kits,
+              delivered anywhere in Bangladesh. Beat load shedding and rising
+              DESA bills for good.
             </motion.p>
 
             <motion.div
@@ -45,7 +46,7 @@ export default function HeroSection() {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-16"
             >
               <button className="px-8 py-4 bg-accent hover:bg-accent-mid text-white rounded font-body font-semibold text-base transition-colors cursor-pointer">
-                Shop Panels
+                Get a Free Quote
               </button>
               <button className="px-8 py-4 bg-transparent text-ink border border-ink hover:bg-black/5 rounded font-body font-semibold text-base transition-colors cursor-pointer">
                 View Complete Kits
@@ -69,13 +70,13 @@ export default function HeroSection() {
             {/* Minimalist Data Card overlay */}
             <div className="absolute bottom-8 left-8 bg-white/90 backdrop-blur-md p-6 rounded max-w-[250px] shadow-lg">
               <div className="font-body text-sm text-ink-mid mb-2">
-                Highest Rated Output
+                Average Monthly Savings
               </div>
               <div className="font-heading text-4xl font-bold text-accent">
-                400W
+                ৳3,500
               </div>
               <div className="font-body text-xs text-ink mt-2">
-                Monocrystalline Cell
+                On your DESA/DESCO bill
               </div>
             </div>
           </motion.div>

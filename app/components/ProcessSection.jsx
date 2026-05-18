@@ -5,24 +5,24 @@ import { motion } from "framer-motion";
 export default function ProcessSection() {
   const steps = [
     {
-      title: "Calculate Your Needs",
+      title: "Free Site Survey",
       description:
-        "Use our online calculator to determine how many panels and batteries you need for your home.",
+        "Our team visits your home to assess roof space, sunlight exposure, and your electricity usage. Completely free, no obligation.",
     },
     {
-      title: "Select Your Equipment",
+      title: "Custom System Design",
       description:
-        "Choose from our premium selection of monocrystalline panels, inverters, and complete kits.",
+        "We design a system tailored to your needs — whether you want to reduce bills or go fully off-grid during load shedding.",
     },
     {
-      title: "Fast, Free Freight",
+      title: "Delivery & Installation",
       description:
-        "We carefully package your solar equipment and ship it directly to your residence via free freight.",
+        "We deliver to your doorstep anywhere in BD and our certified installers set up everything. Usually done in 1-2 days.",
     },
     {
-      title: "DIY or Hire a Pro",
+      title: "Start Saving",
       description:
-        "Install it yourself with our comprehensive guides, or hire a local contractor to mount your new system.",
+        "Your system starts generating power from day one. Monitor output via mobile app. We handle net metering with DESA/DESCO.",
     },
   ];
 
@@ -57,8 +57,8 @@ export default function ProcessSection() {
                 How It Works
               </div>
               <h2 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight">
-                From our warehouse, <br />
-                <span className="text-accent italic">to your roof.</span>
+                From survey to savings, <br />
+                <span className="text-accent italic">in just 3 days.</span>
               </h2>
             </motion.div>
 

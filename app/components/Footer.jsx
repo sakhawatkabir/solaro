@@ -39,34 +39,34 @@ export default function Footer() {
             <ul className="space-y-4">
               <li>
                 <a
-                  href="#"
+                  href="#panels"
                   className="text-ink-mid hover:text-ink transition-colors"
                 >
-                  Home
+                  Solar Panels
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="#kits"
                   className="text-ink-mid hover:text-ink transition-colors"
                 >
-                  About Us
+                  Home Kits
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
-                  className="text-ink-mid hover:text-ink transition-colors"
-                >
-                  Services
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
+                  href="#process"
                   className="text-ink-mid hover:text-ink transition-colors"
                 >
                   How It Works
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#reviews"
+                  className="text-ink-mid hover:text-ink transition-colors"
+                >
+                  Customer Reviews
                 </a>
               </li>
             </ul>

@@ -24,16 +24,19 @@ export default function CTASection() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6 tracking-tight">
-                Ready to build your{" "}
-                <span className="text-primary italic">solar setup?</span>
+                Ready to go{" "}
+                <span className="text-primary italic">solar in Bangladesh?</span>
               </h2>
               <p className="text-cream/80 text-lg leading-relaxed mb-10 font-body max-w-md">
-                Join the renewable revolution. Browse our catalog of premium
-                solar panels, inverters, and complete DIY kits.
+                Get a free site survey and custom quote for your home. Serving
+                all 64 districts with free delivery and professional installation.
               </p>
               <div className="flex gap-4">
                 <button className="px-8 py-4 bg-primary hover:bg-primary/90 text-ink font-semibold rounded font-body text-base transition-colors cursor-pointer shadow-lg">
-                  Shop All Products
+                  Get Free Quote
+                </button>
+                <button className="px-8 py-4 bg-transparent text-white border border-white/30 hover:bg-white/10 font-semibold rounded font-body text-base transition-colors cursor-pointer">
+                  Call: +880 17 0000 0000
                 </button>
               </div>
             </motion.div>

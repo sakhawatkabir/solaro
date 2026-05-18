@@ -13,9 +13,9 @@ export default function Navigation() {
 
   const navLinks = [
     { name: "Solar Panels", href: "#panels" },
-    { name: "Complete Kits", href: "#kits" },
-    { name: "Accessories", href: "#accessories" },
-    { name: "Support", href: "#support" },
+    { name: "Home Kits", href: "#kits" },
+    { name: "How It Works", href: "#process" },
+    { name: "Reviews", href: "#reviews" },
   ];
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function Navigation() {
             <span>Cart (0)</span>
           </button>
           <button className="px-6 py-3 bg-accent hover:bg-accent-mid text-white rounded-full font-semibold text-[15px] transition-colors cursor-pointer shadow-md shadow-accent/20">
-            Shop Now
+            Get Free Quote
           </button>
         </div>
 
@@ -100,7 +100,7 @@ export default function Navigation() {
                 </Link>
               ))}
               <button className="mt-8 px-6 py-4 bg-accent text-white rounded-full font-semibold text-center w-full">
-                Shop Now
+                Get Free Quote
               </button>
             </div>
           </motion.div>

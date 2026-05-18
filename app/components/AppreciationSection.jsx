@@ -7,17 +7,17 @@ export default function AppreciationSection() {
     {
       value: "25+",
       label: "Years of Warranty",
-      description: "Full coverage for panels and installation",
+      description: "Full coverage for panels, inverter, and installation",
     },
     {
-      value: "10k+",
+      value: "5,000+",
       label: "Homes Powered",
-      description: "Across the country and growing daily",
+      description: "Across all 64 districts of Bangladesh",
     },
     {
       value: "100%",
       label: "Satisfaction",
-      description: "Dedicated support team available 24/7",
+      description: "Local support team in Dhaka, available 24/7",
     },
   ];
 
@@ -35,10 +35,10 @@ export default function AppreciationSection() {
             Our Impact
           </div>
           <h2 className="text-4xl lg:text-5xl font-heading leading-tight">
-            We've helped homeowners and businesses transform their energy usage,
-            saving money and{" "}
+            We've helped thousands of Bangladeshi families take control of
+            their energy costs and say goodbye to{" "}
             <span className="italic text-accent">
-              protecting the environment.
+              load shedding forever.
             </span>
           </h2>
         </motion.div>

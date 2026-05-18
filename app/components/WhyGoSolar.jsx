@@ -7,22 +7,22 @@ export default function WhyGoSolar() {
     {
       number: "01",
       title: "Direct from Manufacturer",
-      desc: "Cut out the middleman and save thousands. We ship premium grade solar panels directly from our warehouse to your door.",
+      desc: "No middlemen, no inflated prices. We import premium solar panels directly and deliver to your doorstep anywhere in Bangladesh.",
     },
     {
       number: "02",
-      title: "Easy DIY Installation",
-      desc: "Our complete kits come with detailed instructions, wiring diagrams, and dedicated technical support for DIY homeowners.",
+      title: "Beat Load Shedding",
+      desc: "Never suffer through scheduled blackouts again. Our battery-backed kits keep your fans, lights, and WiFi running 24/7.",
     },
     {
       number: "03",
-      title: "Free Freight Shipping",
-      desc: "Enjoy free residential freight shipping on all complete kit orders. We ensure your panels arrive safely and on time.",
+      title: "Free Delivery Nationwide",
+      desc: "We deliver and install across all 64 districts — from Dhaka to Cox's Bazar, Sylhet to Khulna. No hidden transport costs.",
     },
     {
       number: "04",
       title: "25-Year Warranty",
-      desc: "Total peace of mind with an industry-leading 25-year performance warranty on all monocrystalline panels.",
+      desc: "Industry-leading 25-year performance warranty on all panels. Local after-sales support from our Dhaka service center.",
     },
   ];
 
@@ -44,7 +44,7 @@ export default function WhyGoSolar() {
               The Advantage
             </div>
             <h2 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight tracking-tight max-w-2xl">
-              Why buy solar <span className="text-accent italic">from us?</span>
+              Why go solar <span className="text-accent italic">in Bangladesh?</span>
             </h2>
           </motion.div>
 
@@ -56,9 +56,10 @@ export default function WhyGoSolar() {
             className="flex-1 lg:max-w-md pt-2 lg:pt-12"
           >
             <p className="text-ink-mid text-lg leading-relaxed font-body">
-              We believe in democratizing solar energy. By offering premium
-              equipment directly to consumers, we make clean energy affordable
-              and accessible.
+              Bangladesh gets 250+ days of sunshine per year — one of the highest
+              in South Asia. With rising electricity costs and frequent load
+              shedding, solar isn't just green, it's the smartest investment
+              you'll make for your home.
             </p>
           </motion.div>
         </div>
