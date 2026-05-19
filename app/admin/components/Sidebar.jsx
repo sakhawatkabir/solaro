@@ -10,7 +10,6 @@ import {
   Users,
   MessageSquare,
   MapPin,
-  FileText,
   BarChart3,
   Settings,
   ChevronLeft,
@@ -27,7 +26,6 @@ const navItems = [
   { label: "Customers", href: "/admin/customers", icon: Users },
   { label: "Leads", href: "/admin/leads", icon: MessageSquare },
   { label: "Districts", href: "/admin/districts", icon: MapPin },
-  { label: "Content", href: "/admin/content", icon: FileText },
   { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
