@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import CartDrawer from "./components/CartDrawer";
 import { MotionProvider } from "./components/MotionProvider";
 
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -28,7 +29,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        
       >
         <ThemeProvider>
           <CartProvider>
