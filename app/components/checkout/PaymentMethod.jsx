@@ -36,7 +36,7 @@ const paymentMethods = [
 export default function PaymentMethod({ paymentMethod, setPaymentMethod }) {
   return (
     <div className="bg-white rounded-xl p-6 border border-ink/5">
-      <h2 className="text-xl font-heading font-bold text-ink mb-6 flex items-center gap-2">
+      <h2 className="text-xl font-heading font-semibold text-ink mb-6 flex items-center gap-2">
         <CreditCard size={20} className="text-accent" />
         Payment Method
       </h2>
@@ -44,6 +44,7 @@ export default function PaymentMethod({ paymentMethod, setPaymentMethod }) {
         {paymentMethods.map((method) => (
           <label
             key={method.id}
+            htmlFor={`payment-${method.id}`}
             className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
               paymentMethod === method.id
                 ? "border-accent bg-accent/5"
@@ -51,12 +52,13 @@ export default function PaymentMethod({ paymentMethod, setPaymentMethod }) {
             }`}
           >
             <input
+              id={`payment-${method.id}`}
               type="radio"
               name="payment"
               value={method.id}
               checked={paymentMethod === method.id}
               onChange={(e) => setPaymentMethod(e.target.value)}
-              className="w-4 h-4 mt-0.5 text-accent focus:ring-accent/20"
+              className="size-4 mt-0.5 text-accent focus:ring-accent/20"
             />
             <div>
               <div className="font-semibold text-ink text-sm flex items-center gap-2">

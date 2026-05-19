@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
   Sun,
   Users,
@@ -15,8 +15,13 @@ import {
   Calendar,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function AboutPage() {
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
   const stats = [
     { number: "10+", label: "Years in Bangladesh", icon: Calendar },
     { number: "45,500+", label: "Installations Completed", icon: Zap },
@@ -116,15 +121,15 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="pt-32 pb-16 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
           >
             <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-4">
               About SOLARO
             </div>
-            <h1 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight mb-6">
+            <h1 className="text-5xl lg:text-6xl font-heading font-semibold text-ink leading-tight mb-6">
               Powering Bangladesh{" "}
               <span className="text-accent italic">with sunshine</span>
             </h1>
@@ -134,40 +139,40 @@ export default function AboutPage() {
               mission is simple: end load shedding and make electricity affordable
               for every Bangladeshi family.
             </p>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* Stats */}
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: transitionDuration, delay: 0.2 }}
             className="bg-white rounded-2xl p-8 border border-ink/5 shadow-sm"
           >
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={index}
+              {stats.map((stat) => (
+                <m.div
+                  key={stat.label}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  transition={{ duration: 0.4 }}
                   className="text-center"
                 >
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-3">
+                  <div className="size-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-3">
                     <stat.icon size={22} className="text-accent" />
                   </div>
-                  <div className="text-4xl font-heading font-bold text-accent mb-1">
+                  <div className="text-4xl font-heading font-semibold text-accent mb-1">
                     {stat.number}
                   </div>
                   <div className="text-ink-mid text-sm">{stat.label}</div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -175,16 +180,16 @@ export default function AboutPage() {
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: transitionDuration }}
             >
               <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
                 Our Story
               </div>
-              <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-6">
+              <h2 className="text-3xl lg:text-4xl font-heading font-semibold text-ink mb-6">
                 Born from the frustration of load shedding
               </h2>
               <div className="space-y-4 text-ink-mid leading-relaxed">
@@ -207,21 +212,23 @@ export default function AboutPage() {
                   save an average of ৳3,500 per month on electricity bills.
                 </p>
               </div>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: transitionDuration }}
               className="rounded-2xl overflow-hidden aspect-[4/3]"
             >
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=1200&auto=format&fit=crop"
                 alt="SOLARO installation team"
+                width={1200}
+                height={900}
                 className="w-full h-full object-cover"
               />
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </section>
@@ -229,45 +236,45 @@ export default function AboutPage() {
       {/* Values */}
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
             className="text-center mb-12"
           >
             <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
               Our Values
             </div>
-            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
+            <h2 className="text-3xl lg:text-4xl font-heading font-semibold text-ink mb-4">
               What drives us every day
             </h2>
             <p className="text-ink-mid max-w-2xl mx-auto">
               These core principles guide every decision we make and every system
               we install.
             </p>
-          </motion.div>
+          </m.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {values.map((value, index) => (
-              <motion.div
-                key={index}
+            {values.map((value) => (
+              <m.div
+                key={value.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                transition={{ duration: 0.4 }}
                 className="bg-white rounded-2xl p-8 border border-ink/5 hover:shadow-lg transition-shadow"
               >
-                <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-5">
+                <div className="size-14 rounded-xl bg-accent/10 flex items-center justify-center mb-5">
                   <value.icon size={26} className="text-accent" />
                 </div>
-                <h3 className="text-xl font-heading font-bold text-ink mb-3">
+                <h3 className="text-xl font-heading font-semibold text-ink mb-3">
                   {value.title}
                 </h3>
                 <p className="text-ink-mid leading-relaxed">
                   {value.description}
                 </p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -276,48 +283,48 @@ export default function AboutPage() {
       {/* Timeline */}
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
             className="text-center mb-12"
           >
             <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
               Our Journey
             </div>
-            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
+            <h2 className="text-3xl lg:text-4xl font-heading font-semibold text-ink mb-4">
               Milestones that define us
             </h2>
-          </motion.div>
+          </m.div>
 
           <div className="relative">
             <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-accent/20" />
             <div className="space-y-8">
-              {milestones.map((milestone, index) => (
-                <motion.div
-                  key={index}
+              {milestones.map((milestone) => (
+                <m.div
+                  key={milestone.year}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  transition={{ duration: 0.4 }}
                   className="flex gap-6 relative"
                 >
-                  <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0 z-10">
+                  <div className="size-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0 z-10">
                     <TrendingUp size={20} className="text-white" />
                   </div>
                   <div className="bg-white rounded-xl p-6 border border-ink/5 flex-1">
                     <div className="text-accent font-bold text-sm mb-1">
                       {milestone.year}
                     </div>
-                    <h3 className="font-heading font-bold text-ink text-lg mb-2">
+                    <h3 className="font-heading font-semibold text-ink text-lg mb-2">
                       {milestone.title}
                     </h3>
                     <p className="text-ink-mid text-sm leading-relaxed">
                       {milestone.desc}
                     </p>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -327,44 +334,46 @@ export default function AboutPage() {
       {/* Team */}
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
             className="text-center mb-12"
           >
             <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
               Our Team
             </div>
-            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
+            <h2 className="text-3xl lg:text-4xl font-heading font-semibold text-ink mb-4">
               The people behind SOLARO
             </h2>
             <p className="text-ink-mid max-w-2xl mx-auto">
               Passionate professionals dedicated to bringing solar energy to
               every corner of Bangladesh.
             </p>
-          </motion.div>
+          </m.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member, index) => (
-              <motion.div
-                key={index}
+            {team.map((member) => (
+              <m.div
+                key={member.name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                transition={{ duration: 0.4 }}
                 className="bg-white rounded-2xl overflow-hidden border border-ink/5 group hover:shadow-lg transition-shadow"
               >
                 <div className="aspect-[3/4] overflow-hidden">
-                  <img
+                  <Image
                     src={member.image}
                     alt={member.name}
+                    width={400}
+                    height={533}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
                 <div className="p-5">
-                  <h3 className="font-heading font-bold text-ink text-lg">
+                  <h3 className="font-heading font-semibold text-ink text-lg">
                     {member.name}
                   </h3>
                   <div className="text-accent text-sm font-semibold mb-2">
@@ -372,7 +381,7 @@ export default function AboutPage() {
                   </div>
                   <p className="text-ink-light text-sm">{member.bio}</p>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -382,7 +391,7 @@ export default function AboutPage() {
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
           <div className="bg-gradient-to-br from-accent to-accent-mid rounded-2xl p-8 lg:p-12 text-center text-white">
-            <h3 className="text-2xl lg:text-4xl font-heading font-bold mb-4">
+            <h3 className="text-2xl lg:text-4xl font-heading font-semibold mb-4">
               Ready to Join 45,500+ Solar Homes?
             </h3>
             <p className="text-white/80 text-lg mb-8 max-w-2xl mx-auto">

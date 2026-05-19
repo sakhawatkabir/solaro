@@ -1,4 +1,5 @@
 import Badge from "./Badge";
+import Image from "next/image";
 
 export default function MembersBadge() {
   const avatars = [
@@ -10,12 +11,14 @@ export default function MembersBadge() {
   return (
     <Badge className="pl-2">
       <div className="flex -space-x-2">
-        {avatars.map((avatar, index) => (
-          <img
-            key={index}
+        {avatars.map((avatar) => (
+          <Image
+            key={avatar}
             src={avatar}
-            alt={`Member ${index + 1}`}
-            className="w-8 h-8 rounded-full border-2 border-cream object-cover"
+            alt="Member avatar"
+            width={32}
+            height={32}
+            className="size-8 rounded-full border-2 border-cream object-cover"
           />
         ))}
       </div>

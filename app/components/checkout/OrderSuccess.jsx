@@ -1,23 +1,25 @@
-"use client";
-
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { CheckCircle, Package } from "lucide-react";
 import Link from "next/link";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 export default function OrderSuccess({ orderId }) {
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.5;
+
   return (
     <section className="pt-32 pb-20 px-8 lg:px-16 min-h-screen flex items-center">
       <div className="max-w-2xl mx-auto w-full">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: transitionDuration }}
           className="bg-white rounded-2xl p-8 lg:p-12 border border-ink/5 text-center"
         >
-          <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6">
+          <div className="size-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6">
             <CheckCircle size={40} className="text-accent" />
           </div>
-          <h1 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
+          <h1 className="text-3xl lg:text-4xl font-heading font-semibold text-ink mb-4">
             Order Confirmed!
           </h1>
           <p className="text-ink-mid text-lg mb-8">
@@ -58,7 +60,7 @@ export default function OrderSuccess({ orderId }) {
               </span>
             </Link>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

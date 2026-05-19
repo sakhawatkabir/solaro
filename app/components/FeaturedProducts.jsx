@@ -1,11 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Star, ArrowRight, ShoppingCart } from "lucide-react";
 import { products, formatPrice } from "../data/products";
 import { useCart } from "../context/CartContext";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const featuredProducts = products
   .filter((p) => p.category === "home-kit")
@@ -14,6 +16,8 @@ const featuredProducts = products
 export default function FeaturedProducts() {
   const { addItem } = useCart();
   const [addedId, setAddedId] = useState(null);
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
   const handleAddToCart = (product) => {
     addItem({
@@ -29,28 +33,28 @@ export default function FeaturedProducts() {
   return (
     <section className="py-20 px-8 lg:px-16">
       <div className="max-w-[1400px] mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: transitionDuration }}
           className="text-center mb-12"
         >
           <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
             Featured Products
           </div>
-          <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
+          <h2 className="text-3xl lg:text-4xl font-heading font-semibold text-ink mb-4">
             Complete solar kits for every home
           </h2>
           <p className="text-ink-mid max-w-xl mx-auto">
             From small apartments to large villas — find the perfect solar
             system with free delivery and installation across all 64 districts.
           </p>
-        </motion.div>
+        </m.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           {featuredProducts.map((product, index) => (
-            <motion.div
+            <m.div
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -60,9 +64,11 @@ export default function FeaturedProducts() {
             >
               <Link href={`/products/${product.id}`}>
                 <div className="relative aspect-[4/3] overflow-hidden bg-cream rounded-t-2xl">
-                  <img
+                  <Image
                     src={product.image}
                     alt={product.title}
+                    width={600}
+                    height={450}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   {product.badge && (
@@ -86,7 +92,7 @@ export default function FeaturedProducts() {
 
               <div className="p-5 flex flex-col flex-1">
                 <Link href={`/products/${product.id}`}>
-                  <h3 className="font-heading font-bold text-ink text-lg mb-1 cursor-pointer hover:text-accent transition-colors">
+                  <h3 className="font-heading font-semibold text-ink text-lg mb-1 cursor-pointer hover:text-accent transition-colors">
                     {product.title}
                   </h3>
                 </Link>
@@ -113,7 +119,7 @@ export default function FeaturedProducts() {
                 {/* Price & CTA */}
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-ink/5">
                   <div>
-                    <div className="text-xl font-heading font-bold text-accent">
+                    <div className="text-xl font-heading font-semibold text-accent">
                       {formatPrice(product.price)}
                     </div>
                     {product.originalPrice > product.price && (
@@ -135,16 +141,16 @@ export default function FeaturedProducts() {
                   </button>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
         {/* View All */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: transitionDuration }}
           className="text-center"
         >
           <Link href="/products">
@@ -153,7 +159,7 @@ export default function FeaturedProducts() {
               <ArrowRight size={18} />
             </span>
           </Link>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

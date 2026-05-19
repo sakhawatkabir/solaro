@@ -1,24 +1,28 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Sun, Phone } from "lucide-react";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function CTASection() {
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
   return (
     <section className="py-20 px-8 lg:px-16 bg-cream">
       <div className="max-w-[1400px] mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: transitionDuration }}
           className="bg-gradient-to-br from-accent to-accent-mid rounded-3xl overflow-hidden relative"
         >
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full translate-y-1/2 -translate-x-1/4 blur-2xl" />
+            <div className="absolute top-0 right-0 size-96 bg-white rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl" />
+            <div className="absolute bottom-0 left-0 size-64 bg-white rounded-full translate-y-1/2 -translate-x-1/4 blur-2xl" />
           </div>
 
           <div className="relative z-10 px-8 py-16 lg:px-16 lg:py-20">
@@ -29,7 +33,7 @@ export default function CTASection() {
                   <Sun size={16} />
                   Start Saving Today
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-heading font-bold text-white leading-tight mb-6">
+                <h2 className="text-4xl lg:text-5xl font-heading font-semibold text-white leading-tight mb-6">
                   Ready to go{" "}
                   <span className="italic text-primary">
                     solar in Bangladesh?
@@ -59,25 +63,25 @@ export default function CTASection() {
               {/* Right Stats */}
               <div className="grid grid-cols-2 gap-6">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                  <div className="text-3xl lg:text-4xl font-heading font-bold text-white mb-1">
+                  <div className="text-3xl lg:text-4xl font-heading font-semibold text-white mb-1">
                     45,500+
                   </div>
                   <div className="text-white/70 text-sm">Homes Powered</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                  <div className="text-3xl lg:text-4xl font-heading font-bold text-white mb-1">
+                  <div className="text-3xl lg:text-4xl font-heading font-semibold text-white mb-1">
                     64
                   </div>
                   <div className="text-white/70 text-sm">Districts Covered</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                  <div className="text-3xl lg:text-4xl font-heading font-bold text-white mb-1">
+                  <div className="text-3xl lg:text-4xl font-heading font-semibold text-white mb-1">
                     70%
                   </div>
                   <div className="text-white/70 text-sm">Bill Reduction</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                  <div className="text-3xl lg:text-4xl font-heading font-bold text-white mb-1">
+                  <div className="text-3xl lg:text-4xl font-heading font-semibold text-white mb-1">
                     25yr
                   </div>
                   <div className="text-white/70 text-sm">Panel Warranty</div>
@@ -85,7 +89,7 @@ export default function CTASection() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
   Mail,
   Phone,
@@ -13,6 +13,8 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -25,12 +27,14 @@ export default function ContactPage() {
     district: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
-  const handleChange = (e) => {
+  const handleContactInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleContactFormSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 5000);
@@ -103,15 +107,15 @@ export default function ContactPage() {
       {/* Hero */}
       <section className="pt-32 pb-16 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
           >
             <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-4">
               Contact Us
             </div>
-            <h1 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight mb-6">
+            <h1 className="text-5xl lg:text-6xl font-heading font-semibold text-ink leading-tight mb-6">
               Let's start your{" "}
               <span className="text-accent italic">solar journey</span>
             </h1>
@@ -120,7 +124,7 @@ export default function ContactPage() {
               ready to help you switch to clean energy. Reach out and we will
               respond within 24 hours.
             </p>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -129,26 +133,26 @@ export default function ContactPage() {
         <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {contactInfo.map((info, index) => (
-              <motion.div
-                key={index}
+              <m.div
+                key={info.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 className="bg-white rounded-xl p-6 border border-ink/5 hover:shadow-lg transition-shadow"
               >
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-4">
-                  <info.icon className="w-5 h-5 text-accent" />
+                <div className="size-12 rounded-full bg-accent/10 flex items-center justify-center mb-4">
+                  <info.icon className="size-5 text-accent" />
                 </div>
-                <h3 className="font-heading font-bold text-ink mb-3">
+                <h3 className="font-heading font-semibold text-ink mb-3">
                   {info.title}
                 </h3>
-                {info.details.map((detail, idx) => (
-                  <p key={idx} className="text-ink-mid text-sm">
+                {info.details.map((detail) => (
+                  <p key={detail} className="text-ink-mid text-sm">
                     {detail}
                   </p>
                 ))}
                 <p className="text-ink-light text-xs mt-2">{info.sub}</p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -159,15 +163,15 @@ export default function ContactPage() {
         <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Form */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: transitionDuration }}
             >
               <div className="flex items-center gap-2 mb-2">
                 <MessageSquare size={20} className="text-accent" />
-                <h2 className="text-2xl font-heading font-bold text-ink">
+                <h2 className="text-2xl font-heading font-semibold text-ink">
                   Send Us a Message
                 </h2>
               </div>
@@ -177,7 +181,7 @@ export default function ContactPage() {
               </p>
 
               {submitted && (
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="bg-accent/10 border border-accent/20 rounded-xl p-4 mb-6 flex items-center gap-3"
@@ -194,34 +198,36 @@ export default function ContactPage() {
                       We will contact you within 24 hours.
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleContactFormSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-sm font-semibold text-ink mb-2">
+                    <label htmlFor="contact-firstName" className="block text-sm font-semibold text-ink mb-2">
                       First Name
                     </label>
                     <input
+                      id="contact-firstName"
                       type="text"
                       name="firstName"
                       value={formData.firstName}
-                      onChange={handleChange}
+                      onChange={handleContactInputChange}
                       required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                       placeholder="Rahim"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-ink mb-2">
+                    <label htmlFor="contact-lastName" className="block text-sm font-semibold text-ink mb-2">
                       Last Name
                     </label>
                     <input
+                      id="contact-lastName"
                       type="text"
                       name="lastName"
                       value={formData.lastName}
-                      onChange={handleChange}
+                      onChange={handleContactInputChange}
                       required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                       placeholder="Ahmed"
@@ -231,28 +237,30 @@ export default function ContactPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-sm font-semibold text-ink mb-2">
+                    <label htmlFor="contact-email" className="block text-sm font-semibold text-ink mb-2">
                       Email
                     </label>
                     <input
+                      id="contact-email"
                       type="email"
                       name="email"
                       value={formData.email}
-                      onChange={handleChange}
+                      onChange={handleContactInputChange}
                       required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                       placeholder="rahim@email.com"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-ink mb-2">
+                    <label htmlFor="contact-phone" className="block text-sm font-semibold text-ink mb-2">
                       Phone Number
                     </label>
                     <input
+                      id="contact-phone"
                       type="tel"
                       name="phone"
                       value={formData.phone}
-                      onChange={handleChange}
+                      onChange={handleContactInputChange}
                       required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                       placeholder="+880 17XX-XXXXXX"
@@ -262,13 +270,14 @@ export default function ContactPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-sm font-semibold text-ink mb-2">
+                    <label htmlFor="contact-service" className="block text-sm font-semibold text-ink mb-2">
                       Service Interested In
                     </label>
                     <select
+                      id="contact-service"
                       name="service"
                       value={formData.service}
-                      onChange={handleChange}
+                      onChange={handleContactInputChange}
                       required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all appearance-none"
                     >
@@ -281,13 +290,14 @@ export default function ContactPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-ink mb-2">
+                    <label htmlFor="contact-district" className="block text-sm font-semibold text-ink mb-2">
                       Your District
                     </label>
                     <select
+                      id="contact-district"
                       name="district"
                       value={formData.district}
-                      onChange={handleChange}
+                      onChange={handleContactInputChange}
                       required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all appearance-none"
                     >
@@ -302,13 +312,14 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-ink mb-2">
+                  <label htmlFor="contact-message" className="block text-sm font-semibold text-ink mb-2">
                     Message
                   </label>
                   <textarea
+                    id="contact-message"
                     name="message"
                     value={formData.message}
-                    onChange={handleChange}
+                    onChange={handleContactInputChange}
                     rows="5"
                     required
                     className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all resize-none"
@@ -316,30 +327,32 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                <m.button
+                  whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+                  whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
                   type="submit"
                   className="w-full py-4 bg-accent hover:bg-accent-mid text-white font-semibold rounded-full transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2"
                 >
                   <Send size={18} />
                   Send Message
-                </motion.button>
+                </m.button>
               </form>
-            </motion.div>
+            </m.div>
 
             {/* Map / Image */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: transitionDuration }}
               className="space-y-6"
             >
               <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=1200&auto=format&fit=crop"
                   alt="SOLARO office Dhaka"
+                  width={1200}
+                  height={900}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -348,7 +361,7 @@ export default function ContactPage() {
               <div className="bg-white rounded-2xl p-6 border border-ink/5">
                 <div className="flex items-center gap-2 mb-4">
                   <Building2 size={20} className="text-accent" />
-                  <h3 className="font-heading font-bold text-ink">
+                  <h3 className="font-heading font-semibold text-ink">
                     Head Office — Dhaka
                   </h3>
                 </div>
@@ -383,7 +396,7 @@ export default function ContactPage() {
 
               {/* Why Contact Us */}
               <div className="bg-accent/5 rounded-2xl p-6 border border-accent/10">
-                <h3 className="font-heading font-bold text-ink mb-4">
+                <h3 className="font-heading font-semibold text-ink mb-4">
                   Why Talk to Us?
                 </h3>
                 <div className="space-y-3">
@@ -393,8 +406,8 @@ export default function ContactPage() {
                     "No obligation, no pressure",
                     "Honest savings estimates",
                     "Net metering guidance included",
-                  ].map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
+                  ].map((item) => (
+                    <div key={item} className="flex items-center gap-3">
                       <CheckCircle
                         size={16}
                         className="text-accent flex-shrink-0"
@@ -404,7 +417,7 @@ export default function ContactPage() {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </section>
@@ -412,23 +425,23 @@ export default function ContactPage() {
       {/* FAQ */}
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
             className="text-center mb-12"
           >
             <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
               FAQ
             </div>
-            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
+            <h2 className="text-3xl lg:text-4xl font-heading font-semibold text-ink mb-4">
               Frequently Asked Questions
             </h2>
             <p className="text-ink-mid max-w-xl mx-auto">
               Quick answers to common questions about going solar in Bangladesh.
             </p>
-          </motion.div>
+          </m.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
             {[
@@ -456,20 +469,20 @@ export default function ContactPage() {
                 q: "Are financing options available?",
                 a: "Yes. We partner with several banks offering solar loans with competitive interest rates and flexible EMI plans.",
               },
-            ].map((faq, index) => (
-              <motion.div
-                key={index}
+            ].map((faq) => (
+              <m.div
+                key={faq.q}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
+                transition={{ duration: 0.4 }}
                 className="bg-white rounded-xl p-6 border border-ink/5 hover:shadow-md transition-shadow"
               >
-                <h3 className="font-heading font-bold text-ink mb-2">
+                <h3 className="font-heading font-semibold text-ink mb-2">
                   {faq.q}
                 </h3>
                 <p className="text-ink-mid text-sm leading-relaxed">{faq.a}</p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>

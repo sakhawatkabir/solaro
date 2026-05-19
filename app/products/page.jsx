@@ -1,11 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ShoppingCart, Filter, Search, ChevronRight, Star } from "lucide-react";
 import { products, formatPrice } from "../data/products";
 import { useCart } from "../context/CartContext";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const categories = [
   { id: "all", label: "All Products" },
@@ -20,6 +22,8 @@ export default function ProductsPage() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [addedId, setAddedId] = useState(null);
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
   const filtered = products.filter((p) => {
     const matchesCategory =
@@ -46,15 +50,15 @@ export default function ProductsPage() {
       {/* Header */}
       <section className="pt-32 pb-16 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
           >
             <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-4">
               Shop Solar Systems
             </div>
-            <h1 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight mb-6">
+            <h1 className="text-5xl lg:text-6xl font-heading font-semibold text-ink leading-tight mb-6">
               Complete solar systems{" "}
               <span className="text-accent italic">for every home</span>
             </h1>
@@ -63,7 +67,7 @@ export default function ProductsPage() {
               solar solution for your home. All prices include free delivery and
               installation across Bangladesh.
             </p>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -112,7 +116,7 @@ export default function ProductsPage() {
           {filtered.length === 0 ? (
             <div className="text-center py-20">
               <Search size={48} className="text-ink-faint mx-auto mb-4" />
-              <h3 className="text-xl font-heading font-bold text-ink mb-2">
+              <h3 className="text-xl font-heading font-semibold text-ink mb-2">
                 No products found
               </h3>
               <p className="text-ink-mid">
@@ -122,7 +126,7 @@ export default function ProductsPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filtered.map((product, index) => (
-                <motion.div
+                <m.div
                   key={product.id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -133,9 +137,11 @@ export default function ProductsPage() {
                   {/* Image */}
                   <Link href={`/products/${product.id}`}>
                     <div className="relative aspect-[4/3] overflow-hidden bg-cream rounded-t-2xl cursor-pointer">
-                      <img
+                      <Image
                         src={product.image}
                         alt={product.title}
+                        width={600}
+                        height={450}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                       {product.badge && (
@@ -164,7 +170,7 @@ export default function ProductsPage() {
                         ?.label || product.category}
                     </div>
                     <Link href={`/products/${product.id}`}>
-                      <h3 className="font-heading text-xl font-bold text-ink mb-1 cursor-pointer hover:text-accent transition-colors">
+                      <h3 className="font-heading text-xl font-semibold text-ink mb-1 cursor-pointer hover:text-accent transition-colors">
                         {product.title}
                       </h3>
                     </Link>
@@ -188,7 +194,7 @@ export default function ProductsPage() {
                     {/* Price & CTA */}
                     <div className="flex items-center justify-between mt-auto pt-4 border-t border-ink/5">
                       <div>
-                        <div className="text-xl font-heading font-bold text-accent">
+                        <div className="text-xl font-heading font-semibold text-accent">
                           {formatPrice(product.price)}
                         </div>
                         {product.originalPrice > product.price && (
@@ -218,7 +224,7 @@ export default function ProductsPage() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           )}

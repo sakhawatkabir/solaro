@@ -1,17 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ShoppingCart, User } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { totalItems, setIsOpen } = useCart();
+  const prefersReducedMotion = useReducedMotion();
 
   const navLinks = [
     { name: "Products", href: "/products" },
@@ -32,10 +34,10 @@ export default function Navigation() {
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100 }}
+      <m.nav
+        initial={prefersReducedMotion ? {} : { y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 lg:px-16 py-6 transition-all duration-300 font-body ${
           isScrolled
             ? "bg-cream/95 backdrop-blur-md border-b border-black/5 shadow-sm py-4"
@@ -44,8 +46,8 @@ export default function Navigation() {
       >
         <Link href="/">
           <div className="flex items-center gap-2 cursor-pointer">
-            <div className="w-6 h-6 rounded-full bg-primary"></div>
-            <span className="text-2xl font-heading font-bold text-ink tracking-tight">
+            <div className="size-6 rounded-full bg-primary"></div>
+            <span className="text-2xl font-heading font-semibold text-ink tracking-tight">
               Solaro.
             </span>
           </div>
@@ -78,7 +80,7 @@ export default function Navigation() {
             <ShoppingCart size={20} />
 
             {totalItems > 0 && (
-              <span className="absolute -top-1 -right-3 w-5 h-5 bg-accent text-white text-xs rounded-full flex items-center justify-center font-bold">
+              <span className="absolute -top-1 -right-3 size-5 bg-accent text-white text-xs rounded-full flex items-center justify-center font-bold">
                 {totalItems}
               </span>
             )}
@@ -94,7 +96,7 @@ export default function Navigation() {
           <button onClick={() => setIsOpen(true)} className="text-ink relative">
             <ShoppingCart size={24} />
             {totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-[10px] rounded-full flex items-center justify-center font-bold">
+              <span className="absolute -top-1 -right-1 size-4 bg-accent text-white text-[10px] rounded-full flex items-center justify-center font-bold">
                 {totalItems}
               </span>
             )}
@@ -106,12 +108,12 @@ export default function Navigation() {
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-      </motion.nav>
+      </m.nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -140,7 +142,7 @@ export default function Navigation() {
                 </Link>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

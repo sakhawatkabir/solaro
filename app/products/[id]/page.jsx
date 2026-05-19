@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
   ArrowLeft,
   ShoppingCart,
@@ -23,6 +23,8 @@ import { products, formatPrice, getProductById } from "@/app/data/products";
 import { useCart } from "@/app/context/CartContext";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { useReducedMotion } from "@/app/hooks/useReducedMotion";
 
 const specIcons = {
   panels: Sun,
@@ -52,6 +54,8 @@ export default function ProductDetailPage({ params }) {
   const [activeTab, setActiveTab] = useState("specs");
   const [saved, setSaved] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
   const product = getProductById(params.id);
 
@@ -62,7 +66,7 @@ export default function ProductDetailPage({ params }) {
   if (!product) {
     return (
       <div className="pt-32 pb-20 px-8 text-center">
-        <h1 className="text-4xl font-heading font-bold text-ink mb-4">
+        <h1 className="text-4xl font-heading font-semibold text-ink mb-4">
           Product Not Found
         </h1>
         <p className="text-ink-mid mb-8">
@@ -131,15 +135,17 @@ export default function ProductDetailPage({ params }) {
         <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Image Gallery */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: transitionDuration }}
             >
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-white mb-4">
-                <img
+                <Image
                   src={images[selectedImage]}
                   alt={product.title}
+                  width={1200}
+                  height={900}
                   className="w-full h-full object-cover"
                 />
                 {product.badge && (
@@ -164,29 +170,31 @@ export default function ProductDetailPage({ params }) {
               <div className="flex gap-3">
                 {images.map((img, idx) => (
                   <button
-                    key={idx}
+                    key={img}
                     onClick={() => setSelectedImage(idx)}
-                    className={`w-24 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                    className={`size-24 rounded-lg overflow-hidden border-2 transition-all ${
                       selectedImage === idx
                         ? "border-accent shadow-md"
                         : "border-transparent opacity-60 hover:opacity-100"
                     }`}
                   >
-                    <img
+                    <Image
                       src={img}
                       alt={`${product.title} view ${idx + 1}`}
+                      width={96}
+                      height={80}
                       className="w-full h-full object-cover"
                     />
                   </button>
                 ))}
               </div>
-            </motion.div>
+            </m.div>
 
             {/* Product Info */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: transitionDuration }}
               className="flex flex-col"
             >
               <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
@@ -199,7 +207,7 @@ export default function ProductDetailPage({ params }) {
                       : "Inverter"}
               </div>
 
-              <h1 className="text-4xl lg:text-5xl font-heading font-bold text-ink leading-tight mb-4">
+              <h1 className="text-4xl lg:text-5xl font-heading font-semibold text-ink leading-tight mb-4">
                 {product.title}
               </h1>
 
@@ -225,7 +233,7 @@ export default function ProductDetailPage({ params }) {
               {/* Price */}
               <div className="bg-white rounded-xl p-6 mb-6 border border-ink/5">
                 <div className="flex items-end gap-4 mb-2">
-                  <span className="text-4xl font-heading font-bold text-accent">
+                  <span className="text-4xl font-heading font-semibold text-accent">
                     {formatPrice(product.price)}
                   </span>
                   {product.originalPrice > product.price && (
@@ -350,7 +358,7 @@ export default function ProductDetailPage({ params }) {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </section>
@@ -379,7 +387,7 @@ export default function ProductDetailPage({ params }) {
           </div>
 
           {/* Tab Content */}
-          <motion.div
+          <m.div
             key={activeTab}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -395,7 +403,7 @@ export default function ProductDetailPage({ params }) {
                       key={key}
                       className="flex items-start gap-4 p-4 rounded-xl bg-cream/50"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <div className="size-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
                         <Icon size={20} className="text-accent" />
                       </div>
                       <div>
@@ -412,12 +420,12 @@ export default function ProductDetailPage({ params }) {
 
             {activeTab === "includes" && (
               <div className="space-y-4">
-                {product.includes.map((item, idx) => (
+                {product.includes.map((item) => (
                   <div
-                    key={idx}
+                    key={item}
                     className="flex items-center gap-4 p-4 rounded-xl bg-cream/50"
                   >
-                    <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                    <div className="size-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
                       <CheckCircle size={18} className="text-accent" />
                     </div>
                     <span className="text-ink">{item}</span>
@@ -495,13 +503,13 @@ export default function ProductDetailPage({ params }) {
         <section className="px-8 lg:px-16 pb-20">
           <div className="max-w-[1400px] mx-auto">
             <div className="bg-gradient-to-br from-accent to-accent-mid rounded-2xl p-8 lg:p-12 text-white">
-              <h3 className="text-2xl lg:text-3xl font-heading font-bold mb-6">
+              <h3 className="text-2xl lg:text-3xl font-heading font-semibold mb-6">
                 Perfect For
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {product.suitableFor.map((item, idx) => (
+                {product.suitableFor.map((item) => (
                   <div
-                    key={idx}
+                    key={item}
                     className="flex items-start gap-3 bg-white/10 rounded-xl p-4 backdrop-blur-sm"
                   >
                     <CheckCircle size={20} className="flex-shrink-0 mt-0.5" />
@@ -518,7 +526,7 @@ export default function ProductDetailPage({ params }) {
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
           <div className="bg-white rounded-2xl p-8 border border-ink/5">
-            <h3 className="text-2xl font-heading font-bold text-ink mb-4">
+            <h3 className="text-2xl font-heading font-semibold text-ink mb-4">
               About This Product
             </h3>
             <p className="text-ink-mid leading-relaxed text-lg">
@@ -541,7 +549,7 @@ export default function ProductDetailPage({ params }) {
       {relatedProducts.length > 0 && (
         <section className="px-8 lg:px-16 pb-20">
           <div className="max-w-[1400px] mx-auto">
-            <h3 className="text-2xl lg:text-3xl font-heading font-bold text-ink mb-8">
+            <h3 className="text-2xl lg:text-3xl font-heading font-semibold text-ink mb-8">
               You May Also Like
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -551,14 +559,16 @@ export default function ProductDetailPage({ params }) {
                   href={`/products/${related.id}`}
                   className="group"
                 >
-                  <motion.div
-                    whileHover={{ y: -5 }}
+                  <m.div
+                    whileHover={prefersReducedMotion ? {} : { y: -5 }}
                     className="bg-white rounded-2xl overflow-hidden border border-ink/5 hover:shadow-xl transition-shadow"
                   >
                     <div className="relative aspect-[4/3] overflow-hidden">
-                      <img
+                      <Image
                         src={related.image}
                         alt={related.title}
+                        width={600}
+                        height={450}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       {related.badge && (
@@ -568,17 +578,17 @@ export default function ProductDetailPage({ params }) {
                       )}
                     </div>
                     <div className="p-5">
-                      <h4 className="font-heading font-bold text-ink mb-1 group-hover:text-accent transition-colors">
+                      <h4 className="font-heading font-semibold text-ink mb-1 group-hover:text-accent transition-colors">
                         {related.title}
                       </h4>
                       <p className="text-ink-mid text-sm mb-3">
                         {related.subtitle}
                       </p>
-                      <div className="text-xl font-heading font-bold text-accent">
+                      <div className="text-xl font-heading font-semibold text-accent">
                         {formatPrice(related.price)}
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 </Link>
               ))}
             </div>
@@ -590,7 +600,7 @@ export default function ProductDetailPage({ params }) {
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
           <div className="bg-ink rounded-2xl p-8 lg:p-12 text-center">
-            <h3 className="text-2xl lg:text-4xl font-heading font-bold text-white mb-4">
+            <h3 className="text-2xl lg:text-4xl font-heading font-semibold text-white mb-4">
               Need Help Choosing the Right System?
             </h3>
             <p className="text-ink-faint text-lg mb-8 max-w-2xl mx-auto">

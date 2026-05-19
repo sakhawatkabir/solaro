@@ -11,11 +11,11 @@ export default function WarrantyCard() {
 
       <div className="relative">
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/20 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
-          <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+          <span className="size-2 bg-primary rounded-full animate-pulse"></span>
           Protection Plan
         </div>
 
-        <h3 className="text-4xl font-heading font-bold mb-4">
+        <h3 className="text-4xl font-heading font-semibold mb-4">
           25-Year
           <br />
           Warranty
@@ -24,15 +24,15 @@ export default function WarrantyCard() {
 
       <div className="relative space-y-3">
         <div className="flex items-center gap-3">
-          <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+          <div className="size-1.5 bg-primary rounded-full"></div>
           <span className="text-ink-faint">Performance guarantee</span>
         </div>
         <div className="flex items-center gap-3">
-          <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+          <div className="size-1.5 bg-primary rounded-full"></div>
           <span className="text-ink-faint">Free maintenance included</span>
         </div>
         <div className="flex items-center gap-3">
-          <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+          <div className="size-1.5 bg-primary rounded-full"></div>
           <span className="text-ink-faint">24/7 customer support</span>
         </div>
       </div>

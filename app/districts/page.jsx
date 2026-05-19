@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
   MapPin,
   Search,
@@ -14,6 +14,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useState } from "react";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const divisions = [
   {
@@ -148,6 +149,8 @@ const allDistricts = divisions.flatMap((d) =>
 export default function DistrictsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedDivision, setExpandedDivision] = useState(null);
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
   const filteredDivisions = divisions
     .map((div) => ({
@@ -171,16 +174,16 @@ export default function DistrictsPage() {
       {/* Hero */}
       <section className="pt-32 pb-16 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
           >
             <div className="flex items-center gap-2 text-accent font-semibold text-sm tracking-widest uppercase mb-4">
               <MapPin size={16} />
               Coverage Area
             </div>
-            <h1 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight mb-6">
+            <h1 className="text-5xl lg:text-6xl font-heading font-semibold text-ink leading-tight mb-6">
               Serving all{" "}
               <span className="text-accent italic">64 districts</span>
             </h1>
@@ -189,28 +192,28 @@ export default function DistrictsPage() {
               Sylhet tea gardens — we deliver, install, and maintain solar
               systems across every district of Bangladesh.
             </p>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* Stats Bar */}
       <section className="px-8 lg:px-16 pb-16">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: transitionDuration, delay: 0.2 }}
             className="bg-white rounded-2xl p-8 border border-ink/5 shadow-sm"
           >
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="text-4xl font-heading font-bold text-accent mb-1">
+                <div className="text-4xl font-heading font-semibold text-accent mb-1">
                   {totalDistricts}
                 </div>
                 <div className="text-ink-mid text-sm">Districts Covered</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-heading font-bold text-accent mb-1">
+                <div className="text-4xl font-heading font-semibold text-accent mb-1">
                   {totalInstallations}
                 </div>
                 <div className="text-ink-mid text-sm">
@@ -218,7 +221,7 @@ export default function DistrictsPage() {
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-heading font-bold text-accent mb-1">
+                <div className="text-4xl font-heading font-semibold text-accent mb-1">
                   {avgRating}
                 </div>
                 <div className="flex items-center justify-center gap-1 text-ink-mid text-sm">
@@ -227,13 +230,13 @@ export default function DistrictsPage() {
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-heading font-bold text-accent mb-1">
+                <div className="text-4xl font-heading font-semibold text-accent mb-1">
                   8
                 </div>
                 <div className="text-ink-mid text-sm">Regional Offices</div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -261,7 +264,7 @@ export default function DistrictsPage() {
         <div className="max-w-[1400px] mx-auto">
           <div className="space-y-4">
             {filteredDivisions.map((div, index) => (
-              <motion.div
+              <m.div
                 key={div.name}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -280,7 +283,7 @@ export default function DistrictsPage() {
                   <div className="flex items-center gap-4">
                     <span className="text-3xl">{div.icon}</span>
                     <div className="text-left">
-                      <h3 className="text-xl font-heading font-bold text-ink">
+                      <h3 className="text-xl font-heading font-semibold text-ink">
                         {div.name} Division
                       </h3>
                       <div className="flex items-center gap-4 text-sm text-ink-mid">
@@ -313,7 +316,7 @@ export default function DistrictsPage() {
 
                 {/* Districts Grid */}
                 {expandedDivision === div.name && (
-                  <motion.div
+                  <m.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
@@ -354,16 +357,16 @@ export default function DistrictsPage() {
                         </div>
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )}
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
           {filteredDivisions.length === 0 && (
             <div className="text-center py-16">
               <Search size={48} className="text-ink-faint mx-auto mb-4" />
-              <h3 className="text-xl font-heading font-bold text-ink mb-2">
+              <h3 className="text-xl font-heading font-semibold text-ink mb-2">
                 No districts found
               </h3>
               <p className="text-ink-mid">
@@ -377,13 +380,13 @@ export default function DistrictsPage() {
       {/* Delivery Process */}
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
           >
-            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-heading font-semibold text-ink text-center mb-12">
               How We Deliver to Your District
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -410,13 +413,13 @@ export default function DistrictsPage() {
                 },
               ].map((step, idx) => (
                 <div
-                  key={idx}
+                  key={step.title}
                   className="bg-white rounded-2xl p-6 border border-ink/5 text-center relative"
                 >
-                  <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
+                  <div className="size-14 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
                     <step.icon size={24} className="text-accent" />
                   </div>
-                  <h3 className="font-heading font-bold text-ink mb-2">
+                  <h3 className="font-heading font-semibold text-ink mb-2">
                     {step.title}
                   </h3>
                   <p className="text-ink-mid text-sm leading-relaxed">
@@ -430,7 +433,7 @@ export default function DistrictsPage() {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -438,7 +441,7 @@ export default function DistrictsPage() {
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
           <div className="bg-gradient-to-br from-accent to-accent-mid rounded-2xl p-8 lg:p-12 text-center text-white">
-            <h3 className="text-2xl lg:text-4xl font-heading font-bold mb-4">
+            <h3 className="text-2xl lg:text-4xl font-heading font-semibold mb-4">
               Not Sure If We Cover Your Area?
             </h3>
             <p className="text-white/80 text-lg mb-8 max-w-2xl mx-auto">

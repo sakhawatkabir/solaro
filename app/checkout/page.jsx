@@ -43,7 +43,7 @@ export default function CheckoutPage() {
     "Mymensingh",
   ];
 
-  const handleChange = (e) => {
+  const handleShippingChange = (e) => {
     setShipping({ ...shipping, [e.target.name]: e.target.value });
   };
 
@@ -71,17 +71,17 @@ export default function CheckoutPage() {
       <div className="max-w-[1400px] mx-auto">
         <CheckoutBreadcrumb />
 
-        <h1 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-8">
+        <h1 className="text-3xl lg:text-4xl font-heading font-semibold text-ink mb-8">
           Checkout
         </h1>
 
         <form onSubmit={handlePlaceOrder}>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-              <ContactInfo shipping={shipping} handleChange={handleChange} />
+              <ContactInfo shipping={shipping} handleShippingChange={handleShippingChange} />
               <ShippingAddress
                 shipping={shipping}
-                handleChange={handleChange}
+                handleShippingChange={handleShippingChange}
                 districts={districts}
               />
               <PaymentMethod

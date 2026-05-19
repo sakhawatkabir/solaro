@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
   Mail,
   Lock,
@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -19,8 +21,10 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
-  const handleSubmit = async (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
@@ -41,16 +45,16 @@ export default function LoginPage() {
         <div className="max-w-[1400px] mx-auto w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left - Form */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: transitionDuration }}
             >
               <div className="flex items-center gap-2 text-accent font-semibold text-sm tracking-widest uppercase mb-4">
                 <Sun size={16} />
                 Welcome Back
               </div>
-              <h1 className="text-4xl lg:text-5xl font-heading font-bold text-ink mb-4">
+              <h1 className="text-4xl lg:text-5xl font-heading font-semibold text-ink mb-4">
                 Sign in to your{" "}
                 <span className="text-accent italic">account</span>
               </h1>
@@ -69,9 +73,12 @@ export default function LoginPage() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleLoginSubmit} className="space-y-5">
                 <div>
-                  <label className="block text-sm font-semibold text-ink mb-2">
+                  <label
+                    htmlFor="login-email"
+                    className="block text-sm font-semibold text-ink mb-2"
+                  >
                     Email Address
                   </label>
                   <div className="relative">
@@ -80,6 +87,7 @@ export default function LoginPage() {
                       className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-light"
                     />
                     <input
+                      id="login-email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -90,7 +98,10 @@ export default function LoginPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-ink mb-2">
+                  <label
+                    htmlFor="login-password"
+                    className="block text-sm font-semibold text-ink mb-2"
+                  >
                     Password
                   </label>
                   <div className="relative">
@@ -99,6 +110,7 @@ export default function LoginPage() {
                       className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-light"
                     />
                     <input
+                      id="login-password"
                       type={showPassword ? "text" : "password"}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -119,16 +131,16 @@ export default function LoginPage() {
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
-                      className="w-4 h-4 rounded border-ink/20 text-accent focus:ring-accent/20"
+                      className="size-4 rounded border-ink/20 text-accent focus:ring-accent/20"
                     />
                     <span className="text-sm text-ink-mid">Remember me</span>
                   </label>
-                  <a
-                    href="#"
+                  <Link
+                    href="/forgot-password"
                     className="text-sm text-accent font-semibold hover:underline"
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
 
                 <button
@@ -137,7 +149,7 @@ export default function LoginPage() {
                   className="w-full py-4 bg-accent hover:bg-accent-mid disabled:bg-accent/50 text-white font-semibold rounded-full transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : (
                     <>
                       Sign In
@@ -156,25 +168,27 @@ export default function LoginPage() {
                   Create one now
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
 
             {/* Right - Image / Promo */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: transitionDuration, delay: 0.2 }}
               className="hidden lg:block"
             >
               <div className="relative rounded-2xl overflow-hidden aspect-[4/5]">
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=1200&auto=format&fit=crop"
                   alt="Solar panels on home"
+                  width={1200}
+                  height={1500}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-accent/80 via-accent/20 to-transparent" />
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-                    <div className="text-white font-heading font-bold text-xl mb-2">
+                    <div className="text-white font-heading font-semibold text-xl mb-2">
                       Track Your Solar Savings
                     </div>
                     <p className="text-white/80 text-sm">
@@ -184,7 +198,7 @@ export default function LoginPage() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </section>

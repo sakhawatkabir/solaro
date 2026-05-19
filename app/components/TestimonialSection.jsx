@@ -1,8 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function TestimonialSection() {
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
   const testimonials = [
     {
       quote:
@@ -25,27 +29,27 @@ export default function TestimonialSection() {
     >
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col lg:flex-row justify-between items-start mb-24 gap-12">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
             className="flex-1"
           >
             <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-6">
               Testimonials
             </div>
-            <h2 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight tracking-tight max-w-2xl">
+            <h2 className="text-5xl lg:text-6xl font-heading font-semibold text-ink leading-tight tracking-tight max-w-2xl">
               Join thousands of Bangladeshi families who{" "}
               <span className="text-accent italic">went solar.</span>
             </h2>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: transitionDuration, delay: 0.1 }}
             className="flex-1 lg:max-w-md pt-2 lg:pt-12"
           >
             <p className="text-ink-mid text-lg leading-relaxed font-body">
@@ -53,17 +57,17 @@ export default function TestimonialSection() {
               Bangladesh are cutting their electricity costs and living
               load-shedding free with Solaro.
             </p>
-          </motion.div>
+          </m.div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
-          {testimonials.map((t, idx) => (
-            <motion.blockquote
-              key={idx}
+          {testimonials.map((t) => (
+            <m.blockquote
+              key={t.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              transition={{ duration: 0.5 }}
               className="flex flex-col"
             >
               <div className="text-accent text-6xl font-heading leading-none mb-6">
@@ -78,7 +82,7 @@ export default function TestimonialSection() {
                 </p>
                 <p className="text-sm text-ink-mid font-body">{t.location}</p>
               </div>
-            </motion.blockquote>
+            </m.blockquote>
           ))}
         </div>
       </div>

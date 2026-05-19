@@ -6,7 +6,7 @@ export default function EmptyCart() {
     <section className="pt-32 pb-20 px-8 lg:px-16 min-h-screen flex items-center">
       <div className="max-w-2xl mx-auto text-center">
         <ShoppingCart size={64} className="text-ink-faint mx-auto mb-6" />
-        <h1 className="text-3xl font-heading font-bold text-ink mb-4">
+        <h1 className="text-3xl font-heading font-semibold text-ink mb-4">
           Your cart is empty
         </h1>
         <p className="text-ink-mid mb-8">

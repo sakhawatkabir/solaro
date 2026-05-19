@@ -1,48 +1,53 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import Image from "next/image";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function HeroSection() {
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-cream pt-32 pb-16">
       <div className="w-full max-w-[1400px] mx-auto px-8 lg:px-16">
         <div className="flex flex-col lg:flex-row gap-16 items-center">
           {/* Left - Text */}
           <div className="flex-1 flex flex-col justify-center lg:pr-12 text-center lg:text-left">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: transitionDuration }}
               className="text-accent font-semibold text-sm tracking-widest uppercase mb-6"
             >
               Bangladesh's Trusted Solar Partner
-            </motion.div>
+            </m.div>
 
-            <motion.h1
+            <m.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: transitionDuration, delay: 0.1 }}
               className="font-heading text-5xl md:text-6xl lg:text-7xl leading-[1.1] text-ink mb-8 tracking-tight"
             >
               Cut your <br className="hidden lg:block" />
               <span className="text-accent italic">electricity bill</span> by 70%.
-            </motion.h1>
+            </m.h1>
 
-            <motion.p
+            <m.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: transitionDuration, delay: 0.2 }}
               className="font-body text-lg md:text-xl text-ink-mid leading-relaxed mb-12 max-w-[500px] mx-auto lg:mx-0"
             >
               Premium monocrystalline solar panels and complete home kits,
               delivered anywhere in Bangladesh. Beat load shedding and rising
               DESA bills for good.
-            </motion.p>
+            </m.p>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: transitionDuration, delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-16"
             >
               <button className="px-8 py-4 bg-accent hover:bg-accent-mid text-white rounded font-body font-semibold text-base transition-colors cursor-pointer">
@@ -51,20 +56,22 @@ export default function HeroSection() {
               <button className="px-8 py-4 bg-transparent text-ink border border-ink hover:bg-black/5 rounded font-body font-semibold text-base transition-colors cursor-pointer">
                 View Complete Kits
               </button>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Right - Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
+          <m.div
+            initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: 0.2 }}
             className="flex-1 relative rounded-2xl overflow-hidden shadow-2xl w-full"
             style={{ aspectRatio: "4/5", maxHeight: "700px" }}
           >
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1592833159155-c62df1b65634?q=80&w=2074&auto=format&fit=crop"
               alt="High efficiency solar panels"
+              width={2074}
+              height={2592}
               className="absolute inset-0 w-full h-full object-cover"
             />
             {/* Minimalist Data Card overlay */}
@@ -72,14 +79,14 @@ export default function HeroSection() {
               <div className="font-body text-sm text-ink-mid mb-2">
                 Average Monthly Savings
               </div>
-              <div className="font-heading text-4xl font-bold text-accent">
+              <div className="font-heading text-4xl font-semibold text-accent">
                 ৳3,500
               </div>
               <div className="font-body text-xs text-ink mt-2">
                 On your DESA/DESCO bill
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

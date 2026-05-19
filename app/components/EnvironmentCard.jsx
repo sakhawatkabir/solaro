@@ -2,8 +2,8 @@ export default function EnvironmentCard() {
   return (
     <div className="bg-gradient-to-br from-accent to-accent-mid rounded-3xl p-8 text-white relative overflow-hidden min-h-[400px] flex flex-col justify-between">
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full"></div>
-        <div className="absolute bottom-10 right-10 w-24 h-24 border-4 border-white rounded-full"></div>
+        <div className="absolute top-10 left-10 size-32 border-4 border-white rounded-full"></div>
+        <div className="absolute bottom-10 right-10 size-24 border-4 border-white rounded-full"></div>
       </div>
 
       <div className="relative">
@@ -11,7 +11,7 @@ export default function EnvironmentCard() {
           Environmental Impact
         </div>
 
-        <h3 className="text-4xl font-heading font-bold mb-4">
+        <h3 className="text-4xl font-heading font-semibold mb-4">
           Reduce Carbon
           <br />
           Footprint

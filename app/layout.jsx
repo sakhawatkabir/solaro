@@ -5,6 +5,7 @@ import { CartProvider } from "./context/CartContext";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import CartDrawer from "./components/CartDrawer";
+import { MotionProvider } from "./components/MotionProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,10 +32,12 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider>
           <CartProvider>
-            <Navigation />
-            <CartDrawer />
-            <main>{children}</main>
-            <Footer />
+            <MotionProvider>
+              <Navigation />
+              <CartDrawer />
+              <main>{children}</main>
+              <Footer />
+            </MotionProvider>
           </CartProvider>
         </ThemeProvider>
       </body>

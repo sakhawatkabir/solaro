@@ -1,8 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import Image from "next/image";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function ServicesSection() {
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
   const products = [
     {
       title: "Monocrystalline Panels",
@@ -36,41 +41,43 @@ export default function ServicesSection() {
       id="products"
     >
       <div className="max-w-[1400px] mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: transitionDuration }}
           className="text-center mb-24"
         >
           <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-6">
             Featured Products
           </div>
-          <h2 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight">
+          <h2 className="text-5xl lg:text-6xl font-heading font-semibold text-ink leading-tight">
             Power your home with{" "}
             <span className="text-accent italic">Bangladesh's sun</span>
           </h2>
-        </motion.div>
+        </m.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {products.map((product, index) => (
-            <motion.div
-              key={index}
+          {products.map((product) => (
+            <m.div
+              key={product.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.5 }}
               className="flex flex-col group cursor-pointer"
             >
               <div className="overflow-hidden rounded mb-8 aspect-[4/3] bg-cream">
-                <img
+                <Image
                   src={product.image}
                   alt={product.title}
+                  width={1200}
+                  height={900}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
               <div className="flex justify-between items-start mb-2">
-                <h3 className="font-heading text-2xl font-bold text-ink">
+                <h3 className="font-heading text-2xl font-semibold text-ink">
                   {product.title}
                 </h3>
               </div>
@@ -83,7 +90,7 @@ export default function ServicesSection() {
               <button className="mt-auto px-6 py-3 border border-ink hover:bg-ink hover:text-white transition-colors font-body font-semibold rounded">
                 Add to Cart
               </button>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

@@ -1,36 +1,40 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Sun, Home, Search } from "lucide-react";
 import Link from "next/link";
+import { useReducedMotion } from "./hooks/useReducedMotion";
 
 export default function NotFound() {
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
   return (
     <>
       <section className="pt-32 pb-20 px-8">
         <div className="max-w-2xl mx-auto text-center">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
           >
             {/* Sun Icon */}
-            <div className="relative w-32 h-32 mx-auto mb-8">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            <div className="relative size-32 mx-auto mb-8">
+              <m.div
+                animate={prefersReducedMotion ? {} : { rotate: 360 }}
+                transition={prefersReducedMotion ? {} : { duration: 20, repeat: Infinity, ease: "linear" }}
                 className="absolute inset-0"
               >
                 <Sun size={128} className="text-accent/20 w-full h-full" />
-              </motion.div>
+              </m.div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-5xl font-heading font-bold text-accent">
+                <span className="text-5xl font-heading font-semibold text-accent">
                   404
                 </span>
               </div>
             </div>
 
-            <h1 className="text-4xl lg:text-5xl font-heading font-bold text-ink mb-4">
+            <h1 className="text-4xl lg:text-5xl font-heading font-semibold text-ink mb-4">
               Page Not Found
             </h1>
             <p className="text-ink-mid text-lg mb-8 leading-relaxed">
@@ -52,16 +56,16 @@ export default function NotFound() {
                 </span>
               </Link>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Helpful Links */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: transitionDuration, delay: 0.3 }}
             className="mt-16 bg-white rounded-2xl p-8 border border-ink/5"
           >
-            <h3 className="font-heading font-bold text-ink mb-4">
+            <h3 className="font-heading font-semibold text-ink mb-4">
               Quick Links
             </h3>
             <div className="grid grid-cols-2 gap-4">
@@ -102,7 +106,7 @@ export default function NotFound() {
                 </div>
               </Link>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
     </>

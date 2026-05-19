@@ -1,9 +1,13 @@
+import Image from "next/image";
+
 export default function PropertyValueCard() {
   return (
     <div className="relative rounded-3xl overflow-hidden h-full min-h-[400px]">
-      <img
+      <Image
         src="https://images.unsplash.com/photo-1700529289398-dd313f11c9cc?crop=entropy&cs=srgb&fm=jpg&q=85&w=800"
         alt="Worker installing solar panels on roof"
+        width={800}
+        height={600}
         className="absolute inset-0 w-full h-full object-cover"
       />
 
@@ -15,7 +19,7 @@ export default function PropertyValueCard() {
         </div>
 
         <div className="space-y-2">
-          <h3 className="text-4xl font-heading font-bold leading-tight">
+          <h3 className="text-4xl font-heading font-semibold leading-tight">
             Increase{" "}
             <span className="relative inline-block">
               Property

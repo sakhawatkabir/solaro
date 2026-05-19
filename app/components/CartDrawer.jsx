@@ -1,10 +1,12 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { X, Plus, Minus, ShoppingBag, Trash2 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { formatPrice } from "../data/products";
 import Link from "next/link";
+import Image from "next/image";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function CartDrawer() {
   const {
@@ -16,13 +18,14 @@ export default function CartDrawer() {
     totalItems,
     totalPrice,
   } = useCart();
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
           {/* Backdrop */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -31,18 +34,18 @@ export default function CartDrawer() {
           />
 
           {/* Drawer */}
-          <motion.div
-            initial={{ x: "100%" }}
+          <m.div
+            initial={prefersReducedMotion ? {} : { x: "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            exit={prefersReducedMotion ? {} : { x: "100%" }}
+            transition={prefersReducedMotion ? {} : { type: "spring", damping: 25, stiffness: 200 }}
             className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-cream shadow-2xl z-[70] flex flex-col font-body"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-ink/10">
               <div className="flex items-center gap-3">
                 <ShoppingBag size={22} className="text-accent" />
-                <h2 className="text-xl font-heading font-bold text-ink">
+                <h2 className="text-xl font-heading font-semibold text-ink">
                   Your Cart ({totalItems})
                 </h2>
               </div>
@@ -59,7 +62,7 @@ export default function CartDrawer() {
               {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <ShoppingBag size={64} className="text-ink-faint mb-4" />
-                  <h3 className="text-lg font-heading font-bold text-ink mb-2">
+                  <h3 className="text-lg font-heading font-semibold text-ink mb-2">
                     Your cart is empty
                   </h3>
                   <p className="text-ink-mid text-sm mb-6 max-w-[250px]">
@@ -75,23 +78,25 @@ export default function CartDrawer() {
               ) : (
                 <div className="space-y-4">
                   {items.map((item) => (
-                    <motion.div
+                    <m.div
                       key={item.id}
                       layout
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={prefersReducedMotion ? {} : { opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
+                      exit={prefersReducedMotion ? {} : { opacity: 0, x: 100 }}
                       className="flex gap-4 bg-white rounded-xl p-4 border border-ink/5"
                     >
-                      <div className="w-20 h-20 rounded-lg overflow-hidden bg-cream flex-shrink-0">
-                        <img
+                      <div className="size-20 rounded-lg overflow-hidden bg-cream flex-shrink-0">
+                        <Image
                           src={item.image}
                           alt={item.title}
+                          width={80}
+                          height={80}
                           className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-heading font-bold text-ink text-sm leading-tight mb-1 truncate">
+                        <h4 className="font-heading font-semibold text-ink text-sm leading-tight mb-1 truncate">
                           {item.title}
                         </h4>
                         <p className="text-accent font-semibold text-sm mb-3">
@@ -103,7 +108,7 @@ export default function CartDrawer() {
                               onClick={() =>
                                 updateQuantity(item.id, item.quantity - 1)
                               }
-                              className="w-7 h-7 flex items-center justify-center rounded-full border border-ink/20 hover:bg-ink/5 transition-colors"
+                              className="size-7 flex items-center justify-center rounded-full border border-ink/20 hover:bg-ink/5 transition-colors"
                             >
                               <Minus size={14} />
                             </button>
@@ -114,7 +119,7 @@ export default function CartDrawer() {
                               onClick={() =>
                                 updateQuantity(item.id, item.quantity + 1)
                               }
-                              className="w-7 h-7 flex items-center justify-center rounded-full border border-ink/20 hover:bg-ink/5 transition-colors"
+                              className="size-7 flex items-center justify-center rounded-full border border-ink/20 hover:bg-ink/5 transition-colors"
                             >
                               <Plus size={14} />
                             </button>
@@ -127,7 +132,7 @@ export default function CartDrawer() {
                           </button>
                         </div>
                       </div>
-                    </motion.div>
+                    </m.div>
                   ))}
                 </div>
               )}
@@ -145,7 +150,7 @@ export default function CartDrawer() {
                     <span>Delivery & Installation</span>
                     <span className="text-accent font-semibold">FREE</span>
                   </div>
-                  <div className="flex justify-between text-lg font-heading font-bold text-ink pt-3 border-t border-ink/10">
+                  <div className="flex justify-between text-lg font-heading font-semibold text-ink pt-3 border-t border-ink/10">
                     <span>Total</span>
                     <span>{formatPrice(totalPrice)}</span>
                   </div>
@@ -161,7 +166,7 @@ export default function CartDrawer() {
                 </div>
               </div>
             )}
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>

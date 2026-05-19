@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
   Sun,
   Zap,
@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const bdElectricityRate = 9.5;
 const solarHoursPerDay = 5.5;
@@ -61,55 +62,24 @@ const systemRecommendations = [
   },
 ];
 
-export default function CalculatorPage() {
-  const [monthlyBill, setMonthlyBill] = useState(5000);
-  const [roofSize, setRoofSize] = useState(300);
-  const [acUnits, setAcUnits] = useState(1);
-  const [fans, setFans] = useState(3);
-  const [lights, setLights] = useState(5);
-  const [fridge, setFridge] = useState(1);
-  const [tv, setTv] = useState(1);
-  const [selectedSystem, setSelectedSystem] = useState(null);
-  const [showResults, setShowResults] = useState(false);
-
-  const monthlyUsage = monthlyBill / bdElectricityRate;
-  const dailyUsage = monthlyUsage / 30;
-
-  const recommendedKW = Math.ceil(
-    dailyUsage / (solarHoursPerDay * systemEfficiency)
-  );
-
-  const recommendedSystem = systemRecommendations.find(
-    (s) => s.kw >= recommendedKW
-  ) || systemRecommendations[systemRecommendations.length - 1];
-
-  const roofCapacity = Math.floor(roofSize / 40);
-  const maxKWFromRoof = roofCapacity * 0.55;
-
-  const dailyGeneration = recommendedSystem.kw * solarHoursPerDay * systemEfficiency;
-  const monthlyGeneration = dailyGeneration * 30;
-  const monthlySavings = monthlyGeneration * bdElectricityRate;
-  const yearlySavings = monthlySavings * 12;
-  const paybackYears = recommendedSystem.price / yearlySavings;
-  const twentyFiveYearSavings = yearlySavings * 25 - recommendedSystem.price;
-  const co2Offset = monthlyGeneration * 0.82;
-
-  const applianceLoad = acUnits * 1200 + fans * 75 + lights * 15 + fridge * 150 + tv * 100;
-
-  useEffect(() => {
-    if (monthlyBill > 0) {
-      setShowResults(true);
-    }
-  }, [monthlyBill]);
-
-  const SliderInput = ({ label, value, onChange, min, max, step, unit, icon: Icon }) => (
+function SliderInput({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  unit,
+  icon: Icon,
+}) {
+  return (
     <div className="bg-white rounded-xl p-5 border border-ink/5">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Icon size={18} className="text-accent" />
           <span className="font-semibold text-ink text-sm">{label}</span>
         </div>
-        <span className="text-2xl font-heading font-bold text-accent">
+        <span className="text-2xl font-heading font-semibold text-accent">
           {value.toLocaleString()}
           <span className="text-sm text-ink-mid ml-1">{unit}</span>
         </span>
@@ -129,22 +99,69 @@ export default function CalculatorPage() {
       </div>
     </div>
   );
+}
+
+export default function CalculatorPage() {
+  const [monthlyBill, setMonthlyBill] = useState(5000);
+  const [roofSize, setRoofSize] = useState(300);
+  const [acUnits, setAcUnits] = useState(1);
+  const [fans, setFans] = useState(3);
+  const [lights, setLights] = useState(5);
+  const [fridge, setFridge] = useState(1);
+  const [tv, setTv] = useState(1);
+  const [selectedSystem, setSelectedSystem] = useState(null);
+  const [showResults, setShowResults] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  const monthlyUsage = monthlyBill / bdElectricityRate;
+  const dailyUsage = monthlyUsage / 30;
+
+  const recommendedKW = Math.ceil(
+    dailyUsage / (solarHoursPerDay * systemEfficiency),
+  );
+
+  const recommendedSystem =
+    systemRecommendations.find((s) => s.kw >= recommendedKW) ||
+    systemRecommendations[systemRecommendations.length - 1];
+
+  const roofCapacity = Math.floor(roofSize / 40);
+  const maxKWFromRoof = roofCapacity * 0.55;
+
+  const dailyGeneration =
+    recommendedSystem.kw * solarHoursPerDay * systemEfficiency;
+  const monthlyGeneration = dailyGeneration * 30;
+  const monthlySavings = monthlyGeneration * bdElectricityRate;
+  const yearlySavings = monthlySavings * 12;
+  const paybackYears = recommendedSystem.price / yearlySavings;
+  const twentyFiveYearSavings = yearlySavings * 25 - recommendedSystem.price;
+  const co2Offset = monthlyGeneration * 0.82;
+
+  const applianceLoad =
+    acUnits * 1200 + fans * 75 + lights * 15 + fridge * 150 + tv * 100;
+
+  useEffect(() => {
+    if (monthlyBill > 0) {
+      setShowResults(true);
+    }
+  }, [monthlyBill]);
+
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
   return (
     <>
       {/* Hero */}
       <section className="pt-32 pb-12 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
           >
             <div className="flex items-center gap-2 text-accent font-semibold text-sm tracking-widest uppercase mb-4">
               <Calculator size={16} />
               Savings Calculator
             </div>
-            <h1 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight mb-6">
+            <h1 className="text-5xl lg:text-6xl font-heading font-semibold text-ink leading-tight mb-6">
               Calculate your{" "}
               <span className="text-accent italic">solar savings</span>
             </h1>
@@ -153,7 +170,7 @@ export default function CalculatorPage() {
               calculate exactly how much you can save with solar energy in
               Bangladesh.
             </p>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -163,7 +180,7 @@ export default function CalculatorPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left Column - Bill & Roof */}
             <div className="space-y-4">
-              <h2 className="text-xl font-heading font-bold text-ink mb-4">
+              <h2 className="text-xl font-heading font-semibold text-ink mb-4">
                 Your Current Usage
               </h2>
               <SliderInput
@@ -190,7 +207,7 @@ export default function CalculatorPage() {
 
             {/* Right Column - Appliances */}
             <div className="space-y-4">
-              <h2 className="text-xl font-heading font-bold text-ink mb-4">
+              <h2 className="text-xl font-heading font-semibold text-ink mb-4">
                 Your Appliances
               </h2>
               <div className="grid grid-cols-2 gap-4">
@@ -254,40 +271,42 @@ export default function CalculatorPage() {
       {showResults && (
         <section className="px-8 lg:px-16 pb-16">
           <div className="max-w-[1400px] mx-auto">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: transitionDuration }}
             >
-              <h2 className="text-3xl font-heading font-bold text-ink text-center mb-8">
+              <h2 className="text-3xl font-heading font-semibold text-ink text-center mb-8">
                 Your Solar Savings Estimate
               </h2>
 
               {/* Main Stats */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div className="bg-white rounded-xl p-6 border border-ink/5 text-center">
-                  <div className="text-3xl font-heading font-bold text-accent mb-1">
+                  <div className="text-3xl font-heading font-semibold text-accent mb-1">
                     ৳{Math.round(monthlySavings).toLocaleString()}
                   </div>
                   <div className="text-sm text-ink-mid">Monthly Savings</div>
                 </div>
                 <div className="bg-white rounded-xl p-6 border border-ink/5 text-center">
-                  <div className="text-3xl font-heading font-bold text-accent mb-1">
+                  <div className="text-3xl font-heading font-semibold text-accent mb-1">
                     ৳{Math.round(yearlySavings).toLocaleString()}
                   </div>
                   <div className="text-sm text-ink-mid">Yearly Savings</div>
                 </div>
                 <div className="bg-white rounded-xl p-6 border border-ink/5 text-center">
-                  <div className="text-3xl font-heading font-bold text-accent mb-1">
+                  <div className="text-3xl font-heading font-semibold text-accent mb-1">
                     {paybackYears.toFixed(1)} yrs
                   </div>
                   <div className="text-sm text-ink-mid">Payback Period</div>
                 </div>
                 <div className="bg-white rounded-xl p-6 border border-ink/5 text-center">
-                  <div className="text-3xl font-heading font-bold text-accent mb-1">
+                  <div className="text-3xl font-heading font-semibold text-accent mb-1">
                     ৳{Math.round(twentyFiveYearSavings).toLocaleString()}
                   </div>
-                  <div className="text-sm text-ink-mid">25-Year Net Savings</div>
+                  <div className="text-sm text-ink-mid">
+                    25-Year Net Savings
+                  </div>
                 </div>
               </div>
 
@@ -310,7 +329,7 @@ export default function CalculatorPage() {
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-700">
-                      {Math.round(co2Offset * 12 / 20)}
+                      {Math.round((co2Offset * 12) / 20)}
                     </div>
                     <div className="text-sm text-green-600">
                       Trees equivalent
@@ -318,7 +337,10 @@ export default function CalculatorPage() {
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-700">
-                      {Math.round(monthlyGeneration * 12 / 1000).toLocaleString()} MWh
+                      {Math.round(
+                        (monthlyGeneration * 12) / 1000,
+                      ).toLocaleString()}{" "}
+                      MWh
                     </div>
                     <div className="text-sm text-green-600">
                       Clean energy per year
@@ -331,7 +353,7 @@ export default function CalculatorPage() {
               <div className="bg-white rounded-2xl p-8 border border-ink/5 mb-8">
                 <div className="flex items-center gap-2 mb-6">
                   <TrendingUp size={20} className="text-accent" />
-                  <h3 className="text-xl font-heading font-bold text-ink">
+                  <h3 className="text-xl font-heading font-semibold text-ink">
                     Recommended System
                   </h3>
                 </div>
@@ -341,7 +363,7 @@ export default function CalculatorPage() {
                     <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-2">
                       {recommendedSystem.name}
                     </div>
-                    <div className="text-4xl font-heading font-bold text-ink mb-4">
+                    <div className="text-4xl font-heading font-semibold text-ink mb-4">
                       {formatPrice(recommendedSystem.price)}
                     </div>
                     <div className="space-y-3">
@@ -387,8 +409,10 @@ export default function CalculatorPage() {
                         <span className="text-ink-mid">Coverage</span>
                         <span className="font-semibold text-accent">
                           {Math.min(
-                            Math.round((monthlyGeneration / monthlyUsage) * 100),
-                            100
+                            Math.round(
+                              (monthlyGeneration / monthlyUsage) * 100,
+                            ),
+                            100,
                           )}
                           %
                         </span>
@@ -406,7 +430,7 @@ export default function CalculatorPage() {
 
               {/* All System Options */}
               <div className="mb-8">
-                <h3 className="text-xl font-heading font-bold text-ink mb-6">
+                <h3 className="text-xl font-heading font-semibold text-ink mb-6">
                   All System Options
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -414,10 +438,10 @@ export default function CalculatorPage() {
                     const isRecommended = system.kw === recommendedSystem.kw;
                     const canFit = roofCapacity >= system.panels;
                     return (
-                      <motion.button
+                      <m.button
                         key={system.kw}
                         onClick={() => setSelectedSystem(system.kw)}
-                        whileHover={{ y: -3 }}
+                        whileHover={prefersReducedMotion ? {} : { y: -3 }}
                         className={`p-6 rounded-xl border-2 text-left transition-all ${
                           isRecommended
                             ? "border-accent bg-accent/5 shadow-lg shadow-accent/10"
@@ -429,10 +453,10 @@ export default function CalculatorPage() {
                             Recommended
                           </div>
                         )}
-                        <div className="font-heading font-bold text-ink mb-1">
+                        <div className="font-heading font-semibold text-ink mb-1">
                           {system.name}
                         </div>
-                        <div className="text-xl font-bold text-accent mb-3">
+                        <div className="text-xl font-semibold text-accent mb-3">
                           {formatPrice(system.price)}
                         </div>
                         <div className="text-sm text-ink-mid mb-2">
@@ -447,7 +471,7 @@ export default function CalculatorPage() {
                             Needs {system.panels * 40} sq ft roof
                           </div>
                         )}
-                      </motion.button>
+                      </m.button>
                     );
                   })}
                 </div>
@@ -455,7 +479,7 @@ export default function CalculatorPage() {
 
               {/* CTA */}
               <div className="bg-ink rounded-2xl p-8 text-center">
-                <h3 className="text-2xl font-heading font-bold text-white mb-4">
+                <h3 className="text-2xl font-heading font-semibold text-white mb-4">
                   Ready to Start Saving?
                 </h3>
                 <p className="text-ink-faint mb-6 max-w-xl mx-auto">
@@ -477,7 +501,7 @@ export default function CalculatorPage() {
                   </Link>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
       )}

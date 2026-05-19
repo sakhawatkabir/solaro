@@ -12,7 +12,7 @@ export function CartProvider({ children }) {
   // Load from localStorage on mount
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("solaro-cart");
+      const saved = localStorage.getItem("solaro-cart:v1");
       if (saved) {
         setItems(JSON.parse(saved));
       }
@@ -25,7 +25,7 @@ export function CartProvider({ children }) {
   // Save to localStorage on change
   useEffect(() => {
     if (initialized) {
-      localStorage.setItem("solaro-cart", JSON.stringify(items));
+      localStorage.setItem("solaro-cart:v1", JSON.stringify(items));
     }
   }, [items, initialized]);
 

@@ -1,8 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function AppreciationSection() {
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
   const stats = [
     {
       value: "25+",
@@ -24,11 +28,11 @@ export default function AppreciationSection() {
   return (
     <section className="bg-ink py-32 px-8 lg:px-16 text-cream">
       <div className="max-w-[1400px] mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: transitionDuration }}
           className="text-center mb-24 max-w-4xl mx-auto"
         >
           <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-6">
@@ -41,28 +45,28 @@ export default function AppreciationSection() {
               load shedding forever.
             </span>
           </h2>
-        </motion.div>
+        </m.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-cream/10 pt-16">
-          {stats.map((stat, idx) => (
-            <motion.div
-              key={idx}
+          {stats.map((stat) => (
+            <m.div
+              key={stat.label}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              transition={{ duration: 0.5 }}
               className="text-center"
             >
-              <div className="text-6xl font-heading font-bold text-accent mb-4">
+              <div className="text-6xl font-heading font-semibold text-accent mb-4">
                 {stat.value}
               </div>
-              <h3 className="text-xl font-heading font-bold mb-2">
+              <h3 className="text-xl font-heading font-semibold mb-2">
                 {stat.label}
               </h3>
               <p className="text-cream/70 font-body text-sm leading-relaxed max-w-xs mx-auto">
                 {stat.description}
               </p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { Shield, Clock } from "lucide-react";
 import { formatPrice } from "../../data/products";
+import Image from "next/image";
 
 export default function OrderSummary({
   items,
@@ -9,17 +10,19 @@ export default function OrderSummary({
 }) {
   return (
     <div className="bg-white rounded-xl p-6 border border-ink/5 sticky top-24">
-      <h3 className="font-heading font-bold text-ink text-lg mb-4">
+      <h3 className="font-heading font-semibold text-ink text-lg mb-4">
         Order Summary
       </h3>
 
       <div className="space-y-4 mb-6 max-h-64 overflow-y-auto">
         {items.map((item) => (
           <div key={item.id} className="flex gap-3">
-            <div className="w-16 h-16 rounded-lg overflow-hidden bg-cream flex-shrink-0">
-              <img
+            <div className="size-16 rounded-lg overflow-hidden bg-cream flex-shrink-0">
+              <Image
                 src={item.image}
                 alt={item.title}
+                width={64}
+                height={64}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -31,7 +34,7 @@ export default function OrderSummary({
                 <button
                   type="button"
                   onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                  className="w-6 h-6 flex items-center justify-center rounded-full border border-ink/20 text-xs hover:bg-ink/5 transition-colors"
+                  className="size-6 flex items-center justify-center rounded-full border border-ink/20 text-xs hover:bg-ink/5 transition-colors"
                 >
                   -
                 </button>
@@ -41,7 +44,7 @@ export default function OrderSummary({
                 <button
                   type="button"
                   onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                  className="w-6 h-6 flex items-center justify-center rounded-full border border-ink/20 text-xs hover:bg-ink/5 transition-colors"
+                  className="size-6 flex items-center justify-center rounded-full border border-ink/20 text-xs hover:bg-ink/5 transition-colors"
                 >
                   +
                 </button>
@@ -63,7 +66,7 @@ export default function OrderSummary({
           <span>Delivery & Installation</span>
           <span className="text-accent font-semibold">FREE</span>
         </div>
-        <div className="flex justify-between text-lg font-heading font-bold text-ink pt-3 border-t border-ink/10">
+        <div className="flex justify-between text-lg font-heading font-semibold text-ink pt-3 border-t border-ink/10">
           <span>Total</span>
           <span className="text-accent">{formatPrice(totalPrice)}</span>
         </div>
@@ -75,7 +78,7 @@ export default function OrderSummary({
         className="w-full py-4 bg-accent hover:bg-accent-mid disabled:bg-accent/50 text-white font-semibold rounded-full transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2"
       >
         {isProcessing ? (
-          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          <div className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
         ) : (
           <>Place Order</>
         )}

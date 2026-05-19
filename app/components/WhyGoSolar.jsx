@@ -1,8 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function WhyGoSolar() {
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
   const benefits = [
     {
       number: "01",
@@ -33,26 +37,26 @@ export default function WhyGoSolar() {
     >
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col lg:flex-row justify-between items-start mb-24 gap-12">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
             className="flex-1"
           >
             <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-6">
               The Advantage
             </div>
-            <h2 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight tracking-tight max-w-2xl">
+            <h2 className="text-5xl lg:text-6xl font-heading font-semibold text-ink leading-tight tracking-tight max-w-2xl">
               Why go solar <span className="text-accent italic">in Bangladesh?</span>
             </h2>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: transitionDuration, delay: 0.1 }}
             className="flex-1 lg:max-w-md pt-2 lg:pt-12"
           >
             <p className="text-ink-mid text-lg leading-relaxed font-body">
@@ -61,29 +65,29 @@ export default function WhyGoSolar() {
               shedding, solar isn't just green, it's the smartest investment
               you'll make for your home.
             </p>
-          </motion.div>
+          </m.div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16">
-          {benefits.map((benefit, idx) => (
-            <motion.div
-              key={idx}
+          {benefits.map((benefit) => (
+            <m.div
+              key={benefit.number}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              transition={{ duration: 0.5 }}
               className="flex flex-col border-t border-ink/10 pt-6"
             >
-              <div className="font-heading text-3xl text-accent mb-6 font-bold">
+              <div className="font-heading text-3xl text-accent mb-6 font-semibold">
                 {benefit.number}
               </div>
-              <h3 className="font-heading text-2xl font-bold text-ink mb-4">
+              <h3 className="font-heading text-2xl font-semibold text-ink mb-4">
                 {benefit.title}
               </h3>
               <p className="font-body text-ink-mid leading-relaxed text-base">
                 {benefit.desc}
               </p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

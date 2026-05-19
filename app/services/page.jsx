@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
   Home,
   Building2,
@@ -18,6 +18,8 @@ import {
   FileText,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const services = [
   {
@@ -152,20 +154,23 @@ const processSteps = [
 ];
 
 export default function ServicesPage() {
+  const prefersReducedMotion = useReducedMotion();
+  const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
   return (
     <>
       {/* Hero */}
       <section className="pt-32 pb-16 px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
           >
             <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-4">
               Our Services
             </div>
-            <h1 className="text-5xl lg:text-6xl font-heading font-bold text-ink leading-tight mb-6">
+            <h1 className="text-5xl lg:text-6xl font-heading font-semibold text-ink leading-tight mb-6">
               Complete solar{" "}
               <span className="text-accent italic">
                 solutions for Bangladesh
@@ -175,7 +180,7 @@ export default function ServicesPage() {
               From free consultation to lifetime support, we handle everything
               so you can enjoy clean, reliable electricity without the hassle.
             </p>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -183,19 +188,21 @@ export default function ServicesPage() {
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
+            {services.map((service) => (
+              <m.div
+                key={service.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                transition={{ duration: 0.4 }}
                 className="bg-white rounded-2xl overflow-hidden border border-ink/5 hover:shadow-xl transition-all group"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
-                  <img
+                  <Image
                     src={service.image}
                     alt={service.title}
+                    width={1200}
+                    height={750}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute top-4 right-4 px-3 py-1 bg-accent text-white text-sm font-bold rounded-full">
@@ -203,18 +210,18 @@ export default function ServicesPage() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
+                  <div className="size-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
                     <service.icon size={24} className="text-accent" />
                   </div>
-                  <h3 className="text-xl font-heading font-bold text-ink mb-3">
+                  <h3 className="text-xl font-heading font-semibold text-ink mb-3">
                     {service.title}
                   </h3>
                   <p className="text-ink-mid text-sm leading-relaxed mb-4">
                     {service.description}
                   </p>
                   <ul className="space-y-2 mb-6">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-sm">
+                    {service.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2 text-sm">
                         <CheckCircle
                           size={14}
                           className="text-accent flex-shrink-0 mt-0.5"
@@ -230,7 +237,7 @@ export default function ServicesPage() {
                     </span>
                   </Link>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -239,44 +246,44 @@ export default function ServicesPage() {
       {/* Process */}
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: transitionDuration }}
             className="text-center mb-12"
           >
             <div className="text-accent font-semibold text-sm tracking-widest uppercase mb-3">
               How It Works
             </div>
-            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-ink mb-4">
+            <h2 className="text-3xl lg:text-4xl font-heading font-semibold text-ink mb-4">
               From inquiry to solar power in 6 steps
             </h2>
             <p className="text-ink-mid max-w-xl mx-auto">
               Our streamlined process makes going solar simple and stress-free.
             </p>
-          </motion.div>
+          </m.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {processSteps.map((step, index) => (
-              <motion.div
-                key={index}
+            {processSteps.map((step) => (
+              <m.div
+                key={step.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                transition={{ duration: 0.4 }}
                 className="bg-white rounded-xl p-6 border border-ink/5 relative"
               >
-                <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center mb-4">
+                <div className="size-12 rounded-full bg-accent flex items-center justify-center mb-4">
                   <step.icon size={22} className="text-white" />
                 </div>
-                <h3 className="font-heading font-bold text-ink text-lg mb-2">
+                <h3 className="font-heading font-semibold text-ink text-lg mb-2">
                   {step.title}
                 </h3>
                 <p className="text-ink-mid text-sm leading-relaxed">
                   {step.desc}
                 </p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -288,7 +295,7 @@ export default function ServicesPage() {
           <div className="bg-gradient-to-br from-accent to-accent-mid rounded-2xl p-8 lg:p-12 text-white">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-3xl lg:text-4xl font-heading font-bold mb-6">
+                <h2 className="text-3xl lg:text-4xl font-heading font-semibold mb-6">
                   Why 45,500+ homes trust SOLARO
                 </h2>
                 <div className="space-y-4">
@@ -299,8 +306,8 @@ export default function ServicesPage() {
                     "DESA/DESCO net metering paperwork handled for you",
                     "24/7 monitoring and lifetime technical support",
                     "Flexible financing and EMI options available",
-                  ].map((item, idx) => (
-                    <div key={idx} className="flex items-start gap-3">
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3">
                       <CheckCircle size={20} className="flex-shrink-0 mt-0.5" />
                       <span className="text-white/90">{item}</span>
                     </div>
@@ -308,7 +315,7 @@ export default function ServicesPage() {
                 </div>
               </div>
               <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
-                <h3 className="font-heading font-bold text-xl mb-4">
+                <h3 className="font-heading font-semibold text-xl mb-4">
                   Need a custom solution?
                 </h3>
                 <p className="text-white/80 mb-6">
