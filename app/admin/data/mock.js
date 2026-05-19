@@ -360,18 +360,90 @@ export const leads = [
 ];
 
 export const districts = [
-  { name: "Dhaka", orders: 18, revenue: 2850000, deliveryAvailable: true, active: true },
-  { name: "Chittagong", orders: 8, revenue: 1200000, deliveryAvailable: true, active: true },
-  { name: "Sylhet", orders: 5, revenue: 750000, deliveryAvailable: true, active: true },
-  { name: "Rajshahi", orders: 4, revenue: 540000, deliveryAvailable: true, active: true },
-  { name: "Khulna", orders: 3, revenue: 420000, deliveryAvailable: true, active: true },
-  { name: "Barishal", orders: 3, revenue: 390000, deliveryAvailable: true, active: true },
-  { name: "Rangpur", orders: 2, revenue: 150000, deliveryAvailable: true, active: true },
-  { name: "Mymensingh", orders: 2, revenue: 180000, deliveryAvailable: true, active: true },
-  { name: "Comilla", orders: 1, revenue: 75000, deliveryAvailable: false, active: false },
-  { name: "Gazipur", orders: 1, revenue: 210000, deliveryAvailable: true, active: true },
-  { name: "Narayanganj", orders: 0, revenue: 0, deliveryAvailable: false, active: false },
-  { name: "Cox's Bazar", orders: 0, revenue: 0, deliveryAvailable: false, active: false },
+  {
+    name: "Dhaka",
+    orders: 18,
+    revenue: 2850000,
+    deliveryAvailable: true,
+    active: true,
+  },
+  {
+    name: "Chittagong",
+    orders: 8,
+    revenue: 1200000,
+    deliveryAvailable: true,
+    active: true,
+  },
+  {
+    name: "Sylhet",
+    orders: 5,
+    revenue: 750000,
+    deliveryAvailable: true,
+    active: true,
+  },
+  {
+    name: "Rajshahi",
+    orders: 4,
+    revenue: 540000,
+    deliveryAvailable: true,
+    active: true,
+  },
+  {
+    name: "Khulna",
+    orders: 3,
+    revenue: 420000,
+    deliveryAvailable: true,
+    active: true,
+  },
+  {
+    name: "Barishal",
+    orders: 3,
+    revenue: 390000,
+    deliveryAvailable: true,
+    active: true,
+  },
+  {
+    name: "Rangpur",
+    orders: 2,
+    revenue: 150000,
+    deliveryAvailable: true,
+    active: true,
+  },
+  {
+    name: "Mymensingh",
+    orders: 2,
+    revenue: 180000,
+    deliveryAvailable: true,
+    active: true,
+  },
+  {
+    name: "Comilla",
+    orders: 1,
+    revenue: 75000,
+    deliveryAvailable: false,
+    active: false,
+  },
+  {
+    name: "Gazipur",
+    orders: 1,
+    revenue: 210000,
+    deliveryAvailable: true,
+    active: true,
+  },
+  {
+    name: "Narayanganj",
+    orders: 0,
+    revenue: 0,
+    deliveryAvailable: false,
+    active: false,
+  },
+  {
+    name: "Cox's Bazar",
+    orders: 0,
+    revenue: 0,
+    deliveryAvailable: false,
+    active: false,
+  },
 ];
 
 export const revenueData = [
@@ -453,4 +525,93 @@ export const contentSections = [
     lastUpdated: "2026-05-03",
     status: "active",
   },
+];
+
+export const adminUsers = [
+  {
+    id: "user-001",
+    name: "Admin User",
+    email: "admin@solaro.com.bd",
+    role: "super-admin",
+    status: "active",
+    lastLogin: "2026-05-19",
+    permissions: ["all"],
+  },
+  {
+    id: "user-002",
+    name: "Rafiq Islam",
+    email: "rafiq@solaro.com.bd",
+    role: "manager",
+    status: "active",
+    lastLogin: "2026-05-18",
+    permissions: ["orders", "products", "customers", "leads", "analytics"],
+  },
+  {
+    id: "user-003",
+    name: "Sumaiya Khan",
+    email: "sumaiya@solaro.com.bd",
+    role: "editor",
+    status: "active",
+    lastLogin: "2026-05-17",
+    permissions: ["products", "leads", "content"],
+  },
+  {
+    id: "user-004",
+    name: "Tariq Hassan",
+    email: "tariq@solaro.com.bd",
+    role: "support",
+    status: "active",
+    lastLogin: "2026-05-16",
+    permissions: ["orders", "customers", "leads", "districts"],
+  },
+  {
+    id: "user-005",
+    name: "Nadia Rahman",
+    email: "nadia@solaro.com.bd",
+    role: "viewer",
+    status: "inactive",
+    lastLogin: "2026-04-20",
+    permissions: ["analytics"],
+  },
+];
+
+export const permissionLabels = {
+  all: "Full Access",
+  orders: "Orders",
+  products: "Products",
+  customers: "Customers",
+  leads: "Leads",
+  districts: "Districts",
+  analytics: "Analytics",
+  users: "Users",
+  settings: "Settings",
+};
+
+export const roles = [
+  {
+    id: "super-admin",
+    label: "Super Admin",
+    description: "Full access to everything",
+  },
+  {
+    id: "manager",
+    label: "Manager",
+    description: "Manage orders, products, customers",
+  },
+  {
+    id: "editor",
+    label: "Editor",
+    description: "Edit products and manage leads",
+  },
+  {
+    id: "support",
+    label: "Support",
+    description: "Handle orders and customer inquiries",
+  },
+  {
+    id: "viewer",
+    label: "Viewer",
+    description: "View-only access to analytics",
+  },
+  { id: "custom", label: "Custom", description: "Custom permission set" },
 ];
