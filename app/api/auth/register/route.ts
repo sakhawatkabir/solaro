@@ -4,6 +4,9 @@ import { getUserByEmail } from "@/lib/auth/user";
 import { hashPassword } from "@/lib/auth/password";
 import { createVerificationToken } from "@/lib/verification-token";
 import { prisma } from "@/lib/prisma";
+import { sendEmail } from "@/lib/email/send";
+import { generateVerificationEmail } from "@/lib/email/templates/verification";
+import { APP_URL } from "@/lib/email/config";
 
 export async function POST(request: Request) {
   try {
@@ -47,11 +50,14 @@ export async function POST(request: Request) {
     });
 
     const verificationToken = await createVerificationToken(email);
+    const verificationUrl = `${APP_URL}/api/auth/verify-email?token=${verificationToken.token}`;
+    const emailTemplate = generateVerificationEmail(name, verificationUrl);
+    await sendEmail({ to: email, ...emailTemplate });
 
     return NextResponse.json({
       success: true,
-      message: "Registration successful. Please verify your email.",
-      verificationToken: verificationToken.token,
+      message:
+        "Registration successful. Please check your email to verify your account.",
     });
   } catch (error) {
     console.error("Registration error:", error);

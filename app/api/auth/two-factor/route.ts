@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
 import { TwoFactorSchema } from "@/lib/auth/schemas";
+import { getTwoFactorTokenByToken } from "@/lib/two-factor-token";
 import { getUserByEmail } from "@/lib/auth/user";
 import { createTwoFactorToken } from "@/lib/two-factor-token";
 import { createTwoFactorConfirmation } from "@/lib/two-factor-confirmation";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
+import { sendEmail } from "@/lib/email/send";
+import { generateTwoFactorEmail } from "@/lib/email/templates/two-factor";
 
 export async function POST(request: Request) {
   try {
@@ -121,6 +124,11 @@ export async function PUT(request: Request) {
     }
 
     const twoFactorToken = await createTwoFactorToken(email);
+    const emailTemplate = generateTwoFactorEmail(
+      user.name || "User",
+      twoFactorToken.token,
+    );
+    await sendEmail({ to: email, ...emailTemplate });
 
     const cookieStore = await cookies();
     cookieStore.set("2fa-pending-email", email, {
@@ -133,8 +141,7 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "2FA code sent",
-      twoFactorToken: twoFactorToken.token,
+      message: "Verification code sent to your email",
     });
   } catch (error) {
     console.error("2FA send code error:", error);
