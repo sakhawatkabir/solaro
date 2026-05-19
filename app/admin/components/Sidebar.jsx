@@ -16,6 +16,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Sun,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -31,26 +32,30 @@ const navItems = [
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ mobileOpen, setMobileOpen }) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
 
-  return (
-    <aside
-      className={cn(
-        "flex flex-col h-screen bg-zinc-950 border-r border-zinc-800 transition-all duration-300 sticky top-0",
-        collapsed ? "w-[68px]" : "w-[260px]",
-      )}
-    >
+  const sidebarContent = (
+    <>
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 h-16 border-b border-zinc-800">
         <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-emerald-500/10">
           <Sun className="w-5 h-5 text-emerald-400" />
         </div>
-        {!collapsed && (
+        {(!collapsed || mobileOpen) && (
           <span className="text-lg font-bold text-white tracking-tight">
             SOLARO
           </span>
+        )}
+        {/* Mobile close button */}
+        {mobileOpen && (
+          <button
+            onClick={() => setMobileOpen(false)}
+            className="ml-auto lg:hidden text-zinc-400 hover:text-white"
+          >
+            <X className="w-5 h-5" />
+          </button>
         )}
       </div>
 
@@ -65,6 +70,7 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={() => mobileOpen && setMobileOpen(false)}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 isActive
@@ -73,14 +79,14 @@ export default function Sidebar() {
               )}
             >
               <item.icon className="w-5 h-5 flex-shrink-0" />
-              {!collapsed && <span>{item.label}</span>}
+              {(!collapsed || mobileOpen) && <span>{item.label}</span>}
             </Link>
           );
         })}
       </nav>
 
-      {/* Collapse toggle */}
-      <div className="p-3 border-t border-zinc-800">
+      {/* Collapse toggle (desktop only) */}
+      <div className="hidden lg:block p-3 border-t border-zinc-800">
         <button
           onClick={() => setCollapsed(!collapsed)}
           className="flex items-center justify-center w-full py-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
@@ -92,6 +98,38 @@ export default function Sidebar() {
           )}
         </button>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      {/* Mobile sidebar */}
+      <aside
+        className={cn(
+          "fixed top-0 left-0 z-50 h-screen bg-zinc-950 border-r border-zinc-800 transition-transform duration-300 lg:hidden w-[260px]",
+          mobileOpen ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
+        {sidebarContent}
+      </aside>
+
+      {/* Desktop sidebar */}
+      <aside
+        className={cn(
+          "hidden lg:flex flex-col h-screen bg-zinc-950 border-r border-zinc-800 transition-all duration-300 sticky top-0",
+          collapsed ? "w-[68px]" : "w-[260px]",
+        )}
+      >
+        {sidebarContent}
+      </aside>
+    </>
   );
 }
