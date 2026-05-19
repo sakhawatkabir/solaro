@@ -13,7 +13,7 @@ import {
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

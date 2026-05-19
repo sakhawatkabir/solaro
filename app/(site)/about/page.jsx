@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 export default function AboutPage() {
   const prefersReducedMotion = useReducedMotion();
@@ -93,25 +93,29 @@ export default function AboutPage() {
     {
       name: "Rahim Ahmed",
       role: "Founder & CEO",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop",
       bio: "15+ years in renewable energy. IIT Dhaka alum.",
     },
     {
       name: "Fatima Khan",
       role: "Chief Technology Officer",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop",
       bio: "Solar engineering expert. 200+ system designs.",
     },
     {
       name: "Kamal Hossain",
       role: "Head of Operations",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
       bio: "Manages 120+ installation teams across BD.",
     },
     {
       name: "Nusrat Jahan",
       role: "Customer Success Lead",
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop",
       bio: "Ensures every customer gets lifetime support.",
     },
   ];
@@ -136,8 +140,8 @@ export default function AboutPage() {
             <p className="text-ink-mid text-lg max-w-2xl leading-relaxed">
               Since 2014, we have helped over 45,000 homes and businesses across
               all 64 districts switch to clean, reliable solar energy. Our
-              mission is simple: end load shedding and make electricity affordable
-              for every Bangladeshi family.
+              mission is simple: end load shedding and make electricity
+              affordable for every Bangladeshi family.
             </p>
           </m.div>
         </div>
@@ -250,8 +254,8 @@ export default function AboutPage() {
               What drives us every day
             </h2>
             <p className="text-ink-mid max-w-2xl mx-auto">
-              These core principles guide every decision we make and every system
-              we install.
+              These core principles guide every decision we make and every
+              system we install.
             </p>
           </m.div>
 
@@ -395,8 +399,8 @@ export default function AboutPage() {
               Ready to Join 45,500+ Solar Homes?
             </h3>
             <p className="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
-              Get a free home survey and custom quote. No obligation, no pressure
-              — just honest advice about solar for your home.
+              Get a free home survey and custom quote. No obligation, no
+              pressure — just honest advice about solar for your home.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">

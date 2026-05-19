@@ -1,5 +1,5 @@
 import { Shield, Clock } from "lucide-react";
-import { formatPrice } from "../../data/products";
+import { formatPrice } from "../../../../data/products";
 import Image from "next/image";
 
 export default function OrderSummary({

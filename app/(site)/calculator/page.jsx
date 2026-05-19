@@ -9,7 +9,6 @@ import {
   Calculator,
   ArrowRight,
   CheckCircle,
-  Download,
   Phone,
   TrendingUp,
   Battery,
@@ -17,7 +16,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 const bdElectricityRate = 9.5;
 const solarHoursPerDay = 5.5;

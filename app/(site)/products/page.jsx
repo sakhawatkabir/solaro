@@ -2,12 +2,12 @@
 
 import { m } from "framer-motion";
 import { ShoppingCart, Filter, Search, ChevronRight, Star } from "lucide-react";
-import { products, formatPrice } from "../data/products";
-import { useCart } from "../context/CartContext";
+import { products, formatPrice } from "../../data/products";
+import { useCart } from "../../context/CartContext";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 const categories = [
   { id: "all", label: "All Products" },

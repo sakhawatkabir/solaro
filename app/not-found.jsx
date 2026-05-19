@@ -22,7 +22,11 @@ export default function NotFound() {
             <div className="relative size-32 mx-auto mb-8">
               <m.div
                 animate={prefersReducedMotion ? {} : { rotate: 360 }}
-                transition={prefersReducedMotion ? {} : { duration: 20, repeat: Infinity, ease: "linear" }}
+                transition={
+                  prefersReducedMotion
+                    ? {}
+                    : { duration: 20, repeat: Infinity, ease: "linear" }
+                }
                 className="absolute inset-0"
               >
                 <Sun size={128} className="text-accent/20 w-full h-full" />
@@ -54,56 +58,6 @@ export default function NotFound() {
                   <Search size={18} />
                   Browse Products
                 </span>
-              </Link>
-            </div>
-          </m.div>
-
-          {/* Helpful Links */}
-          <m.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: transitionDuration, delay: 0.3 }}
-            className="mt-16 bg-white rounded-2xl p-8 border border-ink/5"
-          >
-            <h3 className="font-heading font-semibold text-ink mb-4">
-              Quick Links
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <Link
-                href="/products"
-                className="p-4 rounded-xl bg-cream/50 hover:bg-accent/5 transition-colors text-left"
-              >
-                <div className="font-semibold text-ink">Solar Products</div>
-                <div className="text-sm text-ink-light">
-                  Home kits, panels, batteries
-                </div>
-              </Link>
-              <Link
-                href="/services"
-                className="p-4 rounded-xl bg-cream/50 hover:bg-accent/5 transition-colors text-left"
-              >
-                <div className="font-semibold text-ink">Our Services</div>
-                <div className="text-sm text-ink-light">
-                  Installation & maintenance
-                </div>
-              </Link>
-              <Link
-                href="/about"
-                className="p-4 rounded-xl bg-cream/50 hover:bg-accent/5 transition-colors text-left"
-              >
-                <div className="font-semibold text-ink">About SOLARO</div>
-                <div className="text-sm text-ink-light">
-                  Our story & mission
-                </div>
-              </Link>
-              <Link
-                href="/contact"
-                className="p-4 rounded-xl bg-cream/50 hover:bg-accent/5 transition-colors text-left"
-              >
-                <div className="font-semibold text-ink">Contact Us</div>
-                <div className="text-sm text-ink-light">
-                  Get in touch with our team
-                </div>
               </Link>
             </div>
           </m.div>

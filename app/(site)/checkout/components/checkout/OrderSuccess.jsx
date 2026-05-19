@@ -1,7 +1,7 @@
 import { m } from "framer-motion";
 import { CheckCircle, Package } from "lucide-react";
 import Link from "next/link";
-import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { useReducedMotion } from "../../../../hooks/useReducedMotion";
 
 export default function OrderSuccess({ orderId }) {
   const prefersReducedMotion = useReducedMotion();

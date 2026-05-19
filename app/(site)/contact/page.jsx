@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
-import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({

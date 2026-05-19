@@ -1,15 +1,14 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 import { useState } from "react";
-import OrderSuccess from "../components/checkout/OrderSuccess";
-import EmptyCart from "../components/checkout/EmptyCart";
-import CheckoutBreadcrumb from "../components/checkout/CheckoutBreadcrumb";
-import ContactInfo from "../components/checkout/ContactInfo";
-import ShippingAddress from "../components/checkout/ShippingAddress";
-import PaymentMethod from "../components/checkout/PaymentMethod";
-import OrderSummary from "../components/checkout/OrderSummary";
+import OrderSuccess from "./components/checkout/OrderSuccess";
+import EmptyCart from "./components/checkout/EmptyCart";
+import CheckoutBreadcrumb from "./components/checkout/CheckoutBreadcrumb";
+import ContactInfo from "./components/checkout/ContactInfo";
+import ShippingAddress from "./components/checkout/ShippingAddress";
+import PaymentMethod from "./components/checkout/PaymentMethod";
+import OrderSummary from "./components/checkout/OrderSummary";
 
 export default function CheckoutPage() {
   const { items, updateQuantity, totalPrice, clearCart } = useCart();

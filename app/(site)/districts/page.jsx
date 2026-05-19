@@ -14,7 +14,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useState } from "react";
-import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 const divisions = [
   {
