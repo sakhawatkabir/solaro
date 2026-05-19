@@ -494,7 +494,7 @@ export default function ProductDetailPage({ params }) {
                 </div>
               </div>
             )}
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
