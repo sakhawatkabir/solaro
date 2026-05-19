@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ShoppingCart } from "lucide-react";
+import { Menu, X, ShoppingCart, User } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 export default function Navigation() {
@@ -83,9 +83,9 @@ export default function Navigation() {
               </span>
             )}
           </button>
-          <Link href="/contact">
-            <span className="px-6 py-3 bg-accent hover:bg-accent-mid text-white rounded-full font-semibold text-[15px] transition-colors cursor-pointer shadow-md shadow-accent/20">
-              Get Free Quote
+          <Link href="/login">
+            <span className="text-ink hover:text-accent transition-colors flex items-center gap-2 font-medium">
+              <User size={20} />
             </span>
           </Link>
         </div>
@@ -131,11 +131,14 @@ export default function Navigation() {
                   </Link>
                 );
               })}
-              <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                <span className="mt-8 px-6 py-4 bg-accent text-white rounded-full font-semibold text-center w-full block">
-                  Get Free Quote
-                </span>
-              </Link>
+              <div className="pt-4 border-t border-ink/10 mt-2">
+                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                  <span className="flex items-center gap-2 text-ink-mid hover:text-ink transition-colors">
+                    <User size={20} />
+                    Sign In / Register
+                  </span>
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}
