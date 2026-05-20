@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, MapPin, Calendar, Package } from "lucide-react";
+import { useState } from "react";
+import { Eye, MapPin, Calendar, Package, Trash2 } from "lucide-react";
 import StatusBadge from "../../components/StatusBadge";
 import TablePagination from "../../components/TablePagination";
+import { deleteOrder } from "@/app/actions/orders";
 
 function formatBDT(amount) {
   return `৳${amount.toLocaleString("en-BD")}`;
@@ -17,11 +19,6 @@ function formatDate(date) {
   });
 }
 
-function getOrderItems(items) {
-  if (!items || !Array.isArray(items)) return "—";
-  return items.map((item) => item.name).join(", ");
-}
-
 export default function OrdersTable({
   orders,
   currentPage,
@@ -29,7 +26,21 @@ export default function OrdersTable({
   perPage,
   totalFiltered,
   onPageChange,
+  onDeleteSuccess,
 }) {
+  const [deletingId, setDeletingId] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(null);
+
+  const handleDelete = async (order) => {
+    setDeletingId(order.id);
+    const result = await deleteOrder(order.id);
+    if (result.success) {
+      setConfirmDelete(null);
+      if (onDeleteSuccess) onDeleteSuccess();
+    }
+    setDeletingId(null);
+  };
+
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 overflow-hidden">
       <div className="overflow-x-auto">
@@ -90,16 +101,16 @@ export default function OrdersTable({
                   <td className="px-6 py-4">
                     <div>
                       <div className="text-sm text-white font-medium">
-                        {order.customerName}
+                        {order.customerName || "—"}
                       </div>
                       <div className="text-xs text-zinc-500">
-                        {order.customerEmail}
+                        {order.customerEmail || "—"}
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 hidden md:table-cell">
                     <span className="text-sm text-zinc-300 max-w-xs truncate block">
-                      {getOrderItems(order.items)}
+                      {order.itemsSummary || "—"}
                     </span>
                   </td>
                   <td className="px-6 py-4 hidden lg:table-cell">
@@ -123,12 +134,21 @@ export default function OrdersTable({
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <Link
-                      href={`/admin/orders/${order.id}`}
-                      className="p-1.5 rounded-lg text-zinc-400"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Link>
+                    <div className="flex items-center gap-1">
+                      <Link
+                        href={`/admin/orders/${order.id}`}
+                        className="p-1.5 rounded-lg text-zinc-400 hover:text-emerald-400 transition-colors"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Link>
+                      <button
+                        onClick={() => setConfirmDelete(order)}
+                        className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 transition-colors"
+                        title="Delete order"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -145,6 +165,49 @@ export default function OrdersTable({
           totalFiltered={totalFiltered}
           onPageChange={onPageChange}
         />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {confirmDelete && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-xl p-6 max-w-sm w-full">
+            <h3 className="text-lg font-semibold text-white mb-2">
+              Delete Order
+            </h3>
+            <p className="text-sm text-zinc-400 mb-6">
+              Are you sure you want to delete order{" "}
+              <span className="text-emerald-400 font-mono">
+                {confirmDelete.orderNumber}
+              </span>
+              ? This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setConfirmDelete(null)}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDelete(confirmDelete)}
+                disabled={deletingId === confirmDelete.id}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-500 disabled:opacity-50 transition-colors flex items-center gap-2"
+              >
+                {deletingId === confirmDelete.id ? (
+                  <>
+                    <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="w-4 h-4" />
+                    Delete
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

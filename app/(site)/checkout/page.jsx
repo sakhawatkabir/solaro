@@ -75,8 +75,8 @@ export default function CheckoutPage() {
 
       const result = await createOrder({
         userId: user?.id || null,
-        customerName: shipping.name,
-        customerEmail: shipping.email,
+        customerName: shipping.name || user?.name || "",
+        customerEmail: shipping.email || user?.email || "",
         customerPhone: shipping.phone,
         district: shipping.district,
         items: orderItems,

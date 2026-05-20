@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getOrders, getOrderStats } from "@/app/actions/orders";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import OrdersHeader from "./components/OrdersHeader";
 import OrderStatusSummary from "./components/OrderStatusSummary";
 import OrderFilters from "./components/OrderFilters";
@@ -19,6 +18,7 @@ const allStatuses = [
 ];
 
 export default function OrdersPage() {
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,37 +26,37 @@ export default function OrdersPage() {
 
   const { data: ordersData, isLoading } = useQuery({
     queryKey: ["admin-orders", currentPage, search, statusFilter],
-    queryFn: () =>
-      getOrders({
+    queryFn: async () => {
+      const params = new URLSearchParams({
         page: currentPage,
         perPage,
-        search,
-        status: statusFilter === "all" ? "" : statusFilter,
-      }),
-  });
-
-  const { data: stats } = useQuery({
-    queryKey: ["admin-order-stats"],
-    queryFn: () => getOrderStats(),
+        ...(search && { search }),
+        ...(statusFilter !== "all" && { status: statusFilter }),
+      });
+      const res = await fetch(`/api/admin/orders?${params}`);
+      if (!res.ok) throw new Error("Failed to fetch orders");
+      return res.json();
+    },
   });
 
   const orders = ordersData?.orders || [];
-  const total = ordersData?.total || 0;
-  const totalPages = ordersData?.totalPages || 1;
+  const total = ordersData?.pagination?.total || 0;
+  const totalPages = ordersData?.pagination?.totalPages || 1;
 
-  const statusCounts =
-    stats?.statusBreakdown.map((s) => ({
-      status: s.status,
-      count: s.count,
-    })) || [];
+  const statusCounts = [
+    { status: "PENDING", count: orders.filter((o) => o.status === "PENDING").length },
+    { status: "CONFIRMED", count: orders.filter((o) => o.status === "CONFIRMED").length },
+    { status: "PROCESSING", count: orders.filter((o) => o.status === "PROCESSING").length },
+    { status: "SHIPPED", count: orders.filter((o) => o.status === "SHIPPED").length },
+    { status: "DELIVERED", count: orders.filter((o) => o.status === "DELIVERED").length },
+    { status: "CANCELLED", count: orders.filter((o) => o.status === "CANCELLED").length },
+  ].filter((s) => s.count > 0);
 
   return (
     <div className="space-y-6">
       <OrdersHeader
-        totalOrders={stats?.totalOrders || 0}
-        deliveredCount={
-          stats?.statusBreakdown.find((s) => s.status === "DELIVERED")?.count
-        }
+        totalOrders={total}
+        deliveredCount={orders.filter((o) => o.status === "DELIVERED").length}
       />
 
       {statusCounts.length > 0 && (
@@ -96,6 +96,9 @@ export default function OrdersPage() {
           perPage={perPage}
           totalFiltered={total}
           onPageChange={setCurrentPage}
+          onDeleteSuccess={() => {
+            queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
+          }}
         />
       )}
     </div>
