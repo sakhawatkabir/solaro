@@ -9,6 +9,7 @@ import {
   ClipboardList,
   Users,
   MessageSquare,
+  Star,
   MapPin,
   BarChart3,
   UserCog,
@@ -52,6 +53,12 @@ const allNavItems = [
     href: "/admin/leads",
     icon: MessageSquare,
     permission: "leads",
+  },
+  {
+    label: "Reviews",
+    href: "/admin/reviews",
+    icon: Star,
+    permission: "products",
   },
   {
     label: "Districts",

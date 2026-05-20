@@ -22,7 +22,7 @@ const allowedAdminRoles = [
 
 const permissionRouteMap = {
   analytics: ["/admin/analytics"],
-  products: ["/admin/products"],
+  products: ["/admin/products", "/admin/reviews"],
   orders: ["/admin/orders"],
   customers: ["/admin/customers"],
   leads: ["/admin/leads"],

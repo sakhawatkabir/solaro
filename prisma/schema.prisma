@@ -208,7 +208,7 @@ model Order {
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
-  user            User?         @relation(fields: [userId], references: [id])
+  user User? @relation(fields: [userId], references: [id])
 
   @@index([status])
   @@index([paymentStatus])
@@ -309,4 +309,29 @@ enum UserStatus {
   ACTIVE
   INACTIVE
   SUSPENDED
+}
+
+model Review {
+  id            String       @id @default(cuid())
+  productId     String?
+  userId        String?
+  customerName  String
+  customerEmail String
+  rating        Int
+  title         String?
+  comment       String
+  status        ReviewStatus @default(PENDING)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([status])
+  @@index([rating])
+  @@index([productId])
+  @@index([createdAt])
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
