@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { ChevronRight, X, Save } from "lucide-react";
 
-export default function ProductFormHeader({ isEdit, productName }) {
+export default function ProductFormHeader({
+  isEdit,
+  productName,
+  onSave,
+  isSaving,
+}) {
   return (
     <>
       <div className="flex items-center gap-2 text-sm text-zinc-400">
@@ -36,8 +41,16 @@ export default function ProductFormHeader({ isEdit, productName }) {
             <X className="w-4 h-4" />
             Cancel
           </Link>
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 text-sm font-medium transition-colors">
-            <Save className="w-4 h-4" />
+          <button
+            onClick={onSave}
+            disabled={isSaving}
+            className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 disabled:opacity-50 text-sm font-medium transition-colors"
+          >
+            {isSaving ? (
+              <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
             {isEdit ? "Save Changes" : "Create Product"}
           </button>
         </div>

@@ -1,7 +1,19 @@
 "use client";
 
-const categories = ["Home Kits", "Panels", "Batteries", "Inverters"];
-const statuses = ["active", "draft", "out-of-stock"];
+import RichTextEditor from "./RichTextEditor";
+
+const categories = [
+  { value: "HOME_KIT", label: "Home Kits" },
+  { value: "PANEL", label: "Panels" },
+  { value: "BATTERY", label: "Batteries" },
+  { value: "INVERTER", label: "Inverters" },
+  { value: "ACCESSORY", label: "Accessories" },
+];
+const statuses = [
+  { value: "ACTIVE", label: "Active" },
+  { value: "DRAFT", label: "Draft" },
+  { value: "OUT_OF_STOCK", label: "Out of Stock" },
+];
 
 export default function ProductBasicInfo({ formData, updateField }) {
   return (
@@ -18,7 +30,7 @@ export default function ProductBasicInfo({ formData, updateField }) {
             type="text"
             value={formData.name}
             onChange={(e) => updateField("name", e.target.value)}
-            placeholder="e.g., Home Kit 5KW"
+            placeholder="e.g., 5KW Solar Home Kit"
             className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder:text-zinc-500 focus:outline-none focus:border-emerald-500/50 text-sm"
           />
         </div>
@@ -33,8 +45,12 @@ export default function ProductBasicInfo({ formData, updateField }) {
               className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
             >
               {categories.map((cat) => (
-                <option key={cat} value={cat} className="bg-zinc-900">
-                  {cat}
+                <option
+                  key={cat.value}
+                  value={cat.value}
+                  className="bg-zinc-900"
+                >
+                  {cat.label}
                 </option>
               ))}
             </select>
@@ -49,8 +65,8 @@ export default function ProductBasicInfo({ formData, updateField }) {
               className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
             >
               {statuses.map((s) => (
-                <option key={s} value={s} className="bg-zinc-900">
-                  {s.charAt(0).toUpperCase() + s.slice(1)}
+                <option key={s.value} value={s.value} className="bg-zinc-900">
+                  {s.label}
                 </option>
               ))}
             </select>
@@ -58,14 +74,24 @@ export default function ProductBasicInfo({ formData, updateField }) {
         </div>
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            Badge
+          </label>
+          <input
+            type="text"
+            value={formData.badge}
+            onChange={(e) => updateField("badge", e.target.value)}
+            placeholder="e.g., Best Seller, New"
+            className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder:text-zinc-500 focus:outline-none focus:border-emerald-500/50 text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
             Description
           </label>
-          <textarea
+          <RichTextEditor
             value={formData.description}
-            onChange={(e) => updateField("description", e.target.value)}
-            placeholder="Product description..."
-            rows={4}
-            className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder:text-zinc-500 focus:outline-none focus:border-emerald-500/50 text-sm resize-none"
+            onChange={(html) => updateField("description", html)}
+            placeholder="Write product description..."
           />
         </div>
       </div>

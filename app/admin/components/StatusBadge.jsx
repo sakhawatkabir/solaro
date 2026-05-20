@@ -15,13 +15,18 @@ const statusStyles = {
   converted: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   lost: "bg-red-500/10 text-red-400 border-red-500/20",
   active: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  ACTIVE: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   draft: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
+  DRAFT: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
   "out-of-stock": "bg-orange-500/10 text-orange-400 border-orange-500/20",
+  OUT_OF_STOCK: "bg-orange-500/10 text-orange-400 border-orange-500/20",
 };
 
 export default function StatusBadge({ status }) {
   const style =
     statusStyles[status] || "bg-zinc-500/10 text-zinc-400 border-zinc-500/20";
+
+  const label = status ? status.replace("_", " ").toLowerCase() : status;
 
   return (
     <span
@@ -30,7 +35,7 @@ export default function StatusBadge({ status }) {
         style,
       )}
     >
-      {status}
+      {label}
     </span>
   );
 }

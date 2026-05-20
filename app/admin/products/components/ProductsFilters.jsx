@@ -33,7 +33,7 @@ export default function ProductsFilters({
           >
             {allCategories.map((c) => (
               <option key={c} value={c} className="bg-zinc-900">
-                {c === "all" ? "All Categories" : c}
+                {c === "all" ? "All Categories" : c.replace("_", " ")}
               </option>
             ))}
           </select>

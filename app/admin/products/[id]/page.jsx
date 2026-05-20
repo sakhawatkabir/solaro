@@ -1,7 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { products as mockProducts } from "../../data/mock";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  getProduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "@/app/actions/products";
 import ProductFormHeader from "./components/ProductFormHeader";
 import ProductBasicInfo from "./components/ProductBasicInfo";
 import ProductSpecs from "./components/ProductSpecs";
@@ -9,23 +16,63 @@ import ProductPricing from "./components/ProductPricing";
 import ProductImages from "./components/ProductImages";
 import ProductDangerZone from "./components/ProductDangerZone";
 
-export default function ProductFormPage({ params }) {
-  const isEdit = params && params.id && params.id !== "new";
-  const existingProduct = isEdit
-    ? mockProducts.find((p) => p.id === params.id)
-    : null;
+const defaultFormData = {
+  name: "",
+  category: "HOME_KIT",
+  price: "",
+  stock: "",
+  originalPrice: "",
+  status: "ACTIVE",
+  description: "",
+  badge: "",
+  images: [],
+  specs: [],
+};
 
-  const [formData, setFormData] = useState({
-    name: existingProduct?.name || "",
-    category: existingProduct?.category || "Home Kits",
-    price: existingProduct?.price?.toString() || "",
-    stock: existingProduct?.stock?.toString() || "",
-    status: existingProduct?.status || "active",
-    description: "",
-    specs: existingProduct ? [{ key: "Wattage", value: "550W" }] : [],
+export default function ProductFormPage({ params }) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const isEdit = params && params.id && params.id !== "new";
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [formData, setFormData] = useState(defaultFormData);
+  const [newSpec, setNewSpec] = useState({ key: "", value: "" });
+
+  const { data: productData, isLoading } = useQuery({
+    queryKey: ["admin-product", params.id],
+    queryFn: () => getProduct(params.id),
+    enabled: isEdit,
+    retry: false,
   });
 
-  const [newSpec, setNewSpec] = useState({ key: "", value: "" });
+  useEffect(() => {
+    if (!productData) return;
+
+    setFormData({
+      name: productData.name || "",
+      category: productData.category || "HOME_KIT",
+      price: productData.price?.toString() || "",
+      stock: productData.stock?.toString() || "",
+      originalPrice: productData.originalPrice?.toString() || "",
+      status: productData.status || "ACTIVE",
+      description: productData.description || "",
+      badge: productData.badge || "",
+      images: productData.images || [],
+      specs: productData.specs
+        ? Object.entries(productData.specs).map(([key, value]) => ({
+            key,
+            value,
+          }))
+        : [],
+    });
+  }, [productData]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (isEdit && !productData) {
+      router.push("/admin/products");
+    }
+  }, [isEdit, productData, isLoading, router]);
 
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -54,9 +101,105 @@ export default function ProductFormPage({ params }) {
     updateField("specs", newSpecs);
   };
 
+  const buildPayload = () => {
+    if (!formData.name || !formData.price) {
+      throw new Error("Name and price are required.");
+    }
+
+    const specsObj = formData.specs.length
+      ? JSON.stringify(
+          formData.specs.reduce((acc, s) => {
+            acc[s.key] = s.value;
+            return acc;
+          }, {}),
+        )
+      : null;
+
+    return {
+      name: formData.name,
+      category: formData.category,
+      price: formData.price,
+      originalPrice: formData.originalPrice || null,
+      stock: formData.stock || "0",
+      status: formData.status,
+      description: formData.description,
+      badge: formData.badge,
+      image: formData.images[0] || null,
+      images: formData.images,
+      specs: specsObj,
+    };
+  };
+
+  const createMutation = useMutation({
+    mutationFn: () => createProduct(buildPayload()),
+    onMutate: () => {
+      setError("");
+      setSaving(true);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin-products"]);
+      queryClient.invalidateQueries(["admin-products-summary"]);
+      router.push("/admin/products");
+    },
+    onError: (err) => {
+      setError(err.message);
+      setSaving(false);
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: () => updateProduct(params.id, buildPayload()),
+    onMutate: () => {
+      setError("");
+      setSaving(true);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin-product", params.id]);
+      queryClient.invalidateQueries(["admin-products"]);
+      queryClient.invalidateQueries(["admin-products-summary"]);
+      router.push("/admin/products");
+    },
+    onError: (err) => {
+      setError(err.message);
+      setSaving(false);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteProduct(params.id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin-products"]);
+      queryClient.invalidateQueries(["admin-products-summary"]);
+      router.push("/admin/products");
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      <ProductFormHeader isEdit={isEdit} productName={existingProduct?.name} />
+      <ProductFormHeader
+        isEdit={isEdit}
+        productName={productData?.name || ""}
+        onSave={() =>
+          isEdit ? updateMutation.mutate() : createMutation.mutate()
+        }
+        isSaving={
+          saving || createMutation.isPending || updateMutation.isPending
+        }
+      />
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-red-400 text-sm">
+          {error}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
@@ -73,8 +216,19 @@ export default function ProductFormPage({ params }) {
 
         <div className="space-y-6">
           <ProductPricing formData={formData} updateField={updateField} />
-          <ProductImages />
-          {isEdit && <ProductDangerZone />}
+          <ProductImages
+            value={formData.images}
+            onChange={(urls) => updateField("images", urls)}
+          />
+          {isEdit && (
+            <ProductDangerZone
+              onDelete={() => {
+                if (confirm("Are you sure you want to delete this product?")) {
+                  deleteMutation.mutate();
+                }
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

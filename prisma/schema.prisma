@@ -103,8 +103,52 @@ model TwoFactorConfirmation {
 }
 
 // ===========================
+// Products
+// ===========================
+
+model Product {
+  id            String          @id @default(cuid())
+  name          String
+  slug          String          @unique
+  category      ProductCategory
+  price         Int
+  originalPrice Int?
+  stock         Int             @default(0)
+  status        ProductStatus   @default(ACTIVE)
+  description   String?         @db.Text
+  badge         String?
+  image         String?
+  images        String[]
+  specs         Json?
+  includes      Json?
+  savings       Json?
+  suitableFor   Json?
+  sales         Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([category])
+  @@index([status])
+  @@index([slug])
+}
+
+// ===========================
 // Enums
 // ===========================
+
+enum ProductCategory {
+  HOME_KIT
+  PANEL
+  BATTERY
+  INVERTER
+  ACCESSORY
+}
+
+enum ProductStatus {
+  ACTIVE
+  DRAFT
+  OUT_OF_STOCK
+}
 
 enum Role {
   SUPER_ADMIN

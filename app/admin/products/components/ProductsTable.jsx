@@ -12,6 +12,7 @@ export default function ProductsTable({
   perPage,
   totalFiltered,
   onPageChange,
+  onDelete,
 }) {
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 overflow-hidden">
@@ -61,8 +62,16 @@ export default function ProductsTable({
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0">
-                        <Package className="w-5 h-5 text-zinc-500" />
+                      <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        {product.image || product.images?.[0] ? (
+                          <img
+                            src={product.image || product.images[0]}
+                            alt={product.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <Package className="w-5 h-5 text-zinc-500" />
+                        )}
                       </div>
                       <div>
                         <Link
@@ -77,7 +86,7 @@ export default function ProductsTable({
                   </td>
                   <td className="px-6 py-4 hidden sm:table-cell">
                     <span className="text-sm text-zinc-300">
-                      {product.category}
+                      {product.category?.replace("_", " ")}
                     </span>
                   </td>
                   <td className="px-6 py-4">
@@ -121,7 +130,10 @@ export default function ProductsTable({
                       >
                         <Edit3 className="w-4 h-4" />
                       </Link>
-                      <button className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors">
+                      <button
+                        onClick={() => onDelete(product.id)}
+                        className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors"
+                      >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>

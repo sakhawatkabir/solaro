@@ -9,7 +9,7 @@ export default function ProductsSummary({ products, totalStock }) {
       </div>
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
         <div className="text-2xl font-bold text-emerald-400">
-          {products.filter((p) => p.status === "active").length}
+          {products.filter((p) => p.status === "ACTIVE").length}
         </div>
         <div className="text-sm text-zinc-400">Active</div>
       </div>
