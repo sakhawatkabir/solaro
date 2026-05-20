@@ -1,8 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, Phone, MapPin, Users } from "lucide-react";
+import { Eye, Edit3, Trash2, Users, Mail, Phone, MapPin } from "lucide-react";
 import TablePagination from "../../components/TablePagination";
+
+const statusColors = {
+  ACTIVE: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  INACTIVE: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
+  BLACKLISTED: "bg-red-500/10 text-red-400 border-red-500/20",
+};
 
 export default function CustomersTable({
   customers,
@@ -22,19 +28,19 @@ export default function CustomersTable({
                 Customer
               </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3 hidden md:table-cell">
-                Phone
+                Contact
               </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3 hidden lg:table-cell">
-                District
+                Location
               </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3">
                 Orders
               </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3">
-                Total Spent
+                Spent
               </th>
-              <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3 hidden sm:table-cell">
-                Joined
+              <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3">
+                Status
               </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3">
                 Actions
@@ -60,12 +66,9 @@ export default function CustomersTable({
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                        <span className="text-sm font-semibold text-emerald-400">
-                          {customer.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
+                      <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                        <span className="text-sm font-medium text-emerald-400">
+                          {customer.name.charAt(0).toUpperCase()}
                         </span>
                       </div>
                       <div>
@@ -82,20 +85,33 @@ export default function CustomersTable({
                     </div>
                   </td>
                   <td className="px-6 py-4 hidden md:table-cell">
-                    <div className="flex items-center gap-1.5 text-sm text-zinc-400">
-                      <Phone className="w-3.5 h-3.5" />
-                      {customer.phone}
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-1.5 text-xs text-zinc-400">
+                        <Mail className="w-3 h-3" />
+                        {customer.email}
+                      </div>
+                      {customer.phone && (
+                        <div className="flex items-center gap-1.5 text-xs text-zinc-400">
+                          <Phone className="w-3 h-3" />
+                          {customer.phone}
+                        </div>
+                      )}
                     </div>
                   </td>
                   <td className="px-6 py-4 hidden lg:table-cell">
-                    <div className="flex items-center gap-1.5 text-sm text-zinc-400">
-                      <MapPin className="w-3.5 h-3.5" />
-                      {customer.district}
-                    </div>
+                    {customer.city ? (
+                      <div className="flex items-center gap-1.5 text-xs text-zinc-400">
+                        <MapPin className="w-3 h-3" />
+                        {customer.city}
+                        {customer.district && `, ${customer.district}`}
+                      </div>
+                    ) : (
+                      <span className="text-xs text-zinc-600">—</span>
+                    )}
                   </td>
                   <td className="px-6 py-4">
                     <span className="text-sm font-medium text-white">
-                      {customer.orders}
+                      {customer.totalOrders}
                     </span>
                   </td>
                   <td className="px-6 py-4">
@@ -103,18 +119,30 @@ export default function CustomersTable({
                       ৳{customer.totalSpent.toLocaleString()}
                     </span>
                   </td>
-                  <td className="px-6 py-4 hidden sm:table-cell">
-                    <span className="text-sm text-zinc-400">
-                      {customer.joined}
+                  <td className="px-6 py-4">
+                    <span
+                      className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium border ${
+                        statusColors[customer.status] || statusColors.ACTIVE
+                      }`}
+                    >
+                      {customer.status.replace("_", " ")}
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <Link
-                      href={`/admin/customers/${customer.id}`}
-                      className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Link>
+                    <div className="flex items-center gap-1">
+                      <Link
+                        href={`/admin/customers/${customer.id}`}
+                        className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Link>
+                      <Link
+                        href={`/admin/customers/${customer.id}`}
+                        className="p-1.5 rounded-lg text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 transition-colors"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))

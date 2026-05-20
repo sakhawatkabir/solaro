@@ -67,11 +67,10 @@ export async function getProductsSummary() {
 export async function getProduct(id) {
   try {
     const product = await prisma.product.findUnique({ where: { id } });
-    if (!product) throw new Error("Product not found");
     return product;
   } catch (error) {
     console.error("Get product error:", error);
-    throw error;
+    return null;
   }
 }
 
