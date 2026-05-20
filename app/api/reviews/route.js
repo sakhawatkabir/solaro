@@ -27,8 +27,11 @@ export async function GET(request) {
       prisma.review.count({ where }),
     ]);
 
+    const avgWhere = { status: "APPROVED" };
+    if (productId) avgWhere.productId = productId;
+
     const avgRating = await prisma.review.aggregate({
-      where: { status: "APPROVED" },
+      where: avgWhere,
       _avg: { rating: true },
       _count: true,
     });

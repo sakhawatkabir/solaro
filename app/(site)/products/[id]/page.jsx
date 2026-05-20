@@ -103,7 +103,9 @@ export default function ProductDetailPage({ params }) {
 
       <RelatedProducts products={relatedProducts} />
 
-      <ProductReviews productId={product.id} />
+      <div id="reviews-section">
+        <ProductReviews productId={product.id} />
+      </div>
 
       <ProductCTA />
     </>

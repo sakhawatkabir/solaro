@@ -12,7 +12,7 @@ export default function ReviewCard({ review }) {
           </div>
           <div>
             <div className="font-semibold text-ink flex items-center gap-2">
-              {review.name}
+              {review.customerName || review.name}
               {review.verified && (
                 <span className="text-xs bg-accent/10 text-accent px-2 py-0.5 rounded-full flex items-center gap-1">
                   <CheckCircle size={10} /> Verified
@@ -27,12 +27,17 @@ export default function ReviewCard({ review }) {
             <Star
               key={star}
               size={16}
-              fill={star <= review.rating ? "#16A34A" : "none"}
-              className={star <= review.rating ? "text-accent" : "text-ink/20"}
+              fill={star <= review.rating ? "#FBBF24" : "none"}
+              className={
+                star <= review.rating ? "text-yellow-400" : "text-ink/20"
+              }
             />
           ))}
         </div>
       </div>
+      {review.title && (
+        <p className="font-medium text-ink mb-1">{review.title}</p>
+      )}
       <p className="text-ink-mid leading-relaxed">{review.comment}</p>
     </div>
   );

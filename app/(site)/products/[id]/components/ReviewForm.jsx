@@ -8,6 +8,7 @@ export default function ReviewForm({
   setFormData,
   onSubmit,
   onCancel,
+  isSubmitting,
 }) {
   return (
     <m.div
@@ -38,6 +39,14 @@ export default function ReviewForm({
           />
         </div>
 
+        <input
+          type="text"
+          placeholder="Review Title (optional)"
+          value={formData.title || ""}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          className="w-full px-4 py-3 rounded-xl border border-ink/10 focus:border-accent focus:outline-none"
+        />
+
         <div>
           <label className="text-sm text-ink-mid mb-2 block">Your Rating</label>
           <div className="flex gap-2">
@@ -50,9 +59,9 @@ export default function ReviewForm({
               >
                 <Star
                   size={28}
-                  fill={star <= formData.rating ? "#16A34A" : "none"}
+                  fill={star <= formData.rating ? "#FBBF24" : "none"}
                   className={
-                    star <= formData.rating ? "text-accent" : "text-ink/20"
+                    star <= formData.rating ? "text-yellow-400" : "text-ink/20"
                   }
                 />
               </button>
@@ -74,9 +83,17 @@ export default function ReviewForm({
         <div className="flex gap-3">
           <button
             type="submit"
-            className="px-6 py-3 bg-accent text-white rounded-full font-semibold hover:bg-accent-mid transition-colors"
+            disabled={isSubmitting}
+            className="px-6 py-3 bg-accent text-white rounded-full font-semibold hover:bg-accent-mid disabled:opacity-50 transition-colors flex items-center gap-2"
           >
-            Submit Review
+            {isSubmitting ? (
+              <>
+                <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              "Submit Review"
+            )}
           </button>
           <button
             type="button"

@@ -13,6 +13,7 @@ import {
   Calculator,
 } from "lucide-react";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { formatPrice } from "@/app/data/products";
 import { useCart } from "@/app/context/CartContext";
 
@@ -31,6 +32,21 @@ export default function ProductInfo({ product }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  const { data: reviewStats } = useQuery({
+    queryKey: ["product-review-stats", product.id],
+    queryFn: async () => {
+      const res = await fetch(
+        `/api/reviews?status=APPROVED&productId=${product.id}&limit=1`,
+      );
+      if (!res.ok) return { avgRating: 0, totalReviews: 0 };
+      return res.json();
+    },
+    enabled: !!product.id,
+  });
+
+  const avgRating = reviewStats?.stats?.avgRating || 0;
+  const totalReviews = reviewStats?.stats?.totalReviews || 0;
 
   const handleAddToCart = () => {
     addItem({
@@ -68,10 +84,26 @@ export default function ProductInfo({ product }) {
       <div className="flex items-center gap-3 mb-6">
         <div className="flex items-center gap-1">
           {[1, 2, 3, 4, 5].map((star) => (
-            <Star key={star} size={18} fill="#16A34A" className="text-accent" />
+            <Star
+              key={star}
+              size={18}
+              fill={star <= Math.round(avgRating) ? "#FBBF24" : "none"}
+              className={
+                star <= Math.round(avgRating)
+                  ? "text-yellow-400"
+                  : "text-ink/20"
+              }
+            />
           ))}
         </div>
-        <span className="text-ink-mid text-sm">4.9 (127 reviews)</span>
+        <a
+          href="#reviews-section"
+          className="text-ink-mid text-sm hover:text-accent transition-colors"
+        >
+          {totalReviews > 0
+            ? `${avgRating.toFixed(1)} (${totalReviews} review${totalReviews > 1 ? "s" : ""})`
+            : "No reviews yet"}
+        </a>
       </div>
 
       <div className="bg-white rounded-xl p-6 mb-6 border border-ink/5">
@@ -79,7 +111,7 @@ export default function ProductInfo({ product }) {
           <span className="text-4xl font-heading font-semibold text-accent">
             {formatPrice(product.price)}
           </span>
-          {product.originalPrice > product.price && (
+          {product.originalPrice && product.originalPrice > product.price && (
             <span className="text-xl text-ink-light line-through mb-1">
               {formatPrice(product.originalPrice)}
             </span>

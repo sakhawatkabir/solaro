@@ -7,11 +7,20 @@ import { useState } from "react";
 export default function ProductGallery({ product }) {
   const [selectedImage, setSelectedImage] = useState(0);
 
-  const images = [
-    product.image,
-    "https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=1200&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1592833159155-c62df1b65634?q=80&w=1200&auto=format&fit=crop",
-  ];
+  const images =
+    product.images && product.images.length > 0
+      ? product.images
+      : product.image
+        ? [product.image]
+        : [];
+
+  if (images.length === 0) {
+    return (
+      <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-cream flex items-center justify-center">
+        <span className="text-ink-light text-lg">No image available</span>
+      </div>
+    );
+  }
 
   return (
     <m.div
@@ -32,7 +41,7 @@ export default function ProductGallery({ product }) {
             {product.badge}
           </span>
         )}
-        {product.originalPrice > product.price && (
+        {product.originalPrice && product.originalPrice > product.price && (
           <span className="absolute top-4 right-4 px-4 py-1.5 bg-red-500 text-white text-sm font-bold rounded-full">
             Save{" "}
             {Math.round(
