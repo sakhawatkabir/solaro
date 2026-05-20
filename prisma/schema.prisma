@@ -157,8 +157,62 @@ model Customer {
 }
 
 // ===========================
+// Leads
+// ===========================
+
+model Lead {
+  id            String      @id @default(cuid())
+  name          String
+  email         String
+  phone         String
+  company       String?
+  message       String?     @db.Text
+  source        LeadSource
+  status        LeadStatus  @default(NEW)
+  priority      LeadPriority @default(MEDIUM)
+  assignedTo    String?
+  estimatedValue Int?
+  notes         String?     @db.Text
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([status])
+  @@index([source])
+  @@index([priority])
+  @@index([createdAt])
+}
+
+// ===========================
 // Enums
 // ===========================
+
+enum LeadSource {
+  WEBSITE
+  REFERRAL
+  SOCIAL_MEDIA
+  GOOGLE_ADS
+  FACEBOOK_ADS
+  PHONE_CALL
+  WALK_IN
+  OTHER
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  NEGOTIATION
+  WON
+  LOST
+}
+
+enum LeadPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
 
 enum CustomerStatus {
   ACTIVE
