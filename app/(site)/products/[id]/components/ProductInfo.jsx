@@ -13,7 +13,6 @@ import {
   Calculator,
 } from "lucide-react";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { formatPrice } from "@/app/data/products";
 import { useCart } from "@/app/context/CartContext";
 
@@ -28,22 +27,10 @@ function getCategoryLabel(category) {
   return labels[category] || category;
 }
 
-export default function ProductInfo({ product }) {
+export default function ProductInfo({ product, reviewStats }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const [saved, setSaved] = useState(false);
-
-  const { data: reviewStats } = useQuery({
-    queryKey: ["product-review-stats", product.id],
-    queryFn: async () => {
-      const res = await fetch(
-        `/api/reviews?status=APPROVED&productId=${product.id}&limit=1`,
-      );
-      if (!res.ok) return { avgRating: 0, totalReviews: 0 };
-      return res.json();
-    },
-    enabled: !!product.id,
-  });
 
   const avgRating = reviewStats?.stats?.avgRating || 0;
   const totalReviews = reviewStats?.stats?.totalReviews || 0;

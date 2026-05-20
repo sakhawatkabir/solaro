@@ -39,6 +39,18 @@ export default function ProductDetailPage({ params }) {
     enabled: !!product?.category,
   });
 
+  const { data: reviewStats } = useQuery({
+    queryKey: ["product-review-stats", params.id],
+    queryFn: async () => {
+      const res = await fetch(
+        `/api/reviews?status=APPROVED&productId=${params.id}&limit=1`,
+      );
+      if (!res.ok) return { stats: { avgRating: 0, totalReviews: 0 } };
+      return res.json();
+    },
+    enabled: !!params.id,
+  });
+
   if (isLoading) {
     return (
       <div className="pt-32 pb-20 px-8">
@@ -86,7 +98,7 @@ export default function ProductDetailPage({ params }) {
         <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <ProductGallery product={product} />
-            <ProductInfo product={product} />
+            <ProductInfo product={product} reviewStats={reviewStats} />
           </div>
         </div>
       </section>
