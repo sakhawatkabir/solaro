@@ -8,12 +8,14 @@ import {
   EyeOff,
   ArrowRight,
   Sun,
-  CheckCircle,
+  AlertCircle,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { useAuth } from "../../context/AuthContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -21,8 +23,19 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [requiresVerification, setRequiresVerification] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const prefersReducedMotion = useReducedMotion();
+  const { login } = useAuth();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
+  useEffect(() => {
+    const callbackError = searchParams.get("error");
+    if (callbackError === "SessionExpired") {
+      setError("Your session has expired. Please sign in again.");
+    }
+  }, [searchParams]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -35,8 +48,30 @@ export default function LoginPage() {
       return;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsLoading(false);
+    const result = await login(email, password);
+
+    if (result.error) {
+      if (result.requiresVerification) {
+        setRequiresVerification(true);
+        setError("");
+      } else {
+        setRequiresVerification(false);
+        setError(result.error);
+      }
+      setIsLoading(false);
+      return;
+    }
+
+    setRequiresVerification(false);
+
+    const callbackUrl = searchParams.get("callbackUrl");
+    if (callbackUrl) {
+      router.push(callbackUrl);
+    } else if (result.user.role === "VIEWER") {
+      router.push("/dashboard");
+    } else {
+      router.push("/admin");
+    }
   };
 
   return (
@@ -65,11 +100,35 @@ export default function LoginPage() {
 
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-center gap-3">
-                  <CheckCircle
+                  <AlertCircle
                     size={18}
                     className="text-red-500 flex-shrink-0"
                   />
                   <span className="text-red-700 text-sm">{error}</span>
+                </div>
+              )}
+
+              {requiresVerification && (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-start gap-3">
+                  <Mail
+                    size={18}
+                    className="text-amber-600 flex-shrink-0 mt-0.5"
+                  />
+                  <div className="text-sm">
+                    <p className="text-amber-800 font-semibold mb-1">
+                      Email not verified
+                    </p>
+                    <p className="text-amber-700 mb-2">
+                      Please verify your email before signing in. Check your
+                      inbox for the verification link.
+                    </p>
+                    <Link
+                      href={`/verify-email?resend=${encodeURIComponent(email)}`}
+                      className="text-accent font-semibold hover:underline"
+                    >
+                      Resend verification email
+                    </Link>
+                  </div>
                 </div>
               )}
 
@@ -160,7 +219,9 @@ export default function LoginPage() {
               </form>
 
               <div className="mt-8 text-center">
-                <span className="text-ink-mid">Don't have an account? </span>
+                <span className="text-ink-mid">
+                  Don&apos;t have an account?{" "}
+                </span>
                 <Link
                   href="/register"
                   className="text-accent font-semibold hover:underline"

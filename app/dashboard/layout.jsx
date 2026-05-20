@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Menu, User, LogOut, Settings, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import DashboardSidebar from "./components/DashboardSidebar";
+import { useAuth } from "@/app/context/AuthContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +19,35 @@ import {
 export default function DashboardLayout({ children }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, loading, logout } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login");
+    }
+  }, [loading, user, router]);
+
+  const handleSignOut = async () => {
+    await logout();
+  };
+
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "U";
+
+  if (loading || !user) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <div className="size-8 border-3 border-accent/30 border-t-accent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white flex">
@@ -69,11 +100,11 @@ export default function DashboardLayout({ children }) {
                 <button className="flex items-center gap-2 hover:bg-gray-50 rounded-lg px-2 py-1.5 transition-colors">
                   <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
                     <span className="text-xs font-semibold text-accent">
-                      RU
+                      {initials}
                     </span>
                   </div>
                   <span className="hidden sm:block text-sm font-medium text-ink">
-                    Rahim Uddin
+                    {user?.name || "User"}
                   </span>
                   <ChevronDown className="w-4 h-4 text-ink-light hidden sm:block" />
                 </button>
@@ -84,9 +115,9 @@ export default function DashboardLayout({ children }) {
               >
                 <DropdownMenuLabel className="text-ink">
                   <div className="flex flex-col gap-0.5">
-                    <span className="font-medium">Rahim Uddin</span>
+                    <span className="font-medium">{user?.name || "User"}</span>
                     <span className="text-xs text-ink-mid font-normal">
-                      rahim@email.com
+                      {user?.email}
                     </span>
                   </div>
                 </DropdownMenuLabel>
@@ -110,7 +141,10 @@ export default function DashboardLayout({ children }) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="bg-ink-faint" />
-                <DropdownMenuItem className="text-red-600 hover:bg-red-50 hover:text-red-700 cursor-pointer focus:bg-red-50 focus:text-red-700">
+                <DropdownMenuItem
+                  onClick={handleSignOut}
+                  className="text-red-600 hover:bg-red-50 hover:text-red-700 cursor-pointer focus:bg-red-50 focus:text-red-700"
+                >
                   <LogOut className="w-4 h-4" />
                   Sign Out
                 </DropdownMenuItem>

@@ -3,7 +3,7 @@ import { getVerificationTokenByToken } from "@/lib/verification-token";
 import { getUserByEmail } from "@/lib/auth/user";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(request: Request) {
+export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const token = searchParams.get("token");

@@ -9,7 +9,7 @@ import { cookies } from "next/headers";
 import { sendEmail } from "@/lib/email/send";
 import { generateTwoFactorEmail } from "@/lib/email/templates/two-factor";
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     const body = await request.json();
     const validated = TwoFactorSchema.safeParse(body);
@@ -89,6 +89,13 @@ export async function POST(request: Request) {
       expires,
       path: "/",
     });
+    cookieStore.set("userRole", user.role, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires,
+      path: "/",
+    });
 
     return NextResponse.json({
       success: true,
@@ -109,7 +116,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(request) {
   try {
     const body = await request.json();
     const { email } = body;

@@ -2,13 +2,11 @@ import { NextResponse } from "next/server";
 import { LoginSchema } from "@/lib/auth/schemas";
 import { getUserByEmail } from "@/lib/auth/user";
 import { verifyPassword } from "@/lib/auth/password";
-import { createPasswordResetToken } from "@/lib/password-reset-token";
-import { createTwoFactorToken } from "@/lib/two-factor-token";
 import { createTwoFactorConfirmation } from "@/lib/two-factor-confirmation";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     const body = await request.json();
     const validated = LoginSchema.safeParse(body);
@@ -66,9 +64,10 @@ export async function POST(request: Request) {
 
       await prisma.twoFactorToken.delete({ where: { id: twoFactorToken.id } });
 
-      const existingConfirmation = await prisma.twoFactorConfirmation.findUnique({
-        where: { userId: user.id },
-      });
+      const existingConfirmation =
+        await prisma.twoFactorConfirmation.findUnique({
+          where: { userId: user.id },
+        });
       if (existingConfirmation) {
         await prisma.twoFactorConfirmation.delete({
           where: { id: existingConfirmation.id },
@@ -95,6 +94,13 @@ export async function POST(request: Request) {
 
     const cookieStore = await cookies();
     cookieStore.set("sessionToken", sessionToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires,
+      path: "/",
+    });
+    cookieStore.set("userRole", user.role, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

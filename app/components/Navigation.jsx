@@ -4,15 +4,26 @@ import { useState, useEffect } from "react";
 import { m, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ShoppingCart, User } from "lucide-react";
+import {
+  Menu,
+  X,
+  ShoppingCart,
+  User,
+  LogOut,
+  Settings,
+  LayoutDashboard,
+} from "lucide-react";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const pathname = usePathname();
   const { totalItems, setIsOpen } = useCart();
+  const { user, logout, loading } = useAuth();
   const prefersReducedMotion = useReducedMotion();
 
   const navLinks = [
@@ -32,12 +43,32 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isUserMenuOpen) {
+      const handleClick = () => setIsUserMenuOpen(false);
+      document.addEventListener("click", handleClick);
+      return () => document.removeEventListener("click", handleClick);
+    }
+  }, [isUserMenuOpen]);
+
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "U";
+
   return (
     <>
       <m.nav
         initial={prefersReducedMotion ? {} : { y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: "easeOut" }}
+        transition={{
+          duration: prefersReducedMotion ? 0 : 0.5,
+          ease: "easeOut",
+        }}
         className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 lg:px-16 py-6 transition-all duration-300 font-body ${
           isScrolled
             ? "bg-cream/95 backdrop-blur-md border-b border-black/5 shadow-sm py-4"
@@ -78,18 +109,101 @@ export default function Navigation() {
             className="text-ink hover:text-accent transition-colors flex items-center gap-2 font-medium relative"
           >
             <ShoppingCart size={20} />
-
             {totalItems > 0 && (
               <span className="absolute -top-1 -right-3 size-5 bg-accent text-white text-xs rounded-full flex items-center justify-center font-bold">
                 {totalItems}
               </span>
             )}
           </button>
-          <Link href="/login">
-            <span className="text-ink hover:text-accent transition-colors flex items-center gap-2 font-medium">
-              <User size={20} />
-            </span>
-          </Link>
+
+          {loading ? (
+            <div className="size-5 border-2 border-ink/20 border-t-ink rounded-full animate-spin" />
+          ) : user ? (
+            <div className="relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsUserMenuOpen(!isUserMenuOpen);
+                }}
+                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              >
+                <div className="size-9 rounded-full bg-accent text-white flex items-center justify-center text-sm font-semibold">
+                  {initials}
+                </div>
+              </button>
+
+              <AnimatePresence>
+                {isUserMenuOpen && (
+                  <m.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    onClick={(e) => e.stopPropagation()}
+                    className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-lg border border-ink/10 py-2"
+                  >
+                    <div className="px-4 py-3 border-b border-ink/10">
+                      <p className="text-sm font-semibold text-ink truncate">
+                        {user.name}
+                      </p>
+                      <p className="text-xs text-ink-light truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-ink-mid hover:bg-ink/5 hover:text-ink transition-colors"
+                    >
+                      <LayoutDashboard size={16} />
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="/dashboard/profile"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-ink-mid hover:bg-ink/5 hover:text-ink transition-colors"
+                    >
+                      <User size={16} />
+                      Profile
+                    </Link>
+                    <Link
+                      href="/dashboard/settings"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-ink-mid hover:bg-ink/5 hover:text-ink transition-colors"
+                    >
+                      <Settings size={16} />
+                      Settings
+                    </Link>
+                    {user.role !== "VIEWER" && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-ink-mid hover:bg-ink/5 hover:text-ink transition-colors border-t border-ink/10 mt-1 pt-2"
+                      >
+                        <Settings size={16} />
+                        Admin Panel
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        setIsUserMenuOpen(false);
+                        logout();
+                      }}
+                      className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors border-t border-ink/10 mt-1 pt-2"
+                    >
+                      <LogOut size={16} />
+                      Sign Out
+                    </button>
+                  </m.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <Link href="/login">
+              <span className="text-ink hover:text-accent transition-colors flex items-center gap-2 font-medium">
+                <User size={20} />
+              </span>
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center gap-4 lg:hidden">
@@ -134,12 +248,64 @@ export default function Navigation() {
                 );
               })}
               <div className="pt-4 border-t border-ink/10 mt-2">
-                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                  <span className="flex items-center gap-2 text-ink-mid hover:text-ink transition-colors">
-                    <User size={20} />
-                    Sign In / Register
-                  </span>
-                </Link>
+                {loading ? (
+                  <div className="size-5 border-2 border-ink/20 border-t-ink rounded-full animate-spin mx-auto" />
+                ) : user ? (
+                  <>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="size-10 rounded-full bg-accent text-white flex items-center justify-center text-sm font-semibold">
+                        {initials}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-ink">{user.name}</p>
+                        <p className="text-sm text-ink-light">{user.email}</p>
+                      </div>
+                    </div>
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <span className="block py-2 text-ink-mid hover:text-ink transition-colors">
+                        Dashboard
+                      </span>
+                    </Link>
+                    <Link
+                      href="/dashboard/profile"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <span className="block py-2 text-ink-mid hover:text-ink transition-colors">
+                        Profile
+                      </span>
+                    </Link>
+                    <Link
+                      href="/dashboard/settings"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <span className="block py-2 text-ink-mid hover:text-ink transition-colors">
+                        Settings
+                      </span>
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        logout();
+                      }}
+                      className="block py-2 text-red-600 hover:text-red-700 transition-colors mt-2"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    href="/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <span className="flex items-center gap-2 text-ink-mid hover:text-ink transition-colors">
+                      <User size={20} />
+                      Sign In / Register
+                    </span>
+                  </Link>
+                )}
               </div>
             </div>
           </m.div>

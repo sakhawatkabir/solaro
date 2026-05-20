@@ -5,7 +5,7 @@ import { getUserByEmail } from "@/lib/auth/user";
 import { hashPassword } from "@/lib/auth/password";
 import { prisma } from "@/lib/prisma";
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     const body = await request.json();
     const validated = NewPasswordSchema.safeParse(body);

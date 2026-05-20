@@ -8,7 +8,7 @@ import { sendEmail } from "@/lib/email/send";
 import { generateVerificationEmail } from "@/lib/email/templates/verification";
 import { APP_URL } from "@/lib/email/config";
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     const body = await request.json();
     const validated = RegisterSchema.safeParse(body);

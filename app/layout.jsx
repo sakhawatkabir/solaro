@@ -3,6 +3,8 @@ import "./globals.css";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { CartProvider } from "./context/CartContext";
 import { MotionProvider } from "./components/MotionProvider";
+import { AuthProvider } from "./context/AuthContext";
+import QueryProvider from "./providers/QueryProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,11 +27,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <ThemeProvider>
-          <CartProvider>
-            <MotionProvider>{children}</MotionProvider>
-          </CartProvider>
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <CartProvider>
+                <MotionProvider>{children}</MotionProvider>
+              </CartProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

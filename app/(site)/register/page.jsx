@@ -7,21 +7,22 @@ import {
   Eye,
   EyeOff,
   User,
-  Phone,
   ArrowRight,
   Sun,
+  AlertCircle,
   CheckCircle,
 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { useAuth } from "../../context/AuthContext";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
     password: "",
     confirmPassword: "",
   });
@@ -30,7 +31,9 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const router = useRouter();
   const prefersReducedMotion = useReducedMotion();
+  const { register } = useAuth();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
   const handleInputChange = (e) => {
@@ -41,13 +44,8 @@ export default function RegisterPage() {
     e.preventDefault();
     setError("");
 
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.phone ||
-      !formData.password
-    ) {
-      setError("Please fill in all fields.");
+    if (!formData.name || !formData.email || !formData.password) {
+      setError("Please fill in all required fields.");
       return;
     }
 
@@ -56,16 +54,26 @@ export default function RegisterPage() {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters.");
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters.");
       return;
     }
 
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsLoading(false);
+
+    const result = await register(formData.name, formData.email, formData.password);
+
+    if (result.error) {
+      setError(result.error);
+      setIsLoading(false);
+      return;
+    }
+
     setSuccess(true);
-    setTimeout(() => setSuccess(false), 5000);
+    setIsLoading(false);
+    setTimeout(() => {
+      router.push("/login");
+    }, 3000);
   };
 
   return (
@@ -93,7 +101,7 @@ export default function RegisterPage() {
 
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-center gap-3">
-                  <CheckCircle
+                  <AlertCircle
                     size={18}
                     className="text-red-500 flex-shrink-0"
                   />
@@ -102,13 +110,13 @@ export default function RegisterPage() {
               )}
 
               {success && (
-                <div className="bg-accent/10 border border-accent/20 rounded-xl p-4 mb-6 flex items-center gap-3">
+                <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-center gap-3">
                   <CheckCircle
                     size={18}
-                    className="text-accent flex-shrink-0"
+                    className="text-green-500 flex-shrink-0"
                   />
-                  <span className="text-accent text-sm">
-                    Account created successfully! Redirecting to login...
+                  <span className="text-green-700 text-sm">
+                    Account created! Please check your email to verify your account. Redirecting to login...
                   </span>
                 </div>
               )}
@@ -162,30 +170,6 @@ export default function RegisterPage() {
                   </div>
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="reg-phone"
-                    className="block text-sm font-semibold text-ink mb-2"
-                  >
-                    Phone Number
-                  </label>
-                  <div className="relative">
-                    <Phone
-                      size={18}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-light"
-                    />
-                    <input
-                      id="reg-phone"
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
-                      placeholder="+880 17XX-XXXXXX"
-                    />
-                  </div>
-                </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
                     <label
@@ -206,7 +190,7 @@ export default function RegisterPage() {
                         value={formData.password}
                         onChange={handleInputChange}
                         className="w-full pl-12 pr-12 py-3.5 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
-                        placeholder="Min 6 characters"
+                        placeholder="Min 8 characters"
                       />
                       <button
                         type="button"
@@ -279,7 +263,7 @@ export default function RegisterPage() {
 
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || success}
                   className="w-full py-4 bg-accent hover:bg-accent-mid disabled:bg-accent/50 text-white font-semibold rounded-full transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
