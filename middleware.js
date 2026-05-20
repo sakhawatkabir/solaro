@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 const adminRoutes = ["/admin"];
 const viewerRoutes = ["/dashboard"];
+const protectedRoutes = ["/checkout"];
 const authRoutes = [
   "/login",
   "/register",
@@ -67,12 +68,15 @@ export function middleware(request) {
   const isViewerRoute = viewerRoutes.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`),
   );
+  const isProtectedRoute = protectedRoutes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
   const isAuthRoute = authRoutes.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`),
   );
 
   if (!sessionToken) {
-    if (isAdminRoute || isViewerRoute) {
+    if (isAdminRoute || isViewerRoute || isProtectedRoute) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(loginUrl);

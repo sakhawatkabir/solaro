@@ -31,6 +31,15 @@ export default function CheckoutPage() {
 
   const [paymentMethod, setPaymentMethod] = useState("cod");
 
+  const { data: sessionData, isLoading: sessionLoading } = useQuery({
+    queryKey: ["session"],
+    queryFn: async () => {
+      const res = await fetch("/api/auth/session");
+      if (!res.ok) throw new Error("Failed to fetch session");
+      return res.json();
+    },
+  });
+
   const { data: districtsData, isLoading: districtsLoading } = useQuery({
     queryKey: ["districts"],
     queryFn: async () => {
@@ -41,6 +50,7 @@ export default function CheckoutPage() {
   });
 
   const districts = districtsData?.districts?.map((d) => d.name) || [];
+  const user = sessionData?.user;
 
   const handleShippingChange = (e) => {
     setShipping({ ...shipping, [e.target.name]: e.target.value });
@@ -124,6 +134,7 @@ export default function CheckoutPage() {
               <ContactInfo
                 shipping={shipping}
                 handleShippingChange={handleShippingChange}
+                user={user}
               />
               <ShippingAddress
                 shipping={shipping}
