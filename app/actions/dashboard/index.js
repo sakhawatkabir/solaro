@@ -18,14 +18,14 @@ export async function getDashboardStats() {
   ] = await Promise.all([
     prisma.order.aggregate({
       where: {
-        status: { not: "CANCELLED" },
+        status: "DELIVERED",
         createdAt: { gte: thirtyDaysAgo },
       },
       _sum: { total: true },
     }),
     prisma.order.aggregate({
       where: {
-        status: { not: "CANCELLED" },
+        status: "DELIVERED",
         createdAt: {
           lt: thirtyDaysAgo,
           gte: new Date(thirtyDaysAgo.getTime() - 30 * 24 * 60 * 60 * 1000),
@@ -101,7 +101,7 @@ export async function getRevenueChartData() {
 
     const result = await prisma.order.aggregate({
       where: {
-        status: { not: "CANCELLED" },
+        status: "DELIVERED",
         createdAt: { gte: startOfMonth, lte: endOfMonth },
       },
       _sum: { total: true },

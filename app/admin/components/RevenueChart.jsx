@@ -29,6 +29,20 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 export default function RevenueChart({ data }) {
+  const currentMonthRevenue = data[data.length - 1]?.revenue || 0;
+  const previousMonthRevenue = data[data.length - 2]?.revenue || 0;
+  const percentageChange =
+    previousMonthRevenue > 0
+      ? (
+          ((currentMonthRevenue - previousMonthRevenue) /
+            previousMonthRevenue) *
+          100
+        ).toFixed(1)
+      : currentMonthRevenue > 0
+        ? "100.0"
+        : "0.0";
+  const isPositive = parseFloat(percentageChange) >= 0;
+
   return (
     <div className="lg:col-span-2 rounded-xl bg-zinc-900 border border-zinc-800 p-6">
       <div className="flex items-center justify-between mb-6">
@@ -36,9 +50,16 @@ export default function RevenueChart({ data }) {
           <h2 className="text-lg font-semibold text-white">Revenue</h2>
           <p className="text-sm text-zinc-400">Monthly revenue trend</p>
         </div>
-        <div className="flex items-center gap-2 text-emerald-400">
-          <ArrowUpRight className="w-4 h-4" />
-          <span className="text-sm font-semibold">+37.8%</span>
+        <div
+          className={`flex items-center gap-2 ${isPositive ? "text-emerald-400" : "text-red-400"}`}
+        >
+          <ArrowUpRight
+            className={`w-4 h-4 ${!isPositive ? "rotate-90" : ""}`}
+          />
+          <span className="text-sm font-semibold">
+            {isPositive ? "+" : ""}
+            {percentageChange}%
+          </span>
         </div>
       </div>
       <ResponsiveContainer width="100%" height={280}>
