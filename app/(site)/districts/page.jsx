@@ -14,137 +14,19 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 
-const divisions = [
-  {
-    name: "Dhaka",
-    icon: "🏙️",
-    timeline: "3-5 days",
-    installations: "12,500+",
-    districts: [
-      "Dhaka",
-      "Gazipur",
-      "Narayanganj",
-      "Tangail",
-      "Kishoreganj",
-      "Manikganj",
-      "Munshiganj",
-      "Narsingdi",
-      "Faridpur",
-      "Gopalganj",
-      "Madaripur",
-      "Rajbari",
-      "Shariatpur",
-    ],
-  },
-  {
-    name: "Chittagong",
-    icon: "🌊",
-    timeline: "5-7 days",
-    installations: "8,200+",
-    districts: [
-      "Chittagong",
-      "Cox's Bazar",
-      "Comilla",
-      "Feni",
-      "Brahmanbaria",
-      "Rangamati",
-      "Bandarban",
-      "Khagrachhari",
-      "Noakhali",
-      "Lakshmipur",
-      "Chandpur",
-    ],
-  },
-  {
-    name: "Rajshahi",
-    icon: "🌾",
-    timeline: "5-7 days",
-    installations: "6,800+",
-    districts: [
-      "Rajshahi",
-      "Natore",
-      "Naogaon",
-      "Chapainawabganj",
-      "Pabna",
-      "Sirajganj",
-      "Bogura",
-      "Joypurhat",
-    ],
-  },
-  {
-    name: "Khulna",
-    icon: "🦐",
-    timeline: "7-10 days",
-    installations: "5,400+",
-    districts: [
-      "Khulna",
-      "Bagerhat",
-      "Satkhira",
-      "Jessore",
-      "Jhenaidah",
-      "Magura",
-      "Narail",
-      "Kushtia",
-      "Chuadanga",
-      "Meherpur",
-    ],
-  },
-  {
-    name: "Sylhet",
-    icon: "🍃",
-    timeline: "7-10 days",
-    installations: "4,100+",
-    districts: ["Sylhet", "Moulvibazar", "Habiganj", "Sunamganj"],
-  },
-  {
-    name: "Rangpur",
-    icon: "🌻",
-    timeline: "7-10 days",
-    installations: "3,200+",
-    districts: [
-      "Rangpur",
-      "Dinajpur",
-      "Gaibandha",
-      "Kurigram",
-      "Lalmonirhat",
-      "Nilphamari",
-      "Panchagarh",
-      "Thakurgaon",
-    ],
-  },
-  {
-    name: "Barisal",
-    icon: "🚣",
-    timeline: "10-14 days",
-    installations: "2,800+",
-    districts: [
-      "Barisal",
-      "Bhola",
-      "Patuakhali",
-      "Pirojpur",
-      "Jhalokati",
-      "Barguna",
-    ],
-  },
-  {
-    name: "Mymensingh",
-    icon: "🐟",
-    timeline: "7-10 days",
-    installations: "2,500+",
-    districts: ["Mymensingh", "Jamalpur", "Netrokona", "Sherpur"],
-  },
+const divisionConfig = [
+  { name: "Dhaka", icon: "🏙️", timeline: "3-5 days" },
+  { name: "Chittagong", icon: "🌊", timeline: "5-7 days" },
+  { name: "Rajshahi", icon: "🌾", timeline: "5-7 days" },
+  { name: "Khulna", icon: "🦐", timeline: "7-10 days" },
+  { name: "Sylhet", icon: "🍃", timeline: "7-10 days" },
+  { name: "Rangpur", icon: "🌻", timeline: "7-10 days" },
+  { name: "Barishal", icon: "🚣", timeline: "10-14 days" },
+  { name: "Mymensingh", icon: "🐟", timeline: "7-10 days" },
 ];
-
-const allDistricts = divisions.flatMap((d) =>
-  d.districts.map((name) => ({
-    name,
-    division: d.name,
-    timeline: d.timeline,
-    installations: d.installations,
-  })),
-);
 
 export default function DistrictsPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -152,7 +34,25 @@ export default function DistrictsPage() {
   const prefersReducedMotion = useReducedMotion();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
-  const filteredDivisions = divisions
+  const { data: districts = [], isLoading } = useQuery({
+    queryKey: ["districts"],
+    queryFn: async () => {
+      const res = await fetch("/api/districts");
+      const data = await res.json();
+      return data.districts || [];
+    },
+  });
+
+  const divisionsWithDistricts = divisionConfig.map((div) => {
+    const divDistricts = districts.filter((d) => d.division === div.name);
+    return {
+      ...div,
+      districts: divDistricts.map((d) => d.name),
+      installations: `${divDistricts.length * 500}+`,
+    };
+  });
+
+  const filteredDivisions = divisionsWithDistricts
     .map((div) => ({
       ...div,
       districts: div.districts.filter((d) =>
@@ -165,9 +65,7 @@ export default function DistrictsPage() {
         div.name.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
-  const totalInstallations = "45,500+";
-  const totalDistricts = 64;
-  const avgRating = "4.9";
+  const totalDistricts = districts.length;
 
   return (
     <>
@@ -208,13 +106,13 @@ export default function DistrictsPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center">
                 <div className="text-4xl font-heading font-semibold text-accent mb-1">
-                  {totalDistricts}
+                  {isLoading ? "..." : totalDistricts}
                 </div>
                 <div className="text-ink-mid text-sm">Districts Covered</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-heading font-semibold text-accent mb-1">
-                  {totalInstallations}
+                  45,500+
                 </div>
                 <div className="text-ink-mid text-sm">
                   Installations Completed
@@ -222,7 +120,7 @@ export default function DistrictsPage() {
               </div>
               <div className="text-center">
                 <div className="text-4xl font-heading font-semibold text-accent mb-1">
-                  {avgRating}
+                  4.9
                 </div>
                 <div className="flex items-center justify-center gap-1 text-ink-mid text-sm">
                   <Star size={14} fill="currentColor" className="text-accent" />
@@ -262,108 +160,127 @@ export default function DistrictsPage() {
       {/* Divisions */}
       <section className="px-8 lg:px-16 pb-20">
         <div className="max-w-[1400px] mx-auto">
-          <div className="space-y-4">
-            {filteredDivisions.map((div, index) => (
-              <m.div
-                key={div.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="bg-white rounded-2xl border border-ink/5 overflow-hidden"
-              >
-                {/* Division Header */}
-                <button
-                  onClick={() =>
-                    setExpandedDivision(
-                      expandedDivision === div.name ? null : div.name,
-                    )
-                  }
-                  className="w-full flex items-center justify-between p-6 hover:bg-cream/50 transition-colors"
+          {isLoading ? (
+            <div className="space-y-4">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-2xl border border-ink/5 p-6 animate-pulse"
                 >
                   <div className="flex items-center gap-4">
-                    <span className="text-3xl">{div.icon}</span>
-                    <div className="text-left">
-                      <h3 className="text-xl font-heading font-semibold text-ink">
-                        {div.name} Division
-                      </h3>
-                      <div className="flex items-center gap-4 text-sm text-ink-mid">
-                        <span className="flex items-center gap-1">
-                          <MapPin size={14} />
-                          {div.districts.length} districts
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Zap size={14} />
-                          {div.installations} installs
-                        </span>
-                      </div>
+                    <div className="w-10 h-10 bg-zinc-200 rounded-full" />
+                    <div className="space-y-2">
+                      <div className="h-5 w-32 bg-zinc-200 rounded" />
+                      <div className="h-4 w-24 bg-zinc-200 rounded" />
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="hidden sm:flex items-center gap-2 bg-accent/10 px-4 py-2 rounded-full">
-                      <Clock size={14} className="text-accent" />
-                      <span className="text-sm font-medium text-accent">
-                        {div.timeline}
-                      </span>
-                    </div>
-                    <ChevronDown
-                      size={20}
-                      className={`text-ink-light transition-transform ${
-                        expandedDivision === div.name ? "rotate-180" : ""
-                      }`}
-                    />
-                  </div>
-                </button>
-
-                {/* Districts Grid */}
-                {expandedDivision === div.name && (
-                  <m.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="px-6 pb-6 border-t border-ink/5"
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {filteredDivisions.map((div, index) => (
+                <m.div
+                  key={div.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  className="bg-white rounded-2xl border border-ink/5 overflow-hidden"
+                >
+                  {/* Division Header */}
+                  <button
+                    onClick={() =>
+                      setExpandedDivision(
+                        expandedDivision === div.name ? null : div.name,
+                      )
+                    }
+                    className="w-full flex items-center justify-between p-6 hover:bg-cream/50 transition-colors"
                   >
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 pt-6">
-                      {div.districts.map((district) => (
-                        <div
-                          key={district}
-                          className="flex items-center gap-2 p-3 rounded-xl bg-cream/50 hover:bg-accent/5 transition-colors"
-                        >
-                          <CheckCircle
-                            size={16}
-                            className="text-accent flex-shrink-0"
-                          />
-                          <span className="text-sm text-ink">{district}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="mt-6 p-4 bg-cream rounded-xl border border-ink/5">
-                      <div className="flex items-start gap-3">
-                        <Phone
-                          size={20}
-                          className="text-accent flex-shrink-0 mt-0.5"
-                        />
-                        <div>
-                          <div className="font-semibold text-ink text-sm">
-                            {div.name} Regional Office
-                          </div>
-                          <div className="text-ink-mid text-sm">
-                            Call: +880 1XXX-XXXXXX | Email:{" "}
-                            {div.name.toLowerCase()}@solaro.com.bd
-                          </div>
-                          <div className="text-ink-light text-xs mt-1">
-                            Installation timeline: {div.timeline} from order
-                            confirmation
-                          </div>
+                    <div className="flex items-center gap-4">
+                      <span className="text-3xl">{div.icon}</span>
+                      <div className="text-left">
+                        <h3 className="text-xl font-heading font-semibold text-ink">
+                          {div.name} Division
+                        </h3>
+                        <div className="flex items-center gap-4 text-sm text-ink-mid">
+                          <span className="flex items-center gap-1">
+                            <MapPin size={14} />
+                            {div.districts.length} districts
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Zap size={14} />
+                            {div.installations} installs
+                          </span>
                         </div>
                       </div>
                     </div>
-                  </m.div>
-                )}
-              </m.div>
-            ))}
-          </div>
+                    <div className="flex items-center gap-4">
+                      <div className="hidden sm:flex items-center gap-2 bg-accent/10 px-4 py-2 rounded-full">
+                        <Clock size={14} className="text-accent" />
+                        <span className="text-sm font-medium text-accent">
+                          {div.timeline}
+                        </span>
+                      </div>
+                      <ChevronDown
+                        size={20}
+                        className={`text-ink-light transition-transform ${
+                          expandedDivision === div.name ? "rotate-180" : ""
+                        }`}
+                      />
+                    </div>
+                  </button>
 
-          {filteredDivisions.length === 0 && (
+                  {/* Districts Grid */}
+                  {expandedDivision === div.name && (
+                    <m.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="px-6 pb-6 border-t border-ink/5"
+                    >
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 pt-6">
+                        {div.districts.map((district) => (
+                          <div
+                            key={district}
+                            className="flex items-center gap-2 p-3 rounded-xl bg-cream/50 hover:bg-accent/5 transition-colors"
+                          >
+                            <CheckCircle
+                              size={16}
+                              className="text-accent flex-shrink-0"
+                            />
+                            <span className="text-sm text-ink">{district}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-6 p-4 bg-cream rounded-xl border border-ink/5">
+                        <div className="flex items-start gap-3">
+                          <Phone
+                            size={20}
+                            className="text-accent flex-shrink-0 mt-0.5"
+                          />
+                          <div>
+                            <div className="font-semibold text-ink text-sm">
+                              {div.name} Regional Office
+                            </div>
+                            <div className="text-ink-mid text-sm">
+                              Call: +880 1XXX-XXXXXX | Email:{" "}
+                              {div.name.toLowerCase()}@solaro.com.bd
+                            </div>
+                            <div className="text-ink-light text-xs mt-1">
+                              Installation timeline: {div.timeline} from order
+                              confirmation
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </m.div>
+                  )}
+                </m.div>
+              ))}
+            </div>
+          )}
+
+          {!isLoading && filteredDivisions.length === 0 && (
             <div className="text-center py-16">
               <Search size={48} className="text-ink-faint mx-auto mb-4" />
               <h3 className="text-xl font-heading font-semibold text-ink mb-2">

@@ -15,6 +15,7 @@ import {
 import { useState } from "react";
 import Image from "next/image";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -29,6 +30,15 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
+  const { data: districts = [] } = useQuery({
+    queryKey: ["districts"],
+    queryFn: async () => {
+      const res = await fetch("/api/districts");
+      const data = await res.json();
+      return data.districts || [];
+    },
+  });
 
   const handleContactInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -86,21 +96,7 @@ export default function ContactPage() {
     { value: "other", label: "Other" },
   ];
 
-  const districts = [
-    "Dhaka",
-    "Gazipur",
-    "Narayanganj",
-    "Chittagong",
-    "Comilla",
-    "Sylhet",
-    "Rajshahi",
-    "Khulna",
-    "Rangpur",
-    "Barisal",
-    "Mymensingh",
-    "Cox's Bazar",
-    "Other",
-  ];
+  const districtsList = districts.map((d) => d.name);
 
   return (
     <>
@@ -204,7 +200,10 @@ export default function ContactPage() {
               <form onSubmit={handleContactFormSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label htmlFor="contact-firstName" className="block text-sm font-semibold text-ink mb-2">
+                    <label
+                      htmlFor="contact-firstName"
+                      className="block text-sm font-semibold text-ink mb-2"
+                    >
                       First Name
                     </label>
                     <input
@@ -219,7 +218,10 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="contact-lastName" className="block text-sm font-semibold text-ink mb-2">
+                    <label
+                      htmlFor="contact-lastName"
+                      className="block text-sm font-semibold text-ink mb-2"
+                    >
                       Last Name
                     </label>
                     <input
@@ -237,7 +239,10 @@ export default function ContactPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label htmlFor="contact-email" className="block text-sm font-semibold text-ink mb-2">
+                    <label
+                      htmlFor="contact-email"
+                      className="block text-sm font-semibold text-ink mb-2"
+                    >
                       Email
                     </label>
                     <input
@@ -252,7 +257,10 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="contact-phone" className="block text-sm font-semibold text-ink mb-2">
+                    <label
+                      htmlFor="contact-phone"
+                      className="block text-sm font-semibold text-ink mb-2"
+                    >
                       Phone Number
                     </label>
                     <input
@@ -270,7 +278,10 @@ export default function ContactPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label htmlFor="contact-service" className="block text-sm font-semibold text-ink mb-2">
+                    <label
+                      htmlFor="contact-service"
+                      className="block text-sm font-semibold text-ink mb-2"
+                    >
                       Service Interested In
                     </label>
                     <select
@@ -290,7 +301,10 @@ export default function ContactPage() {
                     </select>
                   </div>
                   <div>
-                    <label htmlFor="contact-district" className="block text-sm font-semibold text-ink mb-2">
+                    <label
+                      htmlFor="contact-district"
+                      className="block text-sm font-semibold text-ink mb-2"
+                    >
                       Your District
                     </label>
                     <select
@@ -302,7 +316,7 @@ export default function ContactPage() {
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all appearance-none"
                     >
                       <option value="">Select district</option>
-                      {districts.map((d) => (
+                      {districtsList.map((d) => (
                         <option key={d} value={d}>
                           {d}
                         </option>
@@ -312,7 +326,10 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="contact-message" className="block text-sm font-semibold text-ink mb-2">
+                  <label
+                    htmlFor="contact-message"
+                    className="block text-sm font-semibold text-ink mb-2"
+                  >
                     Message
                   </label>
                   <textarea

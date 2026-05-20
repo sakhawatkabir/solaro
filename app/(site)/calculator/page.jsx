@@ -17,10 +17,13 @@ import {
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { useQuery } from "@tanstack/react-query";
 
-const bdElectricityRate = 9.5;
-const solarHoursPerDay = 5.5;
-const systemEfficiency = 0.8;
+const defaultSettings = {
+  electricityRate: 9.5,
+  solarHoursPerDay: 5.5,
+  systemEfficiency: 0.8,
+};
 
 const systemRecommendations = [
   {
@@ -112,11 +115,33 @@ export default function CalculatorPage() {
   const [showResults, setShowResults] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
-  const monthlyUsage = monthlyBill / bdElectricityRate;
+  const { data: settings = defaultSettings } = useQuery({
+    queryKey: ["calculator-settings"],
+    queryFn: async () => {
+      const res = await fetch("/api/settings");
+      const data = await res.json();
+      if (data.settings) {
+        return {
+          electricityRate:
+            Number(data.settings.electricityRate) ||
+            defaultSettings.electricityRate,
+          solarHoursPerDay:
+            Number(data.settings.solarHoursPerDay) ||
+            defaultSettings.solarHoursPerDay,
+          systemEfficiency:
+            Number(data.settings.systemEfficiency) ||
+            defaultSettings.systemEfficiency,
+        };
+      }
+      return defaultSettings;
+    },
+  });
+
+  const monthlyUsage = monthlyBill / settings.electricityRate;
   const dailyUsage = monthlyUsage / 30;
 
   const recommendedKW = Math.ceil(
-    dailyUsage / (solarHoursPerDay * systemEfficiency),
+    dailyUsage / (settings.solarHoursPerDay * settings.systemEfficiency),
   );
 
   const recommendedSystem =
@@ -127,9 +152,11 @@ export default function CalculatorPage() {
   const maxKWFromRoof = roofCapacity * 0.55;
 
   const dailyGeneration =
-    recommendedSystem.kw * solarHoursPerDay * systemEfficiency;
+    recommendedSystem.kw *
+    settings.solarHoursPerDay *
+    settings.systemEfficiency;
   const monthlyGeneration = dailyGeneration * 30;
-  const monthlySavings = monthlyGeneration * bdElectricityRate;
+  const monthlySavings = monthlyGeneration * settings.electricityRate;
   const yearlySavings = monthlySavings * 12;
   const paybackYears = recommendedSystem.price / yearlySavings;
   const twentyFiveYearSavings = yearlySavings * 25 - recommendedSystem.price;

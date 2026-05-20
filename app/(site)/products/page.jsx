@@ -1,21 +1,25 @@
 "use client";
 
 import { m } from "framer-motion";
-import { ShoppingCart, Filter, Search, ChevronRight, Star } from "lucide-react";
-import { products, formatPrice } from "../../data/products";
+import { ShoppingCart, Search, ChevronRight, Star } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { useQuery } from "@tanstack/react-query";
 
 const categories = [
   { id: "all", label: "All Products" },
-  { id: "home-kit", label: "Home Kits" },
-  { id: "panel", label: "Solar Panels" },
-  { id: "battery", label: "Batteries" },
-  { id: "inverter", label: "Inverters" },
+  { id: "HOME_KIT", label: "Home Kits" },
+  { id: "PANEL", label: "Solar Panels" },
+  { id: "BATTERY", label: "Batteries" },
+  { id: "INVERTER", label: "Inverters" },
 ];
+
+function formatPrice(price) {
+  return `৳${price.toLocaleString("en-BD")}`;
+}
 
 export default function ProductsPage() {
   const { addItem } = useCart();
@@ -25,19 +29,30 @@ export default function ProductsPage() {
   const prefersReducedMotion = useReducedMotion();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ["products", activeCategory],
+    queryFn: async () => {
+      const categoryParam =
+        activeCategory === "all" ? "" : `&category=${activeCategory}`;
+      const res = await fetch(`/api/products?status=ACTIVE${categoryParam}`);
+      const data = await res.json();
+      return data.products || [];
+    },
+  });
+
   const filtered = products.filter((p) => {
-    const matchesCategory =
-      activeCategory === "all" || p.category === activeCategory;
-    const matchesSearch =
-      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.subtitle.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    if (!searchQuery) return true;
+    return (
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.description &&
+        p.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
   });
 
   const handleAddToCart = (product) => {
     addItem({
       id: product.id,
-      title: product.title,
+      title: product.name,
       price: product.price,
       image: product.image,
     });
@@ -113,7 +128,31 @@ export default function ProductsPage() {
       {/* Products Grid */}
       <section className="px-8 lg:px-16 pb-32">
         <div className="max-w-[1400px] mx-auto">
-          {filtered.length === 0 ? (
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-2xl border border-ink/5 overflow-hidden animate-pulse"
+                >
+                  <div className="aspect-[4/3] bg-zinc-100" />
+                  <div className="p-6 space-y-3">
+                    <div className="h-4 w-20 bg-zinc-200 rounded" />
+                    <div className="h-6 w-3/4 bg-zinc-200 rounded" />
+                    <div className="h-4 w-full bg-zinc-200 rounded" />
+                    <div className="h-8 w-full bg-zinc-200 rounded" />
+                    <div className="flex justify-between pt-4">
+                      <div className="h-6 w-24 bg-zinc-200 rounded" />
+                      <div className="flex gap-2">
+                        <div className="h-8 w-16 bg-zinc-200 rounded-full" />
+                        <div className="h-8 w-20 bg-zinc-200 rounded-full" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="text-center py-20">
               <Search size={48} className="text-ink-faint mx-auto mb-4" />
               <h3 className="text-xl font-heading font-semibold text-ink mb-2">
@@ -137,29 +176,36 @@ export default function ProductsPage() {
                   {/* Image */}
                   <Link href={`/products/${product.id}`}>
                     <div className="relative aspect-[4/3] overflow-hidden bg-cream rounded-t-2xl cursor-pointer">
-                      <Image
-                        src={product.image}
-                        alt={product.title}
-                        width={600}
-                        height={450}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
+                      {product.image ? (
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          width={600}
+                          height={450}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-ink-light">
+                          <Star size={48} />
+                        </div>
+                      )}
                       {product.badge && (
                         <span className="absolute top-4 left-4 px-3 py-1 bg-accent text-white text-xs font-bold rounded-full">
                           {product.badge}
                         </span>
                       )}
-                      {product.originalPrice > product.price && (
-                        <span className="absolute top-4 right-4 px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">
-                          Save{" "}
-                          {Math.round(
-                            ((product.originalPrice - product.price) /
-                              product.originalPrice) *
-                              100
-                          )}
-                          %
-                        </span>
-                      )}
+                      {product.originalPrice &&
+                        product.originalPrice > product.price && (
+                          <span className="absolute top-4 right-4 px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">
+                            Save{" "}
+                            {Math.round(
+                              ((product.originalPrice - product.price) /
+                                product.originalPrice) *
+                                100,
+                            )}
+                            %
+                          </span>
+                        )}
                     </div>
                   </Link>
 
@@ -171,22 +217,24 @@ export default function ProductsPage() {
                     </div>
                     <Link href={`/products/${product.id}`}>
                       <h3 className="font-heading text-xl font-semibold text-ink mb-1 cursor-pointer hover:text-accent transition-colors">
-                        {product.title}
+                        {product.name}
                       </h3>
                     </Link>
-                    <p className="text-ink-mid text-sm mb-3">
-                      {product.subtitle}
-                    </p>
-                    <p className="text-ink-mid text-sm leading-relaxed mb-4 line-clamp-2">
-                      {product.description}
-                    </p>
+                    {product.description && (
+                      <div
+                        className="text-ink-mid text-sm mb-3 line-clamp-2"
+                        dangerouslySetInnerHTML={{
+                          __html: product.description,
+                        }}
+                      />
+                    )}
 
-                    {/* Specs preview */}
                     {product.savings && (
                       <div className="flex items-center gap-2 text-sm text-accent mb-4 bg-accent/5 px-3 py-2 rounded-lg">
                         <Star size={14} fill="currentColor" />
                         <span className="font-semibold">
-                          Save ৳{product.savings.monthly.toLocaleString()}/month
+                          Save ৳{product.savings.monthly?.toLocaleString() || 0}
+                          /month
                         </span>
                       </div>
                     )}
@@ -197,11 +245,12 @@ export default function ProductsPage() {
                         <div className="text-xl font-heading font-semibold text-accent">
                           {formatPrice(product.price)}
                         </div>
-                        {product.originalPrice > product.price && (
-                          <div className="text-sm text-ink-light line-through">
-                            {formatPrice(product.originalPrice)}
-                          </div>
-                        )}
+                        {product.originalPrice &&
+                          product.originalPrice > product.price && (
+                            <div className="text-sm text-ink-light line-through">
+                              {formatPrice(product.originalPrice)}
+                            </div>
+                          )}
                       </div>
                       <div className="flex gap-2">
                         <Link href={`/products/${product.id}`}>

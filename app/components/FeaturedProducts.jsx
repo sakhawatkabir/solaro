@@ -2,16 +2,17 @@
 
 import { m } from "framer-motion";
 import { Star, ArrowRight, ShoppingCart } from "lucide-react";
-import { products, formatPrice } from "../data/products";
 import { useCart } from "../context/CartContext";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useQuery } from "@tanstack/react-query";
+import { getFeaturedProducts } from "@/app/actions/products";
 
-const featuredProducts = products
-  .filter((p) => p.category === "home-kit")
-  .slice(0, 4);
+function formatPrice(price) {
+  return `৳${price.toLocaleString("en-BD")}`;
+}
 
 export default function FeaturedProducts() {
   const { addItem } = useCart();
@@ -19,16 +20,59 @@ export default function FeaturedProducts() {
   const prefersReducedMotion = useReducedMotion();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["featured-products"],
+    queryFn: () => getFeaturedProducts(6),
+  });
+
+  const products = data?.products || [];
+
   const handleAddToCart = (product) => {
     addItem({
       id: product.id,
-      title: product.title,
+      title: product.name,
       price: product.price,
       image: product.image,
     });
     setAddedId(product.id);
     setTimeout(() => setAddedId(null), 2000);
   };
+
+  if (isLoading) {
+    return (
+      <section className="py-20 px-8 lg:px-16">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="text-center mb-12">
+            <div className="h-4 w-32 bg-zinc-200 rounded mx-auto mb-3 animate-pulse" />
+            <div className="h-8 w-80 bg-zinc-200 rounded mx-auto mb-4 animate-pulse" />
+            <div className="h-4 w-96 bg-zinc-200 rounded mx-auto animate-pulse" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl border border-zinc-200 overflow-hidden animate-pulse"
+              >
+                <div className="aspect-[4/3] bg-zinc-100" />
+                <div className="p-5 space-y-3">
+                  <div className="h-5 w-3/4 bg-zinc-200 rounded" />
+                  <div className="h-4 w-1/2 bg-zinc-200 rounded" />
+                  <div className="h-8 w-full bg-zinc-200 rounded" />
+                  <div className="h-4 w-full bg-zinc-200 rounded" />
+                  <div className="flex justify-between pt-4">
+                    <div className="h-6 w-24 bg-zinc-200 rounded" />
+                    <div className="h-10 w-24 bg-zinc-200 rounded-full" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (products.length === 0) return null;
 
   return (
     <section className="py-20 px-8 lg:px-16">
@@ -53,7 +97,7 @@ export default function FeaturedProducts() {
         </m.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {featuredProducts.map((product, index) => (
+          {products.map((product, index) => (
             <m.div
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
@@ -64,69 +108,82 @@ export default function FeaturedProducts() {
             >
               <Link href={`/products/${product.id}`}>
                 <div className="relative aspect-[4/3] overflow-hidden bg-cream rounded-t-2xl">
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    width={600}
-                    height={450}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
+                  {product.image ? (
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      width={600}
+                      height={450}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-ink-light">
+                      <Star size={48} />
+                    </div>
+                  )}
                   {product.badge && (
                     <span className="absolute top-3 left-3 px-3 py-1 bg-accent text-white text-xs font-bold rounded-full">
                       {product.badge}
                     </span>
                   )}
-                  {product.originalPrice > product.price && (
-                    <span className="absolute top-3 right-3 px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">
-                      Save{" "}
-                      {Math.round(
-                        ((product.originalPrice - product.price) /
-                          product.originalPrice) *
-                          100,
-                      )}
-                      %
-                    </span>
-                  )}
+                  {product.originalPrice &&
+                    product.originalPrice > product.price && (
+                      <span className="absolute top-3 right-3 px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">
+                        Save{" "}
+                        {Math.round(
+                          ((product.originalPrice - product.price) /
+                            product.originalPrice) *
+                            100,
+                        )}
+                        %
+                      </span>
+                    )}
                 </div>
               </Link>
 
               <div className="p-5 flex flex-col flex-1">
                 <Link href={`/products/${product.id}`}>
                   <h3 className="font-heading font-semibold text-ink text-lg mb-1 cursor-pointer hover:text-accent transition-colors">
-                    {product.title}
+                    {product.name}
                   </h3>
                 </Link>
-                <p className="text-ink-light text-sm mb-3">
-                  {product.subtitle}
-                </p>
+                {product.description && (
+                  <div
+                    className="text-ink-light text-sm mb-3 line-clamp-2"
+                    dangerouslySetInnerHTML={{ __html: product.description }}
+                  />
+                )}
 
-                {/* Savings */}
                 {product.savings && (
                   <div className="flex items-center gap-1.5 text-sm text-accent mb-3 bg-accent/5 px-3 py-1.5 rounded-lg">
                     <Star size={14} fill="currentColor" />
                     <span className="font-semibold">
-                      Save ৳{product.savings.monthly.toLocaleString()}/month
+                      Save ৳{product.savings.monthly?.toLocaleString() || 0}
+                      /month
                     </span>
                   </div>
                 )}
 
-                {/* Specs preview */}
-                <div className="text-xs text-ink-mid mb-4 space-y-1">
-                  <div>{product.specs.panels}</div>
-                  <div>{product.specs.battery}</div>
-                </div>
+                {product.specs && (
+                  <div className="text-xs text-ink-mid mb-4 space-y-1">
+                    {product.specs.panels && <div>{product.specs.panels}</div>}
+                    {product.specs.battery && (
+                      <div>{product.specs.battery}</div>
+                    )}
+                  </div>
+                )}
 
-                {/* Price & CTA */}
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-ink/5">
                   <div>
                     <div className="text-xl font-heading font-semibold text-accent">
                       {formatPrice(product.price)}
                     </div>
-                    {product.originalPrice > product.price && (
-                      <div className="text-sm text-ink-light line-through">
-                        {formatPrice(product.originalPrice)}
-                      </div>
-                    )}
+                    {product.originalPrice &&
+                      product.originalPrice > product.price && (
+                        <div className="text-sm text-ink-light line-through">
+                          {formatPrice(product.originalPrice)}
+                        </div>
+                      )}
                   </div>
                   <button
                     onClick={() => handleAddToCart(product)}
@@ -145,7 +202,6 @@ export default function FeaturedProducts() {
           ))}
         </div>
 
-        {/* View All */}
         <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

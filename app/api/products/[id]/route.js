@@ -6,7 +6,7 @@ export async function GET(request, { params }) {
     const { id } = params;
 
     const product = await prisma.product.findUnique({
-      where: { id },
+      where: { id, status: "ACTIVE" },
     });
 
     if (!product) {

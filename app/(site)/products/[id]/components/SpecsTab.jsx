@@ -34,6 +34,14 @@ const specIcons = {
 };
 
 export default function SpecsTab({ specs }) {
+  if (!specs || Object.keys(specs).length === 0) {
+    return (
+      <div className="text-center py-8 text-ink-mid">
+        No specifications available.
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {Object.entries(specs).map(([key, value]) => {

@@ -3,6 +3,21 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+export async function getFeaturedProducts(count = 6) {
+  try {
+    const products = await prisma.product.findMany({
+      where: { status: "ACTIVE", category: "HOME_KIT" },
+      orderBy: [{ createdAt: "desc" }],
+      take: count,
+    });
+
+    return { success: true, products };
+  } catch (error) {
+    console.error("Get featured products error:", error);
+    return { success: false, products: [] };
+  }
+}
+
 export async function getProducts(
   page = 1,
   limit = 20,

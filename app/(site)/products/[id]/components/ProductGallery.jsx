@@ -22,7 +22,7 @@ export default function ProductGallery({ product }) {
       <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-white mb-4">
         <Image
           src={images[selectedImage]}
-          alt={product.title}
+          alt={product.name}
           width={1200}
           height={900}
           className="w-full h-full object-cover"
@@ -58,7 +58,7 @@ export default function ProductGallery({ product }) {
           >
             <Image
               src={img}
-              alt={`${product.title} view ${idx + 1}`}
+              alt={`${product.name} view ${idx + 1}`}
               width={96}
               height={80}
               className="w-full h-full object-cover"

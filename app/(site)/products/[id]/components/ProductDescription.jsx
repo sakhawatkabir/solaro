@@ -8,7 +8,10 @@ export default function ProductDescription({ description }) {
           <h3 className="text-2xl font-heading font-semibold text-ink mb-4">
             About This Product
           </h3>
-          <p className="text-ink-mid leading-relaxed text-lg">{description}</p>
+          <div
+            className="text-ink-mid leading-relaxed text-lg prose prose-zinc max-w-none"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
           <div className="mt-6 p-4 bg-cream rounded-xl border border-ink/5">
             <p className="text-sm text-ink-mid">
               <strong className="text-ink">Bangladesh Ready:</strong> All our

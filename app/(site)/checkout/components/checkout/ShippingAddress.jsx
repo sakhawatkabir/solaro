@@ -1,6 +1,6 @@
 import { Truck, MapPin } from "lucide-react";
 
-export default function ShippingAddress({ shipping, handleShippingChange, districts }) {
+export default function ShippingAddress({ shipping, handleShippingChange, districts, districtsLoading }) {
   return (
     <div className="bg-white rounded-xl p-6 border border-ink/5">
       <h2 className="text-xl font-heading font-semibold text-ink mb-6 flex items-center gap-2">
@@ -40,14 +40,19 @@ export default function ShippingAddress({ shipping, handleShippingChange, distri
               value={shipping.district}
               onChange={handleShippingChange}
               required
-              className="w-full px-4 py-3.5 rounded-xl border border-ink/10 bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all appearance-none"
+              disabled={districtsLoading}
+              className="w-full px-4 py-3.5 rounded-xl border border-ink/10 bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all appearance-none disabled:opacity-50"
             >
               <option value="">Select district</option>
-              {districts.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))}
+              {districtsLoading ? (
+                <option value="" disabled>Loading...</option>
+              ) : (
+                districts.map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))
+              )}
             </select>
           </div>
           <div>

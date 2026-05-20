@@ -1,6 +1,14 @@
 "use client";
 
 export default function SavingsTab({ savings }) {
+  if (!savings) {
+    return (
+      <div className="text-center py-8 text-ink-mid">
+        No savings information available.
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

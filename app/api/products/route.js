@@ -8,7 +8,7 @@ export async function GET(request) {
     const limit = parseInt(searchParams.get("limit")) || 20;
     const search = searchParams.get("search") || "";
     const category = searchParams.get("category") || "";
-    const status = searchParams.get("status") || "";
+    const status = searchParams.get("status") || "ACTIVE";
 
     const where = {};
 

@@ -31,7 +31,7 @@ export default function RelatedProducts({ products }) {
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={related.image}
-                    alt={related.title}
+                    alt={related.name}
                     width={600}
                     height={450}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -44,9 +44,13 @@ export default function RelatedProducts({ products }) {
                 </div>
                 <div className="p-5">
                   <h4 className="font-heading font-semibold text-ink mb-1 group-hover:text-accent transition-colors">
-                    {related.title}
+                    {related.name}
                   </h4>
-                  <p className="text-ink-mid text-sm mb-3">{related.subtitle}</p>
+                  {related.description && (
+                    <p className="text-ink-mid text-sm mb-3 line-clamp-2">
+                      {related.description}
+                    </p>
+                  )}
                   <div className="text-xl font-heading font-semibold text-accent">
                     {formatPrice(related.price)}
                   </div>

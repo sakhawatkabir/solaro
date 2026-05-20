@@ -3,6 +3,14 @@
 import { CheckCircle } from "lucide-react";
 
 export default function IncludesTab({ items }) {
+  if (!items || items.length === 0) {
+    return (
+      <div className="text-center py-8 text-ink-mid">
+        No items information available.
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       {items.map((item) => (

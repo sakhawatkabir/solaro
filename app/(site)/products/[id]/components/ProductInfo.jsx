@@ -18,10 +18,11 @@ import { useCart } from "@/app/context/CartContext";
 
 function getCategoryLabel(category) {
   const labels = {
-    "home-kit": "Complete Home Kit",
-    panel: "Solar Panel",
-    battery: "Battery Storage",
-    inverter: "Inverter",
+    HOME_KIT: "Complete Home Kit",
+    PANEL: "Solar Panel",
+    BATTERY: "Battery Storage",
+    INVERTER: "Inverter",
+    ACCESSORY: "Accessory",
   };
   return labels[category] || category;
 }
@@ -34,7 +35,7 @@ export default function ProductInfo({ product }) {
   const handleAddToCart = () => {
     addItem({
       id: product.id,
-      title: product.title,
+      title: product.name,
       price: product.price,
       image: product.image,
     });
@@ -54,12 +55,15 @@ export default function ProductInfo({ product }) {
       </div>
 
       <h1 className="text-4xl lg:text-5xl font-heading font-semibold text-ink leading-tight mb-4">
-        {product.title}
+        {product.name}
       </h1>
 
-      <p className="text-ink-mid text-lg leading-relaxed mb-6">
-        {product.subtitle}
-      </p>
+      {product.description && (
+        <div
+          className="text-ink-mid text-lg leading-relaxed mb-6 line-clamp-2"
+          dangerouslySetInnerHTML={{ __html: product.description }}
+        />
+      )}
 
       <div className="flex items-center gap-3 mb-6">
         <div className="flex items-center gap-1">
