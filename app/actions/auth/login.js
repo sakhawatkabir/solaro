@@ -67,7 +67,13 @@ export async function loginAction(email, password, code) {
   });
 
   const cookieStore = await cookies();
-  await setSessionCookies(cookieStore, sessionToken, user.role, expires);
+  await setSessionCookies(
+    cookieStore,
+    sessionToken,
+    user.role,
+    user.permissions,
+    expires,
+  );
 
   return {
     success: true,

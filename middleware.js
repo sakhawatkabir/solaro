@@ -2,23 +2,71 @@ import { NextResponse } from "next/server";
 
 const adminRoutes = ["/admin"];
 const viewerRoutes = ["/dashboard"];
-const authRoutes = ["/login", "/register", "/forgot-password", "/reset-password", "/two-factor", "/verify-email"];
+const authRoutes = [
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/reset-password",
+  "/two-factor",
+  "/verify-email",
+];
 
-const allowedAdminRoles = ["SUPER_ADMIN", "MANAGER", "EDITOR", "SUPPORT", "CUSTOM"];
+const allowedAdminRoles = [
+  "SUPER_ADMIN",
+  "MANAGER",
+  "EDITOR",
+  "SUPPORT",
+  "CUSTOM",
+];
+
+const permissionRouteMap = {
+  analytics: ["/admin/analytics"],
+  products: ["/admin/products"],
+  orders: ["/admin/orders"],
+  customers: ["/admin/customers"],
+  leads: ["/admin/leads"],
+  districts: ["/admin/districts"],
+  users: ["/admin/users"],
+  settings: ["/admin/settings"],
+};
+
+function getUserPermissions(userPermissions) {
+  try {
+    return JSON.parse(userPermissions || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function hasAccessToRoute(permissions, pathname) {
+  if (pathname === "/admin") return true;
+
+  for (const [permission, routes] of Object.entries(permissionRouteMap)) {
+    if (permissions.includes(permission)) {
+      for (const route of routes) {
+        if (pathname === route || pathname.startsWith(`${route}/`)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
 
 export function middleware(request) {
   const { pathname } = request.nextUrl;
   const sessionToken = request.cookies.get("sessionToken")?.value;
   const userRole = request.cookies.get("userRole")?.value;
+  const userPermissions = request.cookies.get("userPermissions")?.value;
 
   const isAdminRoute = adminRoutes.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
   );
   const isViewerRoute = viewerRoutes.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
   );
   const isAuthRoute = authRoutes.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
   );
 
   if (!sessionToken) {
@@ -31,6 +79,14 @@ export function middleware(request) {
     if (isAdminRoute && !allowedAdminRoles.includes(userRole || "")) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
+
+    if (isAdminRoute) {
+      const permissions = getUserPermissions(userPermissions);
+      if (!hasAccessToRoute(permissions, pathname)) {
+        return NextResponse.redirect(new URL("/admin", request.url));
+      }
+    }
+
     if (isViewerRoute && userRole && userRole !== "VIEWER") {
       return NextResponse.redirect(new URL("/admin", request.url));
     }

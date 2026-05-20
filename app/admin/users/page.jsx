@@ -1,77 +1,50 @@
 "use client";
 
 import { useState } from "react";
-import { adminUsers, roles } from "../data/mock";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getUsers, deleteUser } from "@/app/actions/users";
 import UsersHeader from "./components/UsersHeader";
 import UsersFilters from "./components/UsersFilters";
 import UsersTable from "./components/UsersTable";
-import UserPermissionsModal from "./components/UserPermissionsModal";
-import DeleteConfirmModal from "./components/DeleteConfirmModal";
+
+const allRoles = [
+  "all",
+  "SUPER_ADMIN",
+  "MANAGER",
+  "EDITOR",
+  "SUPPORT",
+  "VIEWER",
+  "CUSTOM",
+];
+const allStatuses = ["all", "ACTIVE", "INACTIVE", "SUSPENDED"];
 
 export default function UsersPage() {
-  const [users, setUsers] = useState(adminUsers);
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [showPermissionsModal, setShowPermissionsModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const perPage = 8;
+  const perPage = 10;
 
-  const allRoles = ["all", ...roles.map((r) => r.id)];
-  const allStatuses = ["all", "active", "inactive"];
-
-  const filtered = users.filter((user) => {
-    const matchSearch =
-      search === "" ||
-      user.name.toLowerCase().includes(search.toLowerCase()) ||
-      user.email.toLowerCase().includes(search.toLowerCase());
-    const matchRole = roleFilter === "all" || user.role === roleFilter;
-    const matchStatus = statusFilter === "all" || user.status === statusFilter;
-    return matchSearch && matchRole && matchStatus;
+  const { data: usersData, isLoading } = useQuery({
+    queryKey: ["admin-users", currentPage, search, roleFilter, statusFilter],
+    queryFn: () =>
+      getUsers(currentPage, perPage, search, roleFilter, statusFilter),
   });
 
-  const totalPages = Math.ceil(filtered.length / perPage);
-  const paginated = filtered.slice(
-    (currentPage - 1) * perPage,
-    currentPage * perPage,
-  );
+  const deleteMutation = useMutation({
+    mutationFn: (id) => deleteUser(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin-users"]);
+    },
+  });
 
-  const activeCount = users.filter((u) => u.status === "active").length;
-  const inactiveCount = users.length - activeCount;
-
-  const handleOpenPermissions = (user) => {
-    setSelectedUser(user);
-    setShowPermissionsModal(true);
-  };
-
-  const handleSavePermissions = (updatedUser) => {
-    setUsers((prev) =>
-      prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)),
-    );
-    setShowPermissionsModal(false);
-    setSelectedUser(null);
-  };
-
-  const handleOpenDelete = (user) => {
-    setSelectedUser(user);
-    setShowDeleteModal(true);
-  };
-
-  const handleConfirmDelete = () => {
-    setUsers((prev) => prev.filter((u) => u.id !== selectedUser.id));
-    setShowDeleteModal(false);
-    setSelectedUser(null);
-  };
+  const users = usersData?.users || [];
+  const pagination = usersData?.pagination || { totalPages: 0, total: 0 };
 
   return (
     <div className="space-y-6">
-      <UsersHeader
-        totalUsers={users.length}
-        activeCount={activeCount}
-        inactiveCount={inactiveCount}
-      />
+      <UsersHeader totalUsers={pagination.total} />
 
       <UsersFilters
         search={search}
@@ -93,37 +66,19 @@ export default function UsersPage() {
         allStatuses={allStatuses}
       />
 
-      <UsersTable
-        users={paginated}
-        currentPage={currentPage}
-        totalPages={totalPages}
-        perPage={perPage}
-        totalFiltered={filtered.length}
-        onPageChange={setCurrentPage}
-        onPermissionsClick={handleOpenPermissions}
-        onDeleteClick={handleOpenDelete}
-      />
-
-      {showPermissionsModal && selectedUser && (
-        <UserPermissionsModal
-          user={selectedUser}
-          roles={roles}
-          onSave={handleSavePermissions}
-          onClose={() => {
-            setShowPermissionsModal(false);
-            setSelectedUser(null);
-          }}
-        />
-      )}
-
-      {showDeleteModal && selectedUser && (
-        <DeleteConfirmModal
-          user={selectedUser}
-          onConfirm={handleConfirmDelete}
-          onClose={() => {
-            setShowDeleteModal(false);
-            setSelectedUser(null);
-          }}
+      {isLoading ? (
+        <div className="flex items-center justify-center py-20">
+          <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
+        </div>
+      ) : (
+        <UsersTable
+          users={users}
+          currentPage={currentPage}
+          totalPages={pagination.totalPages}
+          perPage={perPage}
+          totalFiltered={pagination.total}
+          onPageChange={setCurrentPage}
+          onDelete={(id) => deleteMutation.mutate(id)}
         />
       )}
     </div>

@@ -1,7 +1,6 @@
 "use client";
 
-import { Search, ChevronDown } from "lucide-react";
-import { roles } from "../../data/mock";
+import { Search } from "lucide-react";
 
 export default function UsersFilters({
   search,
@@ -19,51 +18,34 @@ export default function UsersFilters({
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
         <input
           type="text"
-          placeholder="Search by name or email..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 placeholder:text-zinc-500 focus:outline-none focus:border-emerald-500/50 text-sm"
+          placeholder="Search by name or email..."
+          className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder:text-zinc-500 focus:outline-none focus:border-emerald-500/50 text-sm"
         />
       </div>
-      <div className="relative">
-        <select
-          value={roleFilter}
-          onChange={(e) => onRoleChange(e.target.value)}
-          className="appearance-none pl-4 pr-10 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 text-sm focus:outline-none focus:border-emerald-500/50 cursor-pointer"
-        >
-          {allRoles.map((r) => {
-            const matchedRole = roles.find((role) => role.id === r);
-            return (
-              <option key={r} value={r} className="bg-zinc-900">
-                {r === "all"
-                  ? "All Roles"
-                  : matchedRole
-                    ? matchedRole.label
-                    : r}
-              </option>
-            );
-          })}
-        </select>
-        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" />
-      </div>
-      <div className="relative">
-        <select
-          value={statusFilter}
-          onChange={(e) => onStatusChange(e.target.value)}
-          className="appearance-none pl-4 pr-10 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 text-sm focus:outline-none focus:border-emerald-500/50 cursor-pointer"
-        >
-          {allStatuses.map((s) => (
-            <option key={s} value={s} className="bg-zinc-900">
-              {s === "all"
-                ? "All Status"
-                : s === "active"
-                  ? "Active Only"
-                  : "Inactive Only"}
-            </option>
-          ))}
-        </select>
-        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" />
-      </div>
+      <select
+        value={roleFilter}
+        onChange={(e) => onRoleChange(e.target.value)}
+        className="px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
+      >
+        {allRoles.map((role) => (
+          <option key={role} value={role} className="bg-zinc-900">
+            {role === "all" ? "All Roles" : role.replace("_", " ")}
+          </option>
+        ))}
+      </select>
+      <select
+        value={statusFilter}
+        onChange={(e) => onStatusChange(e.target.value)}
+        className="px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
+      >
+        {allStatuses.map((status) => (
+          <option key={status} value={status} className="bg-zinc-900">
+            {status === "all" ? "All Status" : status.replace("_", " ")}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

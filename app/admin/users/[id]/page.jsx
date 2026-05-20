@@ -1,44 +1,172 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { adminUsers, roles } from "../../data/mock";
-import UserDetailHeader from "./components/UserDetailHeader";
-import UserProfileCard from "./components/UserProfileCard";
-import UserPermissionsDetail from "./components/UserPermissionsDetail";
-import UserActivityCard from "./components/UserActivityCard";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+} from "@/app/actions/users";
+import UserFormHeader from "./components/UserFormHeader";
+import UserBasicInfo from "./components/UserBasicInfo";
+import UserPermissions from "./components/UserPermissions";
 import UserDangerZone from "./components/UserDangerZone";
 
-export default function UserDetailPage({ params }) {
-  const router = useRouter();
-  const user = adminUsers.find((u) => u.id === params?.id);
+const defaultFormData = {
+  name: "",
+  email: "",
+  role: "VIEWER",
+  status: "ACTIVE",
+  permissions: ["analytics"],
+};
 
-  if (!user) {
+export default function UserFormPage({ params }) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const isEdit = params && params.id && params.id !== "new";
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [formData, setFormData] = useState(defaultFormData);
+
+  const { data: userData, isLoading } = useQuery({
+    queryKey: ["admin-user", params.id],
+    queryFn: () => getUser(params.id),
+    enabled: isEdit,
+    retry: false,
+  });
+
+  useEffect(() => {
+    if (!userData) return;
+
+    setFormData({
+      name: userData.name || "",
+      email: userData.email || "",
+      role: userData.role || "VIEWER",
+      status: userData.status || "ACTIVE",
+      permissions: userData.permissions || ["analytics"],
+    });
+  }, [userData]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (isEdit && !userData) {
+      router.push("/admin/users");
+    }
+  }, [isEdit, userData, isLoading, router]);
+
+  const updateField = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const togglePermission = (permission) => {
+    setFormData((prev) => ({
+      ...prev,
+      permissions: prev.permissions.includes(permission)
+        ? prev.permissions.filter((p) => p !== permission)
+        : [...prev.permissions, permission],
+    }));
+  };
+
+  const buildPayload = () => {
+    return {
+      role: formData.role,
+      status: formData.status,
+      permissions: formData.permissions,
+    };
+  };
+
+  const createMutation = useMutation({
+    mutationFn: () => createUser(buildPayload()),
+    onMutate: () => {
+      setError("");
+      setSaving(true);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin-users"]);
+      router.push("/admin/users");
+    },
+    onError: (err) => {
+      setError(err.message);
+      setSaving(false);
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: () => updateUser(params.id, buildPayload()),
+    onMutate: () => {
+      setError("");
+      setSaving(true);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin-user", params.id]);
+      queryClient.invalidateQueries(["admin-users"]);
+      router.push("/admin/users");
+    },
+    onError: (err) => {
+      setError(err.message);
+      setSaving(false);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteUser(params.id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin-users"]);
+      router.push("/admin/users");
+    },
+  });
+
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <p className="text-zinc-400">User not found</p>
+        <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
       </div>
     );
   }
 
-  const matchedRole = roles.find((r) => r.id === user.role);
-
   return (
     <div className="space-y-6">
-      <UserDetailHeader userName={user.name} />
+      <UserFormHeader
+        isEdit={isEdit}
+        userName={userData?.name || ""}
+        onSave={() =>
+          isEdit ? updateMutation.mutate() : createMutation.mutate()
+        }
+        isSaving={
+          saving || createMutation.isPending || updateMutation.isPending
+        }
+      />
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-red-400 text-sm">
+          {error}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <UserProfileCard user={user} role={matchedRole} />
-          <UserPermissionsDetail
-            permissions={user.permissions}
-            role={matchedRole}
+          <UserBasicInfo
+            formData={{ ...formData, id: userData?.id }}
+            updateField={updateField}
+          />
+          <UserPermissions
+            permissions={formData.permissions}
+            onToggle={togglePermission}
           />
         </div>
 
         <div className="space-y-6">
-          <UserActivityCard lastLogin={user.lastLogin} status={user.status} />
-          <UserDangerZone userId={user.id} userName={user.name} />
+          {isEdit && (
+            <UserDangerZone
+              onDelete={() => {
+                if (confirm("Are you sure you want to delete this user?")) {
+                  deleteMutation.mutate();
+                }
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ export async function setSessionCookies(
   cookieStore,
   sessionToken,
   role,
+  permissions,
   expires,
 ) {
   cookieStore.set("sessionToken", sessionToken, {
@@ -12,6 +13,13 @@ export async function setSessionCookies(
     path: "/",
   });
   cookieStore.set("userRole", role, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    expires,
+    path: "/",
+  });
+  cookieStore.set("userPermissions", JSON.stringify(permissions), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -29,6 +37,13 @@ export async function clearSessionCookies(cookieStore) {
     path: "/",
   });
   cookieStore.set("userRole", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    expires: new Date(0),
+    path: "/",
+  });
+  cookieStore.set("userPermissions", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",

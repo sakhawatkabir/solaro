@@ -19,22 +19,69 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/app/context/AuthContext";
 
-const navItems = [
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Orders", href: "/admin/orders", icon: ClipboardList },
-  { label: "Products", href: "/admin/products", icon: ShoppingBag },
-  { label: "Customers", href: "/admin/customers", icon: Users },
-  { label: "Leads", href: "/admin/leads", icon: MessageSquare },
-  { label: "Districts", href: "/admin/districts", icon: MapPin },
-  { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-  { label: "Users", href: "/admin/users", icon: UserCog },
-  { label: "Settings", href: "/admin/settings", icon: Settings },
+const allNavItems = [
+  {
+    label: "Dashboard",
+    href: "/admin",
+    icon: LayoutDashboard,
+    permission: null,
+  },
+  {
+    label: "Orders",
+    href: "/admin/orders",
+    icon: ClipboardList,
+    permission: "orders",
+  },
+  {
+    label: "Products",
+    href: "/admin/products",
+    icon: ShoppingBag,
+    permission: "products",
+  },
+  {
+    label: "Customers",
+    href: "/admin/customers",
+    icon: Users,
+    permission: "customers",
+  },
+  {
+    label: "Leads",
+    href: "/admin/leads",
+    icon: MessageSquare,
+    permission: "leads",
+  },
+  {
+    label: "Districts",
+    href: "/admin/districts",
+    icon: MapPin,
+    permission: "districts",
+  },
+  {
+    label: "Analytics",
+    href: "/admin/analytics",
+    icon: BarChart3,
+    permission: "analytics",
+  },
+  { label: "Users", href: "/admin/users", icon: UserCog, permission: "users" },
+  {
+    label: "Settings",
+    href: "/admin/settings",
+    icon: Settings,
+    permission: "settings",
+  },
 ];
 
 export default function Sidebar({ mobileOpen, setMobileOpen }) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
+  const { user } = useAuth();
+
+  const userPermissions = user?.permissions || [];
+  const navItems = allNavItems.filter(
+    (item) => !item.permission || userPermissions.includes(item.permission),
+  );
 
   const sidebarContent = (
     <>

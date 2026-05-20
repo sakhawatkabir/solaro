@@ -59,7 +59,13 @@ export async function verify2FAAction(code) {
   });
 
   cookieStore.delete("2fa-pending-email");
-  await setSessionCookies(cookieStore, sessionToken, user.role, expires);
+  await setSessionCookies(
+    cookieStore,
+    sessionToken,
+    user.role,
+    user.permissions,
+    expires,
+  );
 
   return {
     success: true,

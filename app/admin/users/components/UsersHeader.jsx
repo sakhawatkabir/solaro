@@ -1,28 +1,29 @@
 "use client";
 
-import { CheckCircle, XCircle } from "lucide-react";
+import { Users, UserPlus } from "lucide-react";
+import Link from "next/link";
 
-export default function UsersHeader({ activeCount, inactiveCount }) {
+export default function UsersHeader({ totalUsers }) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-      <div>
-        <h1 className="text-2xl font-bold text-white">Users</h1>
-        <p className="text-sm text-zinc-400 mt-1">
-          Manage admin users and permissions
-        </p>
-      </div>
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-1 text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-lg text-sm">
-          <CheckCircle className="w-4 h-4" />
-          <span className="font-semibold">{activeCount}</span>
-          <span className="text-zinc-400">active</span>
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+          <Users className="w-6 h-6 text-emerald-500" />
         </div>
-        <div className="flex items-center gap-1 text-red-400 bg-red-500/10 px-3 py-1.5 rounded-lg text-sm">
-          <XCircle className="w-4 h-4" />
-          <span className="font-semibold">{inactiveCount}</span>
-          <span className="text-zinc-400">inactive</span>
+        <div>
+          <h1 className="text-2xl font-bold text-white">Users</h1>
+          <p className="text-sm text-zinc-400">
+            {totalUsers} total user{totalUsers !== 1 ? "s" : ""}
+          </p>
         </div>
       </div>
+      <Link
+        href="/admin/users/new"
+        className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-medium transition-colors"
+      >
+        <UserPlus className="w-4 h-4" />
+        Add User
+      </Link>
     </div>
   );
 }
