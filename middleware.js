@@ -28,6 +28,7 @@ const permissionRouteMap = {
   districts: ["/admin/districts"],
   users: ["/admin/users"],
   settings: ["/admin/settings"],
+  profile: ["/admin/profile"],
 };
 
 function getUserPermissions(userPermissions) {
@@ -40,6 +41,7 @@ function getUserPermissions(userPermissions) {
 
 function hasAccessToRoute(permissions, pathname) {
   if (pathname === "/admin") return true;
+  if (pathname === "/admin/profile") return true;
 
   for (const [permission, routes] of Object.entries(permissionRouteMap)) {
     if (permissions.includes(permission)) {

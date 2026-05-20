@@ -13,6 +13,7 @@ import {
   BarChart3,
   UserCog,
   Settings,
+  User,
   ChevronLeft,
   ChevronRight,
   Sun,
@@ -65,6 +66,12 @@ const allNavItems = [
     permission: "analytics",
   },
   { label: "Users", href: "/admin/users", icon: UserCog, permission: "users" },
+  {
+    label: "Profile",
+    href: "/admin/profile",
+    icon: User,
+    permission: null,
+  },
   {
     label: "Settings",
     href: "/admin/settings",

@@ -21,8 +21,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { useAuth } from "@/app/context/AuthContext";
+import { logoutAction } from "@/app/actions/auth";
 
 export default function Header({ onMenuClick }) {
+  const { user } = useAuth();
+
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "U";
+
+  const handleLogout = async () => {
+    await logoutAction();
+    window.location.href = "/";
+  };
+
   return (
     <header className="sticky top-0 z-30 flex items-center h-16 px-6 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
       <div className="flex items-center gap-3 flex-1 max-w-md">
@@ -58,11 +76,11 @@ export default function Header({ onMenuClick }) {
             <button className="flex items-center gap-2 text-zinc-300 hover:text-white px-2 py-1.5 rounded-lg transition-colors">
               <Avatar className="w-8 h-8">
                 <AvatarFallback className="bg-emerald-500/20 text-emerald-400 text-xs font-semibold">
-                  SK
+                  {initials}
                 </AvatarFallback>
               </Avatar>
               <span className="hidden sm:inline text-sm font-medium">
-                Kabir
+                {user?.name || "User"}
               </span>
               <ChevronDown className="w-4 h-4 text-zinc-500" />
             </button>
@@ -73,16 +91,25 @@ export default function Header({ onMenuClick }) {
             className="w-56 bg-zinc-900 text-zinc-100 border-zinc-800"
           >
             <div className="px-3 py-2 border-b border-zinc-800">
-              <p className="text-sm font-medium text-white">Sakhawat</p>
-              <p className="text-xs text-zinc-400">admin@solaro.com</p>
+              <p className="text-sm font-medium text-white">
+                {user?.name || "User"}
+              </p>
+              <p className="text-xs text-zinc-400">{user?.email}</p>
+              <p className="text-xs text-emerald-400 capitalize mt-0.5">
+                {user?.role?.toLowerCase()?.replace("_", " ")}
+              </p>
             </div>
-            <DropdownMenuItem className="cursor-pointer">
-              <User className="w-4 h-4 mr-2" />
-              Profile
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link href="/admin/profile" className="flex items-center w-full">
+                <User className="w-4 h-4 mr-2" />
+                Profile
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              <Settings className="w-4 h-4 mr-2" />
-              Settings
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link href="/admin/settings" className="flex items-center w-full">
+                <Settings className="w-4 h-4 mr-2" />
+                Settings
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild className="cursor-pointer">
@@ -92,7 +119,11 @@ export default function Header({ onMenuClick }) {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive" className="cursor-pointer">
+            <DropdownMenuItem
+              onClick={handleLogout}
+              variant="destructive"
+              className="cursor-pointer"
+            >
               <LogOut className="w-4 h-4 mr-2" />
               Log out
             </DropdownMenuItem>
