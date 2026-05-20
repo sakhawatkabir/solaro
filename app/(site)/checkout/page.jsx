@@ -74,6 +74,7 @@ export default function CheckoutPage() {
         .join(", ");
 
       const result = await createOrder({
+        userId: user?.id || null,
         customerName: shipping.name,
         customerEmail: shipping.email,
         customerPhone: shipping.phone,
