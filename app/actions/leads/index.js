@@ -157,3 +157,37 @@ export async function deleteLead(id) {
     throw new Error("Failed to delete lead");
   }
 }
+
+export async function submitContactLead(data) {
+  try {
+    const { firstName, lastName, email, phone, service, message, district } =
+      data;
+
+    if (!firstName || !email || !phone || !service || !message?.trim()) {
+      return {
+        success: false,
+        error: "Please fill in your name, contact details, and a message.",
+      };
+    }
+
+    const lead = await prisma.lead.create({
+      data: {
+        name: `${firstName} ${lastName || ""}`.trim(),
+        email,
+        phone,
+        message: message || null,
+        source: "WEBSITE",
+        priority: "MEDIUM",
+        notes: `Service: ${service}\nDistrict: ${district || "N/A"}`,
+      },
+    });
+
+    return { success: true, lead };
+  } catch (error) {
+    console.error("Submit contact lead error:", error);
+    return {
+      success: false,
+      error: "Failed to submit your message. Please try again.",
+    };
+  }
+}

@@ -2,11 +2,28 @@
 
 import {
   Mail,
-  MapPin,
+  Phone,
+  Building,
   MessageSquare,
-  ExternalLink,
   Calendar,
+  DollarSign,
+  Tag,
+  Hash,
 } from "lucide-react";
+
+function formatDate(date) {
+  return new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function formatBDT(amount) {
+  return `৳${amount.toLocaleString()}`;
+}
 
 const fields = [
   {
@@ -17,33 +34,49 @@ const fields = [
     iconColor: "text-blue-400",
   },
   {
-    key: "district",
-    label: "District",
-    icon: MapPin,
-    iconWrap: "bg-orange-500/10",
-    iconColor: "text-orange-400",
-  },
-  {
-    key: "interest",
-    label: "Interest",
-    icon: MessageSquare,
+    key: "phone",
+    label: "Phone",
+    icon: Phone,
     iconWrap: "bg-emerald-500/10",
     iconColor: "text-emerald-400",
   },
   {
+    key: "company",
+    label: "Company",
+    icon: Building,
+    iconWrap: "bg-purple-500/10",
+    iconColor: "text-purple-400",
+  },
+  {
     key: "source",
     label: "Source",
-    icon: ExternalLink,
+    icon: Tag,
     iconWrap: "bg-indigo-500/10",
     iconColor: "text-indigo-400",
     capitalize: true,
   },
   {
-    key: "date",
+    key: "priority",
+    label: "Priority",
+    icon: Hash,
+    iconWrap: "bg-orange-500/10",
+    iconColor: "text-orange-400",
+  },
+  {
+    key: "estimatedValue",
+    label: "Estimated Value",
+    icon: DollarSign,
+    iconWrap: "bg-green-500/10",
+    iconColor: "text-green-400",
+    format: (v) => (v ? formatBDT(v) : "—"),
+  },
+  {
+    key: "createdAt",
     label: "Created",
     icon: Calendar,
     iconWrap: "bg-zinc-500/10",
     iconColor: "text-zinc-400",
+    format: (v) => formatDate(v),
   },
 ];
 
@@ -55,23 +88,36 @@ export default function LeadInfoCard({ lead }) {
       </h3>
       <div className="space-y-4">
         {fields.map(
-          ({ key, label, icon: Icon, iconWrap, iconColor, capitalize }) => (
-            <div key={key} className="flex items-center gap-3">
-              <div
-                className={`w-10 h-10 rounded-full ${iconWrap} flex items-center justify-center`}
-              >
-                <Icon className={`w-5 h-5 ${iconColor}`} />
-              </div>
-              <div>
-                <p
-                  className={`text-sm text-white ${capitalize ? "capitalize" : ""}`}
+          ({
+            key,
+            label,
+            icon: Icon,
+            iconWrap,
+            iconColor,
+            capitalize,
+            format,
+          }) => {
+            const value = lead[key];
+            if (!value && key !== "estimatedValue") return null;
+
+            return (
+              <div key={key} className="flex items-center gap-3">
+                <div
+                  className={`w-10 h-10 rounded-full ${iconWrap} flex items-center justify-center flex-shrink-0`}
                 >
-                  {lead[key]}
-                </p>
-                <p className="text-xs text-zinc-400">{label}</p>
+                  <Icon className={`w-5 h-5 ${iconColor}`} />
+                </div>
+                <div>
+                  <p
+                    className={`text-sm text-white ${capitalize ? "capitalize" : ""}`}
+                  >
+                    {format ? format(value) : value || "—"}
+                  </p>
+                  <p className="text-xs text-zinc-400">{label}</p>
+                </div>
               </div>
-            </div>
-          ),
+            );
+          },
         )}
       </div>
     </div>

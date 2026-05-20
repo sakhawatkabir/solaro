@@ -3,7 +3,7 @@
 import { Mail } from "lucide-react";
 import StatusBadge from "@/app/admin/components/StatusBadge";
 
-export default function LeadDetailHeader({ lead, currentStatus }) {
+export default function LeadDetailHeader({ lead }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div className="flex items-start gap-4">
@@ -18,9 +18,9 @@ export default function LeadDetailHeader({ lead, currentStatus }) {
         <div>
           <h1 className="text-2xl font-bold text-white">{lead.name}</h1>
           <div className="flex items-center gap-3 mt-1">
-            <StatusBadge status={currentStatus} />
+            <StatusBadge status={lead.status} />
             <span className="text-sm text-zinc-400">
-              Lead #{lead.id.replace("lead-", "")}
+              {lead.source} &middot; {new Date(lead.createdAt).toLocaleDateString()}
             </span>
           </div>
         </div>
@@ -32,6 +32,12 @@ export default function LeadDetailHeader({ lead, currentStatus }) {
         >
           <Mail className="w-4 h-4" />
           Email
+        </a>
+        <a
+          href={`tel:${lead.phone}`}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 text-sm transition-colors"
+        >
+          Call
         </a>
       </div>
     </div>

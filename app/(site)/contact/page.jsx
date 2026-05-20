@@ -16,6 +16,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { useQuery } from "@tanstack/react-query";
+import { submitContactLead } from "@/app/actions/leads";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -28,6 +29,8 @@ export default function ContactPage() {
     district: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const prefersReducedMotion = useReducedMotion();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
@@ -44,19 +47,30 @@ export default function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleContactFormSubmit = (e) => {
+  const handleContactFormSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      service: "",
-      message: "",
-      district: "",
-    });
+    setSubmitting(true);
+    setSubmitError("");
+
+    const result = await submitContactLead(formData);
+
+    setSubmitting(false);
+
+    if (result.success) {
+      setSubmitted(true);
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        service: "",
+        message: "",
+        district: "",
+      });
+      setTimeout(() => setSubmitted(false), 5000);
+    } else {
+      setSubmitError(result.error || "Something went wrong");
+    }
   };
 
   const contactInfo = [
@@ -197,6 +211,12 @@ export default function ContactPage() {
                 </m.div>
               )}
 
+              {submitError && (
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-red-700 text-sm">
+                  {submitError}
+                </div>
+              )}
+
               <form onSubmit={handleContactFormSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
@@ -212,7 +232,6 @@ export default function ContactPage() {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleContactInputChange}
-                      required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                       placeholder="Rahim"
                     />
@@ -230,7 +249,6 @@ export default function ContactPage() {
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleContactInputChange}
-                      required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                       placeholder="Ahmed"
                     />
@@ -251,7 +269,6 @@ export default function ContactPage() {
                       name="email"
                       value={formData.email}
                       onChange={handleContactInputChange}
-                      required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                       placeholder="rahim@email.com"
                     />
@@ -269,7 +286,6 @@ export default function ContactPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleContactInputChange}
-                      required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                       placeholder="+880 17XX-XXXXXX"
                     />
@@ -289,7 +305,6 @@ export default function ContactPage() {
                       name="service"
                       value={formData.service}
                       onChange={handleContactInputChange}
-                      required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all appearance-none"
                     >
                       <option value="">Select a service</option>
@@ -312,7 +327,6 @@ export default function ContactPage() {
                       name="district"
                       value={formData.district}
                       onChange={handleContactInputChange}
-                      required
                       className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all appearance-none"
                     >
                       <option value="">Select district</option>
@@ -338,7 +352,6 @@ export default function ContactPage() {
                     value={formData.message}
                     onChange={handleContactInputChange}
                     rows="5"
-                    required
                     className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all resize-none"
                     placeholder="Tell us about your home, electricity bill, or any questions..."
                   />
@@ -348,10 +361,20 @@ export default function ContactPage() {
                   whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
                   whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
                   type="submit"
-                  className="w-full py-4 bg-accent hover:bg-accent-mid text-white font-semibold rounded-full transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2"
+                  disabled={submitting}
+                  className="w-full py-4 bg-accent hover:bg-accent-mid disabled:bg-accent/50 text-white font-semibold rounded-full transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2"
                 >
-                  <Send size={18} />
-                  Send Message
+                  {submitting ? (
+                    <>
+                      <div className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send size={18} />
+                      Send Message
+                    </>
+                  )}
                 </m.button>
               </form>
             </m.div>
