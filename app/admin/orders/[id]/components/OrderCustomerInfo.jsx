@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Mail, Phone, MapPin } from "lucide-react";
+import { User, Mail, Phone, MapPin, Home } from "lucide-react";
 
 export default function OrderCustomerInfo({ order }) {
   return (
@@ -12,7 +12,9 @@ export default function OrderCustomerInfo({ order }) {
             <User className="w-5 h-5 text-emerald-400" />
           </div>
           <div>
-            <p className="text-sm font-medium text-white">{order.customer}</p>
+            <p className="text-sm font-medium text-white">
+              {order.customerName}
+            </p>
             <p className="text-xs text-zinc-400">Customer</p>
           </div>
         </div>
@@ -21,28 +23,43 @@ export default function OrderCustomerInfo({ order }) {
             <Mail className="w-5 h-5 text-blue-400" />
           </div>
           <div>
-            <p className="text-sm text-white">{order.email}</p>
+            <p className="text-sm text-white">{order.customerEmail}</p>
             <p className="text-xs text-zinc-400">Email</p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-            <Phone className="w-5 h-5 text-purple-400" />
+        {order.customerPhone && (
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
+              <Phone className="w-5 h-5 text-purple-400" />
+            </div>
+            <div>
+              <p className="text-sm text-white">{order.customerPhone}</p>
+              <p className="text-xs text-zinc-400">Phone</p>
+            </div>
           </div>
-          <div>
-            <p className="text-sm text-white">+880 1XXX-XXXXXX</p>
-            <p className="text-xs text-zinc-400">Phone</p>
+        )}
+        {order.district && (
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center">
+              <MapPin className="w-5 h-5 text-orange-400" />
+            </div>
+            <div>
+              <p className="text-sm text-white">{order.district}</p>
+              <p className="text-xs text-zinc-400">Delivery District</p>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center">
-            <MapPin className="w-5 h-5 text-orange-400" />
+        )}
+        {order.shippingAddress && (
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0">
+              <Home className="w-5 h-5 text-cyan-400" />
+            </div>
+            <div>
+              <p className="text-sm text-white">{order.shippingAddress}</p>
+              <p className="text-xs text-zinc-400">Shipping Address</p>
+            </div>
           </div>
-          <div>
-            <p className="text-sm text-white">{order.district}</p>
-            <p className="text-xs text-zinc-400">Delivery District</p>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

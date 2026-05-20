@@ -6,28 +6,41 @@ import {
   CheckCircle,
   Loader2,
   Truck,
+  XCircle,
 } from "lucide-react";
 import StatusBadge from "../../../components/StatusBadge";
 
 const timelineSteps = [
-  { status: "pending", label: "Order Placed", icon: Clock },
-  { status: "confirmed", label: "Confirmed", icon: CheckCircle },
-  { status: "processing", label: "Processing", icon: Loader2 },
-  { status: "shipped", label: "Shipped", icon: Truck },
-  { status: "delivered", label: "Delivered", icon: Package },
+  { status: "PENDING", label: "Order Placed", icon: Clock },
+  { status: "CONFIRMED", label: "Confirmed", icon: CheckCircle },
+  { status: "PROCESSING", label: "Processing", icon: Loader2 },
+  { status: "SHIPPED", label: "Shipped", icon: Truck },
+  { status: "DELIVERED", label: "Delivered", icon: Package },
 ];
 
 const statusOrder = [
-  "pending",
-  "confirmed",
-  "processing",
-  "shipped",
-  "delivered",
+  "PENDING",
+  "CONFIRMED",
+  "PROCESSING",
+  "SHIPPED",
+  "DELIVERED",
 ];
+
+function formatBDT(amount) {
+  return `৳${amount.toLocaleString("en-BD")}`;
+}
+
+function formatDate(date) {
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
 
 export default function OrderStatusCard({ order }) {
   const currentStatusIndex = statusOrder.indexOf(order.status);
-  const isCancelled = order.status === "cancelled";
+  const isCancelled = order.status === "CANCELLED";
 
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
@@ -37,15 +50,21 @@ export default function OrderStatusCard({ order }) {
             <Package className="w-6 h-6 text-emerald-400" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">{order.id}</h1>
+            <h1 className="text-xl font-bold text-white">
+              {order.orderNumber}
+            </h1>
             <div className="flex items-center gap-3 mt-1">
-              <StatusBadge status={order.status} />
-              <span className="text-sm text-zinc-400">{order.date}</span>
+              <StatusBadge status={order.status.toLowerCase()} />
+              <span className="text-sm text-zinc-400">
+                {formatDate(order.createdAt)}
+              </span>
             </div>
           </div>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold text-white">{order.amount}</div>
+          <div className="text-2xl font-bold text-white">
+            {formatBDT(order.total)}
+          </div>
           <div className="text-sm text-zinc-400">Total Amount</div>
         </div>
       </div>
@@ -89,6 +108,13 @@ export default function OrderStatusCard({ order }) {
               );
             })}
           </div>
+        </div>
+      )}
+
+      {isCancelled && (
+        <div className="mt-8 pt-6 border-t border-zinc-800 flex items-center gap-3 text-red-400">
+          <XCircle className="w-5 h-5" />
+          <span className="text-sm">This order has been cancelled.</span>
         </div>
       )}
     </div>

@@ -2,8 +2,6 @@
 
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
-const chartColors = ["#10b981", "#34d399", "#6ee7b7", "#a7f3d0"];
-
 const PieTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
@@ -35,7 +33,7 @@ export default function CategoryChart({ data }) {
             dataKey="value"
           >
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={chartColors[index]} />
+              <Cell key={`cell-${index}`} fill={entry.fill} />
             ))}
           </Pie>
           <Tooltip content={<PieTooltip />} />
@@ -47,7 +45,7 @@ export default function CategoryChart({ data }) {
             <div className="flex items-center gap-2">
               <div
                 className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: chartColors[i] }}
+                style={{ backgroundColor: item.fill }}
               />
               <span className="text-sm text-zinc-300">{item.name}</span>
             </div>

@@ -2,24 +2,47 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Package } from "lucide-react";
-import { recentOrders } from "../../data/mock";
+import { getOrderById, updateOrder } from "@/app/actions/orders";
 import OrderDetailHeader from "./components/OrderDetailHeader";
 import OrderStatusCard from "./components/OrderStatusCard";
 import OrderCustomerInfo from "./components/OrderCustomerInfo";
 import OrderItems from "./components/OrderItems";
 
 const statusOrder = [
-  "pending",
-  "confirmed",
-  "processing",
-  "shipped",
-  "delivered",
+  "PENDING",
+  "CONFIRMED",
+  "PROCESSING",
+  "SHIPPED",
+  "DELIVERED",
+  "CANCELLED",
 ];
 
 export default function OrderDetailPage({ params }) {
-  const order = recentOrders.find((o) => o.id === params.id);
+  const queryClient = useQueryClient();
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+
+  const { data: order, isLoading } = useQuery({
+    queryKey: ["admin-order", params.id],
+    queryFn: () => getOrderById(params.id),
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: (data) => updateOrder(params.id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin-order", params.id]);
+      setShowStatusDropdown(false);
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (!order) {
     return (
@@ -41,13 +64,19 @@ export default function OrderDetailPage({ params }) {
     );
   }
 
+  const handleStatusChange = (status) => {
+    updateMutation.mutate({ status });
+  };
+
   return (
     <div className="space-y-6">
       <OrderDetailHeader
         order={order}
         showStatusDropdown={showStatusDropdown}
         onToggleStatus={() => setShowStatusDropdown(!showStatusDropdown)}
+        onStatusChange={handleStatusChange}
         statusOrder={statusOrder}
+        isUpdating={updateMutation.isPending}
       />
 
       <OrderStatusCard order={order} />

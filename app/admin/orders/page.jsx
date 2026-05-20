@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { recentOrders } from "../data/mock";
+import { useQuery } from "@tanstack/react-query";
+import { getOrders, getOrderStats } from "@/app/actions/orders";
 import OrdersHeader from "./components/OrdersHeader";
 import OrderStatusSummary from "./components/OrderStatusSummary";
 import OrderFilters from "./components/OrderFilters";
@@ -9,60 +10,65 @@ import OrdersTable from "./components/OrdersTable";
 
 const allStatuses = [
   "all",
-  "pending",
-  "confirmed",
-  "processing",
-  "shipped",
-  "delivered",
-  "cancelled",
+  "PENDING",
+  "CONFIRMED",
+  "PROCESSING",
+  "SHIPPED",
+  "DELIVERED",
+  "CANCELLED",
 ];
 
 export default function OrdersPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [districtFilter, setDistrictFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const perPage = 8;
+  const perPage = 10;
 
-  const allDistricts = ["all", ...new Set(recentOrders.map((o) => o.district))];
-
-  const filtered = recentOrders.filter((order) => {
-    const matchSearch =
-      search === "" ||
-      order.customer.toLowerCase().includes(search.toLowerCase()) ||
-      order.id.toLowerCase().includes(search.toLowerCase()) ||
-      order.email.toLowerCase().includes(search.toLowerCase());
-    const matchStatus = statusFilter === "all" || order.status === statusFilter;
-    const matchDistrict =
-      districtFilter === "all" || order.district === districtFilter;
-    return matchSearch && matchStatus && matchDistrict;
+  const { data: ordersData, isLoading } = useQuery({
+    queryKey: ["admin-orders", currentPage, search, statusFilter],
+    queryFn: () =>
+      getOrders({
+        page: currentPage,
+        perPage,
+        search,
+        status: statusFilter === "all" ? "" : statusFilter,
+      }),
   });
 
-  const totalPages = Math.ceil(filtered.length / perPage);
-  const paginated = filtered.slice(
-    (currentPage - 1) * perPage,
-    currentPage * perPage,
-  );
+  const { data: stats } = useQuery({
+    queryKey: ["admin-order-stats"],
+    queryFn: () => getOrderStats(),
+  });
 
-  const statusCounts = allStatuses
-    .filter((s) => s !== "all")
-    .map((s) => ({
-      status: s,
-      count: recentOrders.filter((o) => o.status === s).length,
-    }));
+  const orders = ordersData?.orders || [];
+  const total = ordersData?.total || 0;
+  const totalPages = ordersData?.totalPages || 1;
+
+  const statusCounts =
+    stats?.statusBreakdown.map((s) => ({
+      status: s.status,
+      count: s.count,
+    })) || [];
 
   return (
     <div className="space-y-6">
-      <OrdersHeader totalOrders={recentOrders.length} />
-
-      <OrderStatusSummary
-        statusCounts={statusCounts}
-        activeFilter={statusFilter}
-        onFilterChange={(status) => {
-          setStatusFilter(status);
-          setCurrentPage(1);
-        }}
+      <OrdersHeader
+        totalOrders={stats?.totalOrders || 0}
+        deliveredCount={
+          stats?.statusBreakdown.find((s) => s.status === "DELIVERED")?.count
+        }
       />
+
+      {statusCounts.length > 0 && (
+        <OrderStatusSummary
+          statusCounts={statusCounts}
+          activeFilter={statusFilter}
+          onFilterChange={(status) => {
+            setStatusFilter(status);
+            setCurrentPage(1);
+          }}
+        />
+      )}
 
       <OrderFilters
         search={search}
@@ -75,23 +81,23 @@ export default function OrdersPage() {
           setStatusFilter(val);
           setCurrentPage(1);
         }}
-        districtFilter={districtFilter}
-        onDistrictChange={(val) => {
-          setDistrictFilter(val);
-          setCurrentPage(1);
-        }}
         allStatuses={allStatuses}
-        allDistricts={allDistricts}
       />
 
-      <OrdersTable
-        orders={paginated}
-        currentPage={currentPage}
-        totalPages={totalPages}
-        perPage={perPage}
-        totalFiltered={filtered.length}
-        onPageChange={setCurrentPage}
-      />
+      {isLoading ? (
+        <div className="flex items-center justify-center py-20">
+          <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
+        </div>
+      ) : (
+        <OrdersTable
+          orders={orders}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          perPage={perPage}
+          totalFiltered={total}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </div>
   );
 }

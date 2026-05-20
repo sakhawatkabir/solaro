@@ -5,6 +5,23 @@ import { Eye, MapPin, Calendar, Package } from "lucide-react";
 import StatusBadge from "../../components/StatusBadge";
 import TablePagination from "../../components/TablePagination";
 
+function formatBDT(amount) {
+  return `৳${amount.toLocaleString("en-BD")}`;
+}
+
+function formatDate(date) {
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function getOrderItems(items) {
+  if (!items || !Array.isArray(items)) return "—";
+  return items.map((item) => item.name).join(", ");
+}
+
 export default function OrdersTable({
   orders,
   currentPage,
@@ -26,13 +43,13 @@ export default function OrdersTable({
                 Customer
               </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3 hidden md:table-cell">
-                Product
+                Items
               </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3 hidden lg:table-cell">
                 District
               </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3">
-                Amount
+                Total
               </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3">
                 Status
@@ -67,46 +84,48 @@ export default function OrdersTable({
                       href={`/admin/orders/${order.id}`}
                       className="text-sm font-medium text-emerald-400 hover:text-emerald-300"
                     >
-                      {order.id}
+                      {order.orderNumber}
                     </Link>
                   </td>
                   <td className="px-6 py-4">
                     <div>
                       <div className="text-sm text-white font-medium">
-                        {order.customer}
+                        {order.customerName}
                       </div>
-                      <div className="text-xs text-zinc-500">{order.email}</div>
+                      <div className="text-xs text-zinc-500">
+                        {order.customerEmail}
+                      </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 hidden md:table-cell">
-                    <span className="text-sm text-zinc-300">
-                      {order.product}
+                    <span className="text-sm text-zinc-300 max-w-xs truncate block">
+                      {getOrderItems(order.items)}
                     </span>
                   </td>
                   <td className="px-6 py-4 hidden lg:table-cell">
                     <div className="flex items-center gap-1.5 text-sm text-zinc-400">
                       <MapPin className="w-3.5 h-3.5" />
-                      {order.district}
+                      {order.district || "—"}
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     <span className="text-sm font-semibold text-white">
-                      {order.amount}
+                      {formatBDT(order.total)}
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <StatusBadge status={order.status} />
+                    <StatusBadge status={order.status.toLowerCase()} />
                   </td>
                   <td className="px-6 py-4 hidden sm:table-cell">
                     <div className="flex items-center gap-1.5 text-sm text-zinc-400">
                       <Calendar className="w-3.5 h-3.5" />
-                      {order.date}
+                      {formatDate(order.createdAt)}
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     <Link
                       href={`/admin/orders/${order.id}`}
-                      className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                      className="p-1.5 rounded-lg text-zinc-400"
                     >
                       <Eye className="w-4 h-4" />
                     </Link>

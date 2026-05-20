@@ -8,9 +8,11 @@ export default function OrderDetailHeader({
   order,
   showStatusDropdown,
   onToggleStatus,
+  onStatusChange,
   statusOrder,
+  isUpdating,
 }) {
-  const isCancelled = order.status === "cancelled";
+  const isCancelled = order.status === "CANCELLED";
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -22,7 +24,9 @@ export default function OrderDetailHeader({
           Orders
         </Link>
         <ChevronRight className="w-4 h-4" />
-        <span className="text-emerald-400 font-medium">{order.id}</span>
+        <span className="text-emerald-400 font-medium">
+          {order.orderNumber}
+        </span>
       </div>
       <div className="flex items-center gap-2">
         <button className="flex items-center gap-2 px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white text-sm transition-colors">
@@ -33,9 +37,10 @@ export default function OrderDetailHeader({
           <div className="relative">
             <button
               onClick={onToggleStatus}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 text-sm transition-colors"
+              disabled={isUpdating}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 text-sm transition-colors disabled:opacity-50"
             >
-              <StatusBadge status={order.status} />
+              <StatusBadge status={order.status.toLowerCase()} />
               <span>Update</span>
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -44,14 +49,15 @@ export default function OrderDetailHeader({
                 {statusOrder.map((status) => (
                   <button
                     key={status}
-                    onClick={onToggleStatus}
-                    className={`w-full px-4 py-2.5 text-left text-sm flex items-center gap-2 hover:bg-zinc-800 transition-colors ${
+                    onClick={() => onStatusChange(status)}
+                    disabled={isUpdating}
+                    className={`w-full px-4 py-2.5 text-left text-sm flex items-center gap-2 hover:bg-zinc-800 transition-colors disabled:opacity-50 ${
                       status === order.status
                         ? "text-emerald-400"
                         : "text-zinc-300"
                     }`}
                   >
-                    <StatusBadge status={status} />
+                    <StatusBadge status={status.toLowerCase()} />
                   </button>
                 ))}
               </div>

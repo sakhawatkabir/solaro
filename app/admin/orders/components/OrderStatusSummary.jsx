@@ -10,21 +10,21 @@ import {
 } from "lucide-react";
 
 const statusIcons = {
-  pending: Clock,
-  confirmed: CheckCircle,
-  processing: Loader2,
-  shipped: Truck,
-  delivered: Package,
-  cancelled: XCircle,
+  PENDING: Clock,
+  CONFIRMED: CheckCircle,
+  PROCESSING: Loader2,
+  SHIPPED: Truck,
+  DELIVERED: Package,
+  CANCELLED: XCircle,
 };
 
 const statusColors = {
-  pending: "text-yellow-400",
-  confirmed: "text-blue-400",
-  processing: "text-purple-400",
-  shipped: "text-indigo-400",
-  delivered: "text-emerald-400",
-  cancelled: "text-red-400",
+  PENDING: "text-yellow-400",
+  CONFIRMED: "text-blue-400",
+  PROCESSING: "text-purple-400",
+  SHIPPED: "text-indigo-400",
+  DELIVERED: "text-emerald-400",
+  CANCELLED: "text-red-400",
 };
 
 export default function OrderStatusSummary({
@@ -36,6 +36,7 @@ export default function OrderStatusSummary({
     <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
       {statusCounts.map(({ status, count }) => {
         const Icon = statusIcons[status];
+        if (!Icon) return null;
         return (
           <button
             key={status}
@@ -48,7 +49,9 @@ export default function OrderStatusSummary({
           >
             <Icon className={`w-5 h-5 ${statusColors[status]}`} />
             <span className="text-lg font-bold text-white">{count}</span>
-            <span className="text-xs text-zinc-400 capitalize">{status}</span>
+            <span className="text-xs text-zinc-400 capitalize">
+              {status.toLowerCase()}
+            </span>
           </button>
         );
       })}
