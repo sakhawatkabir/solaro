@@ -1,54 +1,64 @@
 "use client";
 
 import { useState } from "react";
-import { districts } from "../data/mock";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getDistricts, deleteDistrict } from "@/app/actions/districts";
 import DistrictsHeader from "./components/DistrictsHeader";
-import DistrictsSummary from "./components/DistrictsSummary";
 import DistrictsFilters from "./components/DistrictsFilters";
 import DistrictsTable from "./components/DistrictsTable";
 
+const divisions = [
+  "all",
+  "Dhaka",
+  "Chittagong",
+  "Rajshahi",
+  "Khulna",
+  "Barisal",
+  "Sylhet",
+  "Rangpur",
+  "Mymensingh",
+];
+const coverageOptions = ["all", "covered", "uncovered"];
+
 export default function DistrictsPage() {
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [divisionFilter, setDivisionFilter] = useState("all");
+  const [coverageFilter, setCoverageFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const perPage = 8;
+  const perPage = 15;
 
-  const allStatuses = ["all", "active", "inactive"];
-
-  const filtered = districts.filter((district) => {
-    const matchSearch =
-      search === "" ||
-      district.name.toLowerCase().includes(search.toLowerCase());
-    const matchStatus =
-      statusFilter === "all" ||
-      (statusFilter === "active" && district.active) ||
-      (statusFilter === "inactive" && !district.active);
-    return matchSearch && matchStatus;
+  const { data: districtsData, isLoading } = useQuery({
+    queryKey: [
+      "admin-districts",
+      currentPage,
+      search,
+      divisionFilter,
+      coverageFilter,
+    ],
+    queryFn: () =>
+      getDistricts(
+        currentPage,
+        perPage,
+        search,
+        divisionFilter,
+        coverageFilter,
+      ),
   });
 
-  const totalPages = Math.ceil(filtered.length / perPage);
-  const paginated = filtered.slice(
-    (currentPage - 1) * perPage,
-    currentPage * perPage,
-  );
+  const deleteMutation = useMutation({
+    mutationFn: (id) => deleteDistrict(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin-districts"]);
+    },
+  });
 
-  const totalOrders = districts.reduce((sum, d) => sum + d.orders, 0);
-  const totalRevenue = districts.reduce((sum, d) => sum + d.revenue, 0);
-  const activeCount = districts.filter((d) => d.active).length;
+  const districts = districtsData?.districts || [];
+  const pagination = districtsData?.pagination || { totalPages: 0, total: 0 };
 
   return (
     <div className="space-y-6">
-      <DistrictsHeader
-        totalDistricts={districts.length}
-        totalOrders={totalOrders}
-        totalRevenue={totalRevenue}
-      />
-
-      <DistrictsSummary
-        districts={districts}
-        activeCount={activeCount}
-        totalRevenue={totalRevenue}
-      />
+      <DistrictsHeader totalDistricts={pagination.total} />
 
       <DistrictsFilters
         search={search}
@@ -56,22 +66,35 @@ export default function DistrictsPage() {
           setSearch(val);
           setCurrentPage(1);
         }}
-        statusFilter={statusFilter}
-        onStatusChange={(val) => {
-          setStatusFilter(val);
+        divisionFilter={divisionFilter}
+        onDivisionChange={(val) => {
+          setDivisionFilter(val);
           setCurrentPage(1);
         }}
-        allStatuses={allStatuses}
+        coverageFilter={coverageFilter}
+        onCoverageChange={(val) => {
+          setCoverageFilter(val);
+          setCurrentPage(1);
+        }}
+        allDivisions={divisions}
+        allCoverageOptions={coverageOptions}
       />
 
-      <DistrictsTable
-        districts={paginated}
-        currentPage={currentPage}
-        totalPages={totalPages}
-        perPage={perPage}
-        totalFiltered={filtered.length}
-        onPageChange={setCurrentPage}
-      />
+      {isLoading ? (
+        <div className="flex items-center justify-center py-20">
+          <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
+        </div>
+      ) : (
+        <DistrictsTable
+          districts={districts}
+          currentPage={currentPage}
+          totalPages={pagination.totalPages}
+          perPage={perPage}
+          totalFiltered={pagination.total}
+          onPageChange={setCurrentPage}
+          onDelete={(id) => deleteMutation.mutate(id)}
+        />
+      )}
     </div>
   );
 }

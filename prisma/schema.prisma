@@ -161,20 +161,20 @@ model Customer {
 // ===========================
 
 model Lead {
-  id            String      @id @default(cuid())
-  name          String
-  email         String
-  phone         String
-  company       String?
-  message       String?     @db.Text
-  source        LeadSource
-  status        LeadStatus  @default(NEW)
-  priority      LeadPriority @default(MEDIUM)
-  assignedTo    String?
+  id             String       @id @default(cuid())
+  name           String
+  email          String
+  phone          String
+  company        String?
+  message        String?      @db.Text
+  source         LeadSource
+  status         LeadStatus   @default(NEW)
+  priority       LeadPriority @default(MEDIUM)
+  assignedTo     String?
   estimatedValue Int?
-  notes         String?     @db.Text
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  notes          String?      @db.Text
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
   @@index([status])
   @@index([source])
@@ -183,8 +183,34 @@ model Lead {
 }
 
 // ===========================
+// Districts
+// ===========================
+
+model District {
+  id             String         @id @default(cuid())
+  name           String         @unique
+  division       String
+  solarPotential SolarPotential @default(MEDIUM)
+  coverage       Boolean        @default(false)
+  population     Int?
+  avgSunHours    Float?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([division])
+  @@index([coverage])
+}
+
+// ===========================
 // Enums
 // ===========================
+
+enum SolarPotential {
+  LOW
+  MEDIUM
+  HIGH
+  VERY_HIGH
+}
 
 enum LeadSource {
   WEBSITE
