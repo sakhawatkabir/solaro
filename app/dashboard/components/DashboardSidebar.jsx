@@ -12,6 +12,7 @@ import {
   Sun,
   X,
   LogOut,
+  ArrowLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/app/context/AuthContext";
@@ -84,6 +85,13 @@ export default function DashboardSidebar({
       </nav>
 
       <div className="p-2 border-t border-ink-faint space-y-0.5">
+        <Link
+          href="/"
+          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ink-light hover:text-ink hover:bg-cream transition-colors w-full"
+        >
+          <ArrowLeft className="w-4 h-4 flex-shrink-0" />
+          {(!collapsed || mobileOpen) && <span>Back to Site</span>}
+        </Link>
         <button
           onClick={handleSignOut}
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ink-light hover:text-red-600 hover:bg-red-50 transition-colors w-full"
