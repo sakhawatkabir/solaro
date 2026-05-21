@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { createNotification } from "@/app/actions/notifications";
 
 export async function getOrders({
   page = 1,
@@ -76,6 +77,13 @@ export async function createOrder(data) {
       shippingAddress: data.shippingAddress || null,
       notes: data.notes || null,
     },
+  });
+
+  await createNotification({
+    type: "ORDER",
+    title: `New Order: ${orderNumber}`,
+    message: `${data.customerName} placed an order for ৳${total.toLocaleString()}`,
+    link: `/admin/orders`,
   });
 
   revalidatePath("/admin/orders");

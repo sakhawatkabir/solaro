@@ -43,6 +43,7 @@ function getUserPermissions(userPermissions) {
 function hasAccessToRoute(permissions, pathname) {
   if (pathname === "/admin") return true;
   if (pathname === "/admin/profile") return true;
+  if (pathname === "/admin/notifications") return true;
 
   for (const [permission, routes] of Object.entries(permissionRouteMap)) {
     if (permissions.includes(permission)) {

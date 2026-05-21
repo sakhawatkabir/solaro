@@ -19,6 +19,7 @@ import {
   ChevronRight,
   Sun,
   X,
+  Bell,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/app/context/AuthContext";
@@ -59,6 +60,12 @@ const allNavItems = [
     href: "/admin/reviews",
     icon: Star,
     permission: "products",
+  },
+  {
+    label: "Notifications",
+    href: "/admin/notifications",
+    icon: Bell,
+    permission: null,
   },
   {
     label: "Districts",

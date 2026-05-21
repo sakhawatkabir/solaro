@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { createNotification } from "@/app/actions/notifications";
 
 export async function getLeads(
   page = 1,
@@ -180,6 +181,13 @@ export async function submitContactLead(data) {
         priority: "MEDIUM",
         notes: `Service: ${service}\nDistrict: ${district || "N/A"}`,
       },
+    });
+
+    await createNotification({
+      type: "LEAD",
+      title: `New Contact Lead`,
+      message: `${firstName} ${lastName || ""} submitted a contact form inquiry`,
+      link: `/admin/leads`,
     });
 
     return { success: true, lead };

@@ -38,7 +38,7 @@ export default function AdminLayout({ children }) {
     <TooltipProvider>
       <div className="flex min-h-screen bg-zinc-900">
         <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col">
           <Header onMenuClick={() => setMobileOpen(true)} />
           <main className="flex-1 overflow-y-auto p-6">{children}</main>
         </div>

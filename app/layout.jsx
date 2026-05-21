@@ -4,6 +4,7 @@ import { ThemeProvider } from "./providers/ThemeProvider";
 import { CartProvider } from "./context/CartContext";
 import { MotionProvider } from "./components/MotionProvider";
 import { AuthProvider } from "./context/AuthContext";
+import NotificationWrapper from "./components/NotificationWrapper";
 import QueryProvider from "./providers/QueryProvider";
 
 const geistSans = localFont({
@@ -30,9 +31,11 @@ export default function RootLayout({ children }) {
         <QueryProvider>
           <ThemeProvider>
             <AuthProvider>
-              <CartProvider>
-                <MotionProvider>{children}</MotionProvider>
-              </CartProvider>
+              <NotificationWrapper>
+                <CartProvider>
+                  <MotionProvider>{children}</MotionProvider>
+                </CartProvider>
+              </NotificationWrapper>
             </AuthProvider>
           </ThemeProvider>
         </QueryProvider>
