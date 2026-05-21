@@ -31,7 +31,7 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const router = useRouter();
+  const { push } = useRouter();
   const prefersReducedMotion = useReducedMotion();
   const { register } = useAuth();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
@@ -73,7 +73,7 @@ export default function RegisterPage() {
     setSuccess(true);
     setIsLoading(false);
     setTimeout(() => {
-      router.push("/login");
+      push("/login");
     }, 3000);
   };
 

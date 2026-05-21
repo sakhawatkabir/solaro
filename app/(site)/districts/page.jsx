@@ -168,7 +168,7 @@ export default function DistrictsPage() {
                   className="bg-white rounded-2xl border border-ink/5 p-6 animate-pulse"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-zinc-200 rounded-full" />
+                    <div className="size-10 bg-zinc-200 rounded-full" />
                     <div className="space-y-2">
                       <div className="h-5 w-32 bg-zinc-200 rounded" />
                       <div className="h-4 w-24 bg-zinc-200 rounded" />

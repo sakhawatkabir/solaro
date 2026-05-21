@@ -28,7 +28,7 @@ export default function RecentLeads({ leads }) {
           className="text-sm text-emerald-400 hover:text-emerald-300 font-medium flex items-center gap-1"
         >
           View all
-          <ArrowUpRight className="w-4 h-4" />
+          <ArrowUpRight className="size-4" />
         </Link>
       </div>
       <div className="space-y-3">
@@ -43,7 +43,7 @@ export default function RecentLeads({ leads }) {
               className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50 hover:bg-zinc-800 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                <div className="size-9 rounded-full bg-emerald-500/10 flex items-center justify-center">
                   <span className="text-xs font-semibold text-emerald-400">
                     {lead.name
                       .split(" ")

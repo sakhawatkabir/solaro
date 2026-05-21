@@ -34,7 +34,7 @@ async function fetchSession() {
 }
 
 export function AuthProvider({ children }) {
-  const router = useRouter();
+  const { push } = useRouter();
   const queryClient = useQueryClient();
 
   const {
@@ -81,7 +81,7 @@ export function AuthProvider({ children }) {
     onSuccess: () => {
       queryClient.setQueryData(["session"], { authenticated: false });
       queryClient.invalidateQueries({ queryKey: ["session"] });
-      router.push("/login");
+      push("/login");
     },
   });
 

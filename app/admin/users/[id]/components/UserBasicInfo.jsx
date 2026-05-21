@@ -121,17 +121,17 @@ function ResendActivation({ userId, email }) {
     >
       {sent ? (
         <>
-          <CheckCircle className="w-4 h-4 text-emerald-400" />
+          <CheckCircle className="size-4 text-emerald-400" />
           Sent to {email}
         </>
       ) : sending ? (
         <>
-          <Loader2 className="w-4 h-4 animate-spin" />
+          <Loader2 className="size-4 animate-spin" />
           Sending...
         </>
       ) : (
         <>
-          <Mail className="w-4 h-4" />
+          <Mail className="size-4" />
           Resend Activation Email
         </>
       )}

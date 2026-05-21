@@ -23,7 +23,7 @@ const defaultFormData = {
 };
 
 export default function UserFormPage({ params }) {
-  const router = useRouter();
+  const { push } = useRouter();
   const queryClient = useQueryClient();
   const isEdit = params && params.id && params.id !== "new";
   const [saving, setSaving] = useState(false);
@@ -52,9 +52,9 @@ export default function UserFormPage({ params }) {
   useEffect(() => {
     if (isLoading) return;
     if (isEdit && !userData) {
-      router.push("/admin/users");
+      push("/admin/users");
     }
-  }, [isEdit, userData, isLoading, router]);
+  }, [isEdit, userData, isLoading, push]);
 
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -85,7 +85,7 @@ export default function UserFormPage({ params }) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-users"]);
-      router.push("/admin/users");
+      push("/admin/users");
     },
     onError: (err) => {
       setError(err.message);
@@ -102,7 +102,7 @@ export default function UserFormPage({ params }) {
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-user", params.id]);
       queryClient.invalidateQueries(["admin-users"]);
-      router.push("/admin/users");
+      push("/admin/users");
     },
     onError: (err) => {
       setError(err.message);
@@ -114,7 +114,7 @@ export default function UserFormPage({ params }) {
     mutationFn: () => deleteUser(params.id),
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-users"]);
-      router.push("/admin/users");
+      push("/admin/users");
     },
   });
 

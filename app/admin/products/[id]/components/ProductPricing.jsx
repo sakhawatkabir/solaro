@@ -12,7 +12,7 @@ export default function ProductPricing({ formData, updateField }) {
             Original Price (৳)
           </label>
           <div className="relative">
-            <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
             <input
               type="number"
               value={formData.originalPrice}
@@ -27,7 +27,7 @@ export default function ProductPricing({ formData, updateField }) {
             Price (৳)
           </label>
           <div className="relative">
-            <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
             <input
               type="number"
               value={formData.price}
@@ -42,7 +42,7 @@ export default function ProductPricing({ formData, updateField }) {
             Stock Quantity
           </label>
           <div className="relative">
-            <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <Hash className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
             <input
               type="number"
               value={formData.stock}

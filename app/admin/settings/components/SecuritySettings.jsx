@@ -37,9 +37,9 @@ export default function SecuritySettings() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
               >
                 {showCurrent ? (
-                  <EyeOff className="w-4 h-4" />
+                  <EyeOff className="size-4" />
                 ) : (
-                  <Eye className="w-4 h-4" />
+                  <Eye className="size-4" />
                 )}
               </button>
             </div>
@@ -60,9 +60,9 @@ export default function SecuritySettings() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
               >
                 {showNew ? (
-                  <EyeOff className="w-4 h-4" />
+                  <EyeOff className="size-4" />
                 ) : (
-                  <Eye className="w-4 h-4" />
+                  <Eye className="size-4" />
                 )}
               </button>
             </div>
@@ -83,16 +83,16 @@ export default function SecuritySettings() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
               >
                 {showConfirm ? (
-                  <EyeOff className="w-4 h-4" />
+                  <EyeOff className="size-4" />
                 ) : (
-                  <Eye className="w-4 h-4" />
+                  <Eye className="size-4" />
                 )}
               </button>
             </div>
           </div>
           <div className="flex justify-end pt-4 border-t border-zinc-800">
             <button className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-medium transition-colors">
-              <Key className="w-4 h-4" />
+              <Key className="size-4" />
               Update Password
             </button>
           </div>
@@ -107,7 +107,7 @@ export default function SecuritySettings() {
         <div className="space-y-5">
           <div className="flex items-center justify-between py-3">
             <div className="flex items-center gap-3">
-              <Shield className="w-5 h-5 text-zinc-400" />
+              <Shield className="size-5 text-zinc-400" />
               <div>
                 <div className="text-sm font-medium text-zinc-200">
                   Two-Factor Authentication
@@ -124,7 +124,7 @@ export default function SecuritySettings() {
               }`}
             >
               <div
-                className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                className={`absolute top-0.5 left-0.5 size-5 bg-white rounded-full transition-transform ${
                   twoFactor ? "translate-x-5" : "translate-x-0"
                 }`}
               />
@@ -147,7 +147,7 @@ export default function SecuritySettings() {
           </div>
           <div className="flex justify-end pt-4 border-t border-zinc-800">
             <button className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-medium transition-colors">
-              <Save className="w-4 h-4" />
+              <Save className="size-4" />
               Save Changes
             </button>
           </div>

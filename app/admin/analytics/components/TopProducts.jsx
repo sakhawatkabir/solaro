@@ -42,7 +42,7 @@ export default function TopProducts({ products }) {
               >
                 <td className="py-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                    <div className="size-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
                       <span className="text-xs font-bold text-emerald-400">
                         {index + 1}
                       </span>
@@ -59,7 +59,7 @@ export default function TopProducts({ products }) {
                 </td>
                 <td className="py-3">
                   <div className="flex items-center gap-1.5 text-sm text-zinc-300">
-                    <ShoppingBag className="w-3.5 h-3.5" />
+                    <ShoppingBag className="size-3.5" />
                     <span className="font-medium">{product.sales}</span>
                   </div>
                 </td>

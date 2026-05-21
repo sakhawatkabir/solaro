@@ -10,10 +10,10 @@ export default function UserDetailHeader({ userName }) {
         href="/admin/users"
         className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
       >
-        <ArrowLeft className="w-5 h-5" />
+        <ArrowLeft className="size-5" />
       </Link>
       <div>
-        <h1 className="text-2xl font-bold text-white">User Details</h1>
+        <h1 className="text-2xl font-semibold text-white">User Details</h1>
         <p className="text-sm text-zinc-400 mt-1">{userName}</p>
       </div>
     </div>

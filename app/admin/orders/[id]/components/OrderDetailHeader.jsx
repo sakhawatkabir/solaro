@@ -23,14 +23,14 @@ export default function OrderDetailHeader({
         >
           Orders
         </Link>
-        <ChevronRight className="w-4 h-4" />
+        <ChevronRight className="size-4" />
         <span className="text-emerald-400 font-medium">
           {order.orderNumber}
         </span>
       </div>
       <div className="flex items-center gap-2">
         <button className="flex items-center gap-2 px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white text-sm transition-colors">
-          <Download className="w-4 h-4" />
+          <Download className="size-4" />
           Export
         </button>
         {!isCancelled && (
@@ -42,7 +42,7 @@ export default function OrderDetailHeader({
             >
               <StatusBadge status={order.status.toLowerCase()} />
               <span>Update</span>
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="size-4" />
             </button>
             {showStatusDropdown && (
               <div className="absolute top-full right-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-xl z-10">

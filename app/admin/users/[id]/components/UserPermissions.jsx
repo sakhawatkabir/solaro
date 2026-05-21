@@ -46,13 +46,13 @@ export default function UserPermissions({ permissions, onToggle }) {
             >
               <div
                 className={`
-                  w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5
+                  size-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5
                   ${isActive ? "bg-emerald-500" : "bg-zinc-700"}
                 `}
               >
                 {isActive && (
                   <svg
-                    className="w-3.5 h-3.5 text-white"
+                    className="size-3.5 text-white"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"

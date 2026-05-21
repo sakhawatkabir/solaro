@@ -26,7 +26,7 @@ export default function RecentOrdersTable({ orders }) {
           className="text-sm text-emerald-400 hover:text-emerald-300 font-medium flex items-center gap-1"
         >
           View all
-          <ArrowUpRight className="w-4 h-4" />
+          <ArrowUpRight className="size-4" />
         </Link>
       </div>
       <div className="overflow-x-auto">
@@ -94,7 +94,7 @@ export default function RecentOrdersTable({ orders }) {
                   </td>
                   <td className="px-6 py-4 hidden lg:table-cell">
                     <div className="flex items-center gap-1.5 text-sm text-zinc-400">
-                      <MapPin className="w-3.5 h-3.5" />
+                      <MapPin className="size-3.5" />
                       {order.district || "—"}
                     </div>
                   </td>

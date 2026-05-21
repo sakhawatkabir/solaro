@@ -28,7 +28,7 @@ const defaultFormData = {
 };
 
 export default function CustomerFormPage({ params }) {
-  const router = useRouter();
+  const { push } = useRouter();
   const queryClient = useQueryClient();
   const isEdit = params && params.id && params.id !== "new";
   const [saving, setSaving] = useState(false);
@@ -61,9 +61,9 @@ export default function CustomerFormPage({ params }) {
   useEffect(() => {
     if (isLoading) return;
     if (isEdit && !customerData) {
-      router.push("/admin/customers");
+      push("/admin/customers");
     }
-  }, [isEdit, customerData, isLoading, router]);
+  }, [isEdit, customerData, isLoading, push]);
 
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -95,7 +95,7 @@ export default function CustomerFormPage({ params }) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-customers"]);
-      router.push("/admin/customers");
+      push("/admin/customers");
     },
     onError: (err) => {
       setError(err.message);
@@ -112,7 +112,7 @@ export default function CustomerFormPage({ params }) {
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-customer", params.id]);
       queryClient.invalidateQueries(["admin-customers"]);
-      router.push("/admin/customers");
+      push("/admin/customers");
     },
     onError: (err) => {
       setError(err.message);
@@ -124,7 +124,7 @@ export default function CustomerFormPage({ params }) {
     mutationFn: () => deleteCustomer(params.id),
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-customers"]);
-      router.push("/admin/customers");
+      push("/admin/customers");
     },
   });
 

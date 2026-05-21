@@ -8,8 +8,8 @@ export default function OrderCustomerInfo({ order }) {
       <h3 className="text-lg font-semibold text-white mb-4">Customer</h3>
       <div className="space-y-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
-            <User className="w-5 h-5 text-emerald-400" />
+          <div className="size-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+            <User className="size-5 text-emerald-400" />
           </div>
           <div>
             <p className="text-sm font-medium text-white">
@@ -19,8 +19,8 @@ export default function OrderCustomerInfo({ order }) {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
-            <Mail className="w-5 h-5 text-blue-400" />
+          <div className="size-10 rounded-full bg-blue-500/10 flex items-center justify-center">
+            <Mail className="size-5 text-blue-400" />
           </div>
           <div>
             <p className="text-sm text-white">{order.customerEmail}</p>
@@ -29,8 +29,8 @@ export default function OrderCustomerInfo({ order }) {
         </div>
         {order.customerPhone && (
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-              <Phone className="w-5 h-5 text-purple-400" />
+            <div className="size-10 rounded-full bg-purple-500/10 flex items-center justify-center">
+              <Phone className="size-5 text-purple-400" />
             </div>
             <div>
               <p className="text-sm text-white">{order.customerPhone}</p>
@@ -40,8 +40,8 @@ export default function OrderCustomerInfo({ order }) {
         )}
         {order.district && (
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-orange-400" />
+            <div className="size-10 rounded-full bg-orange-500/10 flex items-center justify-center">
+              <MapPin className="size-5 text-orange-400" />
             </div>
             <div>
               <p className="text-sm text-white">{order.district}</p>
@@ -51,8 +51,8 @@ export default function OrderCustomerInfo({ order }) {
         )}
         {order.shippingAddress && (
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0">
-              <Home className="w-5 h-5 text-cyan-400" />
+            <div className="size-10 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0">
+              <Home className="size-5 text-cyan-400" />
             </div>
             <div>
               <p className="text-sm text-white">{order.shippingAddress}</p>

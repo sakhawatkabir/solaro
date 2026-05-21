@@ -18,7 +18,7 @@ const defaultFormData = {
 };
 
 export default function DistrictFormPage({ params }) {
-  const router = useRouter();
+  const { push } = useRouter();
   const queryClient = useQueryClient();
   const isEdit = params && params.id && params.id !== "new";
   const [saving, setSaving] = useState(false);
@@ -48,9 +48,9 @@ export default function DistrictFormPage({ params }) {
   useEffect(() => {
     if (isLoading) return;
     if (isEdit && !districtData) {
-      router.push("/admin/districts");
+      push("/admin/districts");
     }
-  }, [isEdit, districtData, isLoading, router]);
+  }, [isEdit, districtData, isLoading, push]);
 
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -79,7 +79,7 @@ export default function DistrictFormPage({ params }) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-districts"]);
-      router.push("/admin/districts");
+      push("/admin/districts");
     },
     onError: (err) => {
       setError(err.message);
@@ -96,7 +96,7 @@ export default function DistrictFormPage({ params }) {
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-district", params.id]);
       queryClient.invalidateQueries(["admin-districts"]);
-      router.push("/admin/districts");
+      push("/admin/districts");
     },
     onError: (err) => {
       setError(err.message);
@@ -108,7 +108,7 @@ export default function DistrictFormPage({ params }) {
     mutationFn: () => deleteDistrict(params.id),
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-districts"]);
-      router.push("/admin/districts");
+      push("/admin/districts");
     },
   });
 

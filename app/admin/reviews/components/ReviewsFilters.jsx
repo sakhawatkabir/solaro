@@ -13,7 +13,7 @@ export default function ReviewsFilters({
   return (
     <div className="flex flex-wrap items-center gap-3">
       <div className="relative flex-1 min-w-[200px]">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
         <input
           type="text"
           value={search}

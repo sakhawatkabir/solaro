@@ -64,7 +64,7 @@ export default function ReviewsTable({
                   colSpan={6}
                   className="px-6 py-12 text-center text-zinc-500"
                 >
-                  <Star className="w-10 h-10 mx-auto mb-3 text-zinc-700" />
+                  <Star className="size-10 mx-auto mb-3 text-zinc-700" />
                   <p className="text-sm">No reviews found</p>
                 </td>
               </tr>
@@ -89,7 +89,7 @@ export default function ReviewsTable({
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star
                           key={star}
-                          className={`w-4 h-4 ${
+                          className={`size-4 ${
                             star <= review.rating
                               ? "text-yellow-400 fill-yellow-400"
                               : "text-zinc-700"
@@ -136,7 +136,7 @@ export default function ReviewsTable({
                             className="p-1.5 rounded-lg text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 transition-colors"
                             title="Approve"
                           >
-                            <CheckCircle className="w-4 h-4" />
+                            <CheckCircle className="size-4" />
                           </button>
                           <button
                             onClick={() =>
@@ -145,7 +145,7 @@ export default function ReviewsTable({
                             className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors"
                             title="Reject"
                           >
-                            <XCircle className="w-4 h-4" />
+                            <XCircle className="size-4" />
                           </button>
                         </>
                       )}
@@ -158,14 +158,14 @@ export default function ReviewsTable({
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
                         title="View full comment"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="size-4" />
                       </button>
                       <button
                         onClick={() => setConfirmDelete(review)}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors"
                         title="Delete"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="size-4" />
                       </button>
                     </div>
                   </td>
@@ -209,7 +209,7 @@ export default function ReviewsTable({
                       onClick={() => setExpandedId(null)}
                       className="text-zinc-400 hover:text-white"
                     >
-                      <XCircle className="w-5 h-5" />
+                      <XCircle className="size-5" />
                     </button>
                   </div>
                   <div className="space-y-4">
@@ -228,7 +228,7 @@ export default function ReviewsTable({
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star
                             key={star}
-                            className={`w-4 h-4 ${
+                            className={`size-4 ${
                               star <= review.rating
                                 ? "text-yellow-400 fill-yellow-400"
                                 : "text-zinc-700"
@@ -297,7 +297,7 @@ export default function ReviewsTable({
                 }}
                 className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-500 transition-colors flex items-center gap-2"
               >
-                <Trash2 className="w-4 h-4" />
+                <Trash2 className="size-4" />
                 Delete
               </button>
             </div>

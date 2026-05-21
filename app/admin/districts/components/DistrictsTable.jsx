@@ -56,7 +56,7 @@ export default function DistrictsTable({
                   colSpan={7}
                   className="px-6 py-12 text-center text-zinc-500"
                 >
-                  <MapPin className="w-10 h-10 mx-auto mb-3 text-zinc-700" />
+                  <MapPin className="size-10 mx-auto mb-3 text-zinc-700" />
                   <p className="text-sm">No districts found</p>
                 </td>
               </tr>
@@ -68,8 +68,8 @@ export default function DistrictsTable({
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0">
-                        <MapPin className="w-5 h-5 text-zinc-500" />
+                      <div className="size-10 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                        <MapPin className="size-5 text-zinc-500" />
                       </div>
                       <Link
                         href={`/admin/districts/${district.id}`}
@@ -86,7 +86,7 @@ export default function DistrictsTable({
                   </td>
                   <td className="px-6 py-4 hidden sm:table-cell">
                     <div className="flex items-center gap-1.5">
-                      <Sun className="w-4 h-4" />
+                      <Sun className="size-4" />
                       <span
                         className={`text-sm font-medium ${potentialColors[district.solarPotential] || potentialColors.MEDIUM}`}
                       >
@@ -106,7 +106,7 @@ export default function DistrictsTable({
                   <td className="px-6 py-4 hidden lg:table-cell">
                     {district.population ? (
                       <div className="flex items-center gap-1.5">
-                        <Users className="w-4 h-4 text-zinc-500" />
+                        <Users className="size-4 text-zinc-500" />
                         <span className="text-sm text-zinc-300">
                           {district.population.toLocaleString()}
                         </span>
@@ -132,13 +132,13 @@ export default function DistrictsTable({
                         href={`/admin/districts/${district.id}`}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="size-4" />
                       </Link>
                       <button
                         onClick={() => onDelete(district.id)}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="size-4" />
                       </button>
                     </div>
                   </td>

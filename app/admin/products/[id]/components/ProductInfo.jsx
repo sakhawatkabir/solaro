@@ -14,11 +14,11 @@ export default function ProductInfo({ product }) {
       {/* Main info card */}
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
         <div className="flex items-start gap-4 mb-6">
-          <div className="w-16 h-16 rounded-xl bg-zinc-800 flex items-center justify-center">
-            <Package className="w-8 h-8 text-zinc-500" />
+          <div className="size-16 rounded-xl bg-zinc-800 flex items-center justify-center">
+            <Package className="size-8 text-zinc-500" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">{product.name}</h1>
+            <h1 className="text-xl font-semibold text-white">{product.name}</h1>
             <p className="text-sm text-zinc-400 mt-1">{product.id}</p>
           </div>
         </div>
@@ -26,7 +26,7 @@ export default function ProductInfo({ product }) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="p-4 rounded-lg bg-zinc-800/50">
             <div className="flex items-center gap-2 mb-2">
-              <DollarSign className="w-4 h-4 text-emerald-400" />
+              <DollarSign className="size-4 text-emerald-400" />
               <span className="text-xs text-zinc-400">Price</span>
             </div>
             <span className="text-lg font-bold text-white">
@@ -35,7 +35,7 @@ export default function ProductInfo({ product }) {
           </div>
           <div className="p-4 rounded-lg bg-zinc-800/50">
             <div className="flex items-center gap-2 mb-2">
-              <Package className="w-4 h-4 text-blue-400" />
+              <Package className="size-4 text-blue-400" />
               <span className="text-xs text-zinc-400">Stock</span>
             </div>
             <div className="flex items-center gap-2">
@@ -47,13 +47,13 @@ export default function ProductInfo({ product }) {
                 {product.stock}
               </span>
               {product.stock < 10 && (
-                <AlertTriangle className="w-4 h-4 text-orange-400" />
+                <AlertTriangle className="size-4 text-orange-400" />
               )}
             </div>
           </div>
           <div className="p-4 rounded-lg bg-zinc-800/50">
             <div className="flex items-center gap-2 mb-2">
-              <BarChart3 className="w-4 h-4 text-purple-400" />
+              <BarChart3 className="size-4 text-purple-400" />
               <span className="text-xs text-zinc-400">Sales</span>
             </div>
             <span className="text-lg font-bold text-white">
@@ -62,7 +62,7 @@ export default function ProductInfo({ product }) {
           </div>
           <div className="p-4 rounded-lg bg-zinc-800/50">
             <div className="flex items-center gap-2 mb-2">
-              <Tag className="w-4 h-4 text-orange-400" />
+              <Tag className="size-4 text-orange-400" />
               <span className="text-xs text-zinc-400">Category</span>
             </div>
             <span className="text-sm font-medium text-white">

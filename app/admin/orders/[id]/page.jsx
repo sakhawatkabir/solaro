@@ -47,7 +47,7 @@ export default function OrderDetailPage({ params }) {
   if (!order) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <Package className="w-16 h-16 text-zinc-700 mb-4" />
+        <Package className="size-16 text-zinc-700 mb-4" />
         <h2 className="text-xl font-semibold text-white mb-2">
           Order Not Found
         </h2>
@@ -90,7 +90,7 @@ export default function OrderDetailPage({ params }) {
         href="/admin/orders"
         className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" />
+        <ArrowLeft className="size-4" />
         Back to Orders
       </Link>
     </div>

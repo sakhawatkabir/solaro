@@ -46,11 +46,11 @@ export default function OrderStatusCard({ order }) {
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-            <Package className="w-6 h-6 text-emerald-400" />
+          <div className="size-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+            <Package className="size-6 text-emerald-400" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">
+            <h1 className="text-xl font-semibold text-white">
               {order.orderNumber}
             </h1>
             <div className="flex items-center gap-3 mt-1">
@@ -79,13 +79,13 @@ export default function OrderStatusCard({ order }) {
                 <div key={step.status} className="flex items-center flex-1">
                   <div className="flex flex-col items-center">
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      className={`size-10 rounded-full flex items-center justify-center ${
                         isActive
                           ? "bg-emerald-500/10 text-emerald-400"
                           : "bg-zinc-800 text-zinc-600"
                       }`}
                     >
-                      <Icon className="w-5 h-5" />
+                      <Icon className="size-5" />
                     </div>
                     <span
                       className={`text-xs mt-2 ${
@@ -113,7 +113,7 @@ export default function OrderStatusCard({ order }) {
 
       {isCancelled && (
         <div className="mt-8 pt-6 border-t border-zinc-800 flex items-center gap-3 text-red-400">
-          <XCircle className="w-5 h-5" />
+          <XCircle className="size-5" />
           <span className="text-sm">This order has been cancelled.</span>
         </div>
       )}

@@ -9,7 +9,7 @@ import LeadPipelineStatus from "./components/LeadPipelineStatus";
 import LeadDangerZone from "./components/LeadDangerZone";
 
 export default function LeadDetailPage({ params }) {
-  const router = useRouter();
+  const { push } = useRouter();
   const queryClient = useQueryClient();
 
   const { data: leadData, isLoading } = useQuery({
@@ -23,7 +23,7 @@ export default function LeadDetailPage({ params }) {
     mutationFn: () => deleteLead(params.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-leads"] });
-      router.push("/admin/leads");
+      push("/admin/leads");
     },
   });
 

@@ -25,7 +25,7 @@ export default function LoginForm() {
   const [error, setError] = useState("");
   const [requiresVerification, setRequiresVerification] = useState(false);
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const { push } = useRouter();
   const prefersReducedMotion = useReducedMotion();
   const { login } = useAuth();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
@@ -66,11 +66,11 @@ export default function LoginForm() {
 
     const callbackUrl = searchParams.get("callbackUrl");
     if (callbackUrl) {
-      router.push(callbackUrl);
+      push(callbackUrl);
     } else if (result.user.role === "VIEWER") {
-      router.push("/dashboard");
+      push("/dashboard");
     } else {
-      router.push("/admin");
+      push("/admin");
     }
   };
 

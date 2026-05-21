@@ -108,18 +108,18 @@ export default function AdminNotificationsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Notifications</h1>
+          <h1 className="text-2xl font-semibold text-white">Notifications</h1>
           <p className="text-sm text-zinc-400 mt-1">{total} total notifications</p>
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1 text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-lg text-sm">
-            <Bell className="w-4 h-4" />
+            <Bell className="size-4" />
             <span className="font-semibold">{total}</span>
             <span className="text-zinc-400">total</span>
           </div>
           {unreadCount > 0 && (
             <div className="flex items-center gap-1 text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-lg text-sm">
-              <Bell className="w-4 h-4" />
+              <Bell className="size-4" />
               <span className="font-semibold">{unreadCount}</span>
               <span className="text-zinc-400">unread</span>
             </div>
@@ -130,7 +130,7 @@ export default function AdminNotificationsPage() {
       {/* Filters */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="relative flex-1 min-w-[200px] max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
           <Input
             placeholder="Search notifications..."
             value={search}
@@ -149,7 +149,7 @@ export default function AdminNotificationsPage() {
           }}
         >
           <SelectTrigger className="w-[160px] bg-zinc-900 border-zinc-800 text-zinc-300">
-            <Filter className="w-4 h-4 mr-2" />
+            <Filter className="size-4 mr-2" />
             <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent className="bg-zinc-900 border-zinc-800 text-zinc-300">
@@ -181,7 +181,7 @@ export default function AdminNotificationsPage() {
             onClick={handleMarkAllRead}
             className="px-3 py-2 rounded-lg text-sm font-medium text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 transition-colors flex items-center gap-1.5"
           >
-            <Check className="w-4 h-4" />
+            <Check className="size-4" />
             Mark all read
           </button>
         )}
@@ -190,7 +190,7 @@ export default function AdminNotificationsPage() {
             onClick={() => setConfirmClearAll(true)}
             className="px-3 py-2 rounded-lg text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors flex items-center gap-1.5"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="size-4" />
             Clear all
           </button>
         )}
@@ -200,11 +200,11 @@ export default function AdminNotificationsPage() {
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
         {isLoading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="w-6 h-6 text-zinc-500 animate-spin" />
+            <Loader2 className="size-6 text-zinc-500 animate-spin" />
           </div>
         ) : notifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16">
-            <Bell className="w-12 h-12 text-zinc-700 mb-4" />
+            <Bell className="size-12 text-zinc-700 mb-4" />
             <p className="text-zinc-500">No notifications found</p>
           </div>
         ) : (
@@ -223,7 +223,7 @@ export default function AdminNotificationsPage() {
                       typeColors[n.type] || typeColors.SYSTEM
                     }`}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="size-5" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
@@ -259,7 +259,7 @@ export default function AdminNotificationsPage() {
                         className="p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors"
                         title="Go to source"
                       >
-                        <ArrowUpRight className="w-4 h-4" />
+                        <ArrowUpRight className="size-4" />
                       </button>
                     )}
                     {!n.read && (
@@ -268,7 +268,7 @@ export default function AdminNotificationsPage() {
                         className="p-2 rounded-lg text-zinc-500 hover:text-emerald-400 hover:bg-zinc-800 transition-colors"
                         title="Mark as read"
                       >
-                        <Check className="w-4 h-4" />
+                        <Check className="size-4" />
                       </button>
                     )}
                     <button
@@ -276,7 +276,7 @@ export default function AdminNotificationsPage() {
                       className="p-2 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-zinc-800 transition-colors"
                       title="Delete"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="size-4" />
                     </button>
                   </div>
                 </div>
@@ -334,7 +334,7 @@ export default function AdminNotificationsPage() {
                 onClick={handleDelete}
                 className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-500 transition-colors flex items-center gap-2"
               >
-                <Trash2 className="w-4 h-4" />
+                <Trash2 className="size-4" />
                 Delete
               </button>
             </div>
@@ -364,7 +364,7 @@ export default function AdminNotificationsPage() {
                 onClick={handleDeleteAll}
                 className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-500 transition-colors flex items-center gap-2"
               >
-                <Trash2 className="w-4 h-4" />
+                <Trash2 className="size-4" />
                 Clear All
               </button>
             </div>

@@ -123,7 +123,7 @@ export default function PaymentSettings() {
         )}
         <div className="flex justify-end pt-4 border-t border-zinc-800">
           <button className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-medium transition-colors">
-            <Save className="w-4 h-4" />
+            <Save className="size-4" />
             Save Changes
           </button>
         </div>

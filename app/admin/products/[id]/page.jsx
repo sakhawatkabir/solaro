@@ -30,7 +30,7 @@ const defaultFormData = {
 };
 
 export default function ProductFormPage({ params }) {
-  const router = useRouter();
+  const { push } = useRouter();
   const queryClient = useQueryClient();
   const isEdit = params && params.id && params.id !== "new";
   const [saving, setSaving] = useState(false);
@@ -70,9 +70,9 @@ export default function ProductFormPage({ params }) {
   useEffect(() => {
     if (isLoading) return;
     if (isEdit && !productData) {
-      router.push("/admin/products");
+      push("/admin/products");
     }
-  }, [isEdit, productData, isLoading, router]);
+  }, [isEdit, productData, isLoading, push]);
 
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -139,7 +139,7 @@ export default function ProductFormPage({ params }) {
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-products"]);
       queryClient.invalidateQueries(["admin-products-summary"]);
-      router.push("/admin/products");
+      push("/admin/products");
     },
     onError: (err) => {
       setError(err.message);
@@ -157,7 +157,7 @@ export default function ProductFormPage({ params }) {
       queryClient.invalidateQueries(["admin-product", params.id]);
       queryClient.invalidateQueries(["admin-products"]);
       queryClient.invalidateQueries(["admin-products-summary"]);
-      router.push("/admin/products");
+      push("/admin/products");
     },
     onError: (err) => {
       setError(err.message);
@@ -170,7 +170,7 @@ export default function ProductFormPage({ params }) {
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-products"]);
       queryClient.invalidateQueries(["admin-products-summary"]);
-      router.push("/admin/products");
+      push("/admin/products");
     },
   });
 

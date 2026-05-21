@@ -10,8 +10,8 @@ export default function PaymentMethod({
   return (
     <div className="flex items-center justify-between p-4 rounded-xl bg-zinc-800 border border-zinc-700">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-          <Icon className="w-5 h-5 text-emerald-400" />
+        <div className="size-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+          <Icon className="size-5 text-emerald-400" />
         </div>
         <div>
           <div className="text-sm font-medium text-zinc-200">{name}</div>
@@ -25,7 +25,7 @@ export default function PaymentMethod({
         }`}
       >
         <div
-          className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+          className={`absolute top-0.5 left-0.5 size-5 bg-white rounded-full transition-transform ${
             enabled ? "translate-x-5" : "translate-x-0"
           }`}
         />

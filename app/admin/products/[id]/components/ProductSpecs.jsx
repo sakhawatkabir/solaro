@@ -34,7 +34,7 @@ export default function ProductSpecs({
               onClick={() => onRemoveSpec(index)}
               className="p-2 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors"
             >
-              <X className="w-4 h-4" />
+              <X className="size-4" />
             </button>
           </div>
         ))}
@@ -59,7 +59,7 @@ export default function ProductSpecs({
             onClick={onAddSpec}
             className="p-2 rounded-lg text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 transition-colors"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="size-4" />
           </button>
         </div>
       </div>

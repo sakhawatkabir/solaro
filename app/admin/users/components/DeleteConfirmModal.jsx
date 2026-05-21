@@ -10,8 +10,8 @@ export default function DeleteConfirmModal({ user, onConfirm, onClose }) {
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
-                <AlertTriangle className="w-5 h-5 text-red-400" />
+              <div className="size-10 rounded-full bg-red-500/10 flex items-center justify-center">
+                <AlertTriangle className="size-5 text-red-400" />
               </div>
               <h3 className="text-lg font-semibold text-white">Delete User</h3>
             </div>
@@ -19,7 +19,7 @@ export default function DeleteConfirmModal({ user, onConfirm, onClose }) {
               onClick={onClose}
               className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
             >
-              <X className="w-5 h-5" />
+              <X className="size-5" />
             </button>
           </div>
 
@@ -28,7 +28,7 @@ export default function DeleteConfirmModal({ user, onConfirm, onClose }) {
               Are you sure you want to delete this user?
             </p>
             <div className="flex items-center gap-2 text-sm text-zinc-400">
-              <div className="w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
+              <div className="size-6 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
                 <span className="text-xs font-semibold text-zinc-300">
                   {user.name
                     .split(" ")
@@ -56,7 +56,7 @@ export default function DeleteConfirmModal({ user, onConfirm, onClose }) {
               onClick={onConfirm}
               className="flex items-center gap-2 px-5 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium transition-colors"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="size-4" />
               Delete User
             </button>
           </div>

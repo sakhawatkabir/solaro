@@ -53,14 +53,14 @@ export default function TablePagination({
           disabled={currentPage === 1}
           className="text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-30"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="size-4" />
         </Button>
 
         {getPages().map((page, i) =>
           page === "..." ? (
             <span
               key={`ellipsis-${i}`}
-              className="w-8 h-8 flex items-center justify-center text-sm text-zinc-500"
+              className="size-8 flex items-center justify-center text-sm text-zinc-500"
             >
               ...
             </span>
@@ -70,7 +70,7 @@ export default function TablePagination({
               variant="ghost"
               size="sm"
               onClick={() => onPageChange(page)}
-              className={`w-8 h-8 p-0 text-sm font-medium ${
+              className={`size-8 p-0 text-sm font-medium ${
                 currentPage === page
                   ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
                   : "text-zinc-400 hover:text-white hover:bg-zinc-800"
@@ -88,7 +88,7 @@ export default function TablePagination({
           disabled={currentPage === totalPages}
           className="text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-30"
         >
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="size-4" />
         </Button>
       </div>
     </div>

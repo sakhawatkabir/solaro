@@ -97,7 +97,7 @@ export default function ProfilePage() {
           onClick={editing ? () => setEditing(false) : handleEdit}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-ink-faint text-sm text-ink-mid hover:bg-cream transition-colors"
         >
-          <Edit2 className="w-3.5 h-3.5" />
+          <Edit2 className="size-3.5" />
           {editing ? "Cancel" : "Edit"}
         </button>
       </div>
@@ -119,7 +119,7 @@ export default function ProfilePage() {
       <div className="bg-white rounded-xl border border-ink-faint/50 divide-y divide-ink-faint/50">
         {/* Avatar + Name */}
         <div className="flex items-center gap-4 p-5">
-          <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center">
+          <div className="size-14 rounded-full bg-accent/10 flex items-center justify-center">
             <span className="text-lg font-semibold text-accent">
               {initials}
             </span>
@@ -148,7 +148,7 @@ export default function ProfilePage() {
               />
             ) : (
               <div className="flex items-center gap-2 text-sm text-ink">
-                <User className="w-4 h-4 text-ink-light" />
+                <User className="size-4 text-ink-light" />
                 {user.name || "Not set"}
               </div>
             )}
@@ -159,7 +159,7 @@ export default function ProfilePage() {
               Email
             </label>
             <div className="flex items-center gap-2 text-sm text-ink">
-              <Mail className="w-4 h-4 text-ink-light" />
+              <Mail className="size-4 text-ink-light" />
               {user.email}
             </div>
           </div>
@@ -169,7 +169,7 @@ export default function ProfilePage() {
               Role
             </label>
             <div className="flex items-center gap-2 text-sm text-ink capitalize">
-              <Shield className="w-4 h-4 text-ink-light" />
+              <Shield className="size-4 text-ink-light" />
               {user.role?.toLowerCase()}
             </div>
           </div>
@@ -187,7 +187,7 @@ export default function ProfilePage() {
                 }`}
               >
                 <span
-                  className={`w-1.5 h-1.5 rounded-full ${
+                  className={`size-1.5 rounded-full ${
                     user.status === "ACTIVE" ? "bg-green-500" : "bg-red-500"
                   }`}
                 />
@@ -214,7 +214,7 @@ export default function ProfilePage() {
                 <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  <Save className="w-3.5 h-3.5" />
+                  <Save className="size-3.5" />
                   Save Changes
                 </>
               )}

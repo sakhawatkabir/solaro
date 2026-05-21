@@ -13,7 +13,7 @@ export default function ProductDangerZone({ onDelete }) {
         onClick={onDelete}
         className="flex items-center gap-2 px-4 py-2.5 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500/20 text-sm font-medium transition-colors"
       >
-        <Trash2 className="w-4 h-4" />
+        <Trash2 className="size-4" />
         Delete Product
       </button>
     </div>

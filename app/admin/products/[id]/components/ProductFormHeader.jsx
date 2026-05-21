@@ -18,7 +18,7 @@ export default function ProductFormHeader({
         >
           Products
         </Link>
-        <ChevronRight className="w-4 h-4" />
+        <ChevronRight className="size-4" />
         <span className="text-emerald-400 font-medium">
           {isEdit ? productName : "New Product"}
         </span>
@@ -26,7 +26,7 @@ export default function ProductFormHeader({
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-semibold text-white">
             {isEdit ? "Edit Product" : "Add New Product"}
           </h1>
           <p className="text-sm text-zinc-400 mt-1">
@@ -38,7 +38,7 @@ export default function ProductFormHeader({
             href="/admin/products"
             className="flex items-center gap-2 px-4 py-2.5 bg-zinc-800 text-zinc-300 rounded-lg hover:text-white text-sm transition-colors"
           >
-            <X className="w-4 h-4" />
+            <X className="size-4" />
             Cancel
           </Link>
           <button
@@ -49,7 +49,7 @@ export default function ProductFormHeader({
             {isSaving ? (
               <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
-              <Save className="w-4 h-4" />
+              <Save className="size-4" />
             )}
             {isEdit ? "Save Changes" : "Create Product"}
           </button>

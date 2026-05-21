@@ -4,7 +4,7 @@ export default function DashboardHeader({ dateRange, setDateRange }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
-        <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+        <h1 className="text-2xl font-semibold text-white">Dashboard</h1>
         <p className="text-sm text-zinc-400 mt-1">
           Overview of your solar business performance
         </p>

@@ -20,13 +20,13 @@ export default function DashboardLayout({ children }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, loading, logout } = useAuth();
-  const router = useRouter();
+  const { replace } = useRouter();
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace("/login");
+      replace("/login");
     }
-  }, [loading, user, router]);
+  }, [loading, user, replace]);
 
   const handleSignOut = async () => {
     await logout();
@@ -92,13 +92,13 @@ export default function DashboardLayout({ children }) {
             onClick={() => setMobileOpen(true)}
             className="lg:hidden text-ink-light hover:text-ink"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="size-5" />
           </button>
           <div className="ml-auto">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 hover:bg-gray-50 rounded-lg px-2 py-1.5 transition-colors">
-                  <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
+                  <div className="size-8 rounded-full bg-accent/10 flex items-center justify-center">
                     <span className="text-xs font-semibold text-accent">
                       {initials}
                     </span>
@@ -106,7 +106,7 @@ export default function DashboardLayout({ children }) {
                   <span className="hidden sm:block text-sm font-medium text-ink">
                     {user?.name || "User"}
                   </span>
-                  <ChevronDown className="w-4 h-4 text-ink-light hidden sm:block" />
+                  <ChevronDown className="size-4 text-ink-light hidden sm:block" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -127,7 +127,7 @@ export default function DashboardLayout({ children }) {
                   className="text-ink-mid hover:bg-emerald-500/10 hover:text-accent cursor-pointer focus:bg-emerald-500/10 focus:text-accent"
                 >
                   <Link href="/dashboard/profile">
-                    <User className="w-4 h-4" />
+                    <User className="size-4" />
                     Profile
                   </Link>
                 </DropdownMenuItem>
@@ -136,7 +136,7 @@ export default function DashboardLayout({ children }) {
                   className="text-ink-mid hover:bg-emerald-500/10 hover:text-accent cursor-pointer focus:bg-emerald-500/10 focus:text-accent"
                 >
                   <Link href="/dashboard/settings">
-                    <Settings className="w-4 h-4" />
+                    <Settings className="size-4" />
                     Settings
                   </Link>
                 </DropdownMenuItem>
@@ -145,7 +145,7 @@ export default function DashboardLayout({ children }) {
                   onClick={handleSignOut}
                   className="text-red-600 hover:bg-red-50 hover:text-red-700 cursor-pointer focus:bg-red-50 focus:text-red-700"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="size-4" />
                   Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>

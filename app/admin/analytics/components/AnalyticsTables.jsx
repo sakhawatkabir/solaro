@@ -19,7 +19,7 @@ export default function AnalyticsTables({ data }) {
       {/* Top Products */}
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
         <div className="flex items-center gap-2 mb-4">
-          <ShoppingBag className="w-5 h-5 text-emerald-400" />
+          <ShoppingBag className="size-5 text-emerald-400" />
           <h3 className="text-lg font-semibold text-white">Top Products</h3>
         </div>
         <div className="space-y-3">
@@ -52,7 +52,7 @@ export default function AnalyticsTables({ data }) {
       {/* Recent Leads */}
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
         <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-purple-400" />
+          <TrendingUp className="size-5 text-purple-400" />
           <h3 className="text-lg font-semibold text-white">Recent Leads</h3>
         </div>
         <div className="space-y-3">
@@ -78,7 +78,7 @@ export default function AnalyticsTables({ data }) {
       {/* Top Districts */}
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
         <div className="flex items-center gap-2 mb-4">
-          <MapPin className="w-5 h-5 text-orange-400" />
+          <MapPin className="size-5 text-orange-400" />
           <h3 className="text-lg font-semibold text-white">Top Districts</h3>
         </div>
         <div className="space-y-3">

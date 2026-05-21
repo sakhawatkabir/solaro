@@ -11,7 +11,7 @@ export default function ProductSidebar({ product }) {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-emerald-400" />
+              <TrendingUp className="size-4 text-emerald-400" />
               <span className="text-sm text-zinc-400">Revenue</span>
             </div>
             <span className="text-sm font-semibold text-white">
@@ -20,7 +20,7 @@ export default function ProductSidebar({ product }) {
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <ShoppingCart className="w-4 h-4 text-blue-400" />
+              <ShoppingCart className="size-4 text-blue-400" />
               <span className="text-sm text-zinc-400">Units Sold</span>
             </div>
             <span className="text-sm font-semibold text-white">
@@ -29,7 +29,7 @@ export default function ProductSidebar({ product }) {
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Package className="w-4 h-4 text-orange-400" />
+              <Package className="size-4 text-orange-400" />
               <span className="text-sm text-zinc-400">In Stock</span>
             </div>
             <span className="text-sm font-semibold text-white">
@@ -38,7 +38,7 @@ export default function ProductSidebar({ product }) {
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-purple-400" />
+              <Calendar className="size-4 text-purple-400" />
               <span className="text-sm text-zinc-400">Added</span>
             </div>
             <span className="text-sm text-white">Jan 2026</span>

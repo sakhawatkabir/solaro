@@ -103,9 +103,9 @@ export default function LeadInfoCard({ lead }) {
             return (
               <div key={key} className="flex items-center gap-3">
                 <div
-                  className={`w-10 h-10 rounded-full ${iconWrap} flex items-center justify-center flex-shrink-0`}
+                  className={`size-10 rounded-full ${iconWrap} flex items-center justify-center flex-shrink-0`}
                 >
-                  <Icon className={`w-5 h-5 ${iconColor}`} />
+                  <Icon className={`size-5 ${iconColor}`} />
                 </div>
                 <div>
                   <p

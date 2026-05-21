@@ -22,7 +22,7 @@ function Toggle({ checked, onChange }) {
       }`}
     >
       <div
-        className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
+        className={`absolute top-0.5 left-0.5 size-4 bg-white rounded-full shadow transition-transform ${
           checked ? "translate-x-5" : "translate-x-0"
         }`}
       />
@@ -96,7 +96,7 @@ export default function SettingsPage() {
       <div className="bg-white rounded-xl border border-ink-faint/50">
         <div className="px-5 py-4 border-b border-ink-faint/50">
           <h2 className="text-base font-semibold text-ink flex items-center gap-2">
-            <Bell className="w-4 h-4 text-ink-light" />
+            <Bell className="size-4 text-ink-light" />
             Notifications
           </h2>
         </div>
@@ -128,7 +128,7 @@ export default function SettingsPage() {
       <div className="bg-white rounded-xl border border-ink-faint/50">
         <div className="px-5 py-4 border-b border-ink-faint/50">
           <h2 className="text-base font-semibold text-ink flex items-center gap-2">
-            <Shield className="w-4 h-4 text-ink-light" />
+            <Shield className="size-4 text-ink-light" />
             Security
           </h2>
         </div>
@@ -149,7 +149,7 @@ export default function SettingsPage() {
       <div className="bg-white rounded-xl border border-ink-faint/50">
         <div className="px-5 py-4 border-b border-ink-faint/50">
           <h2 className="text-base font-semibold text-ink flex items-center gap-2">
-            <Lock className="w-4 h-4 text-ink-light" />
+            <Lock className="size-4 text-ink-light" />
             Change Password
           </h2>
         </div>
@@ -183,9 +183,9 @@ export default function SettingsPage() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-light"
               >
                 {showCurrent ? (
-                  <EyeOff className="w-4 h-4" />
+                  <EyeOff className="size-4" />
                 ) : (
-                  <Eye className="w-4 h-4" />
+                  <Eye className="size-4" />
                 )}
               </button>
             </div>
@@ -207,9 +207,9 @@ export default function SettingsPage() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-light"
               >
                 {showNew ? (
-                  <EyeOff className="w-4 h-4" />
+                  <EyeOff className="size-4" />
                 ) : (
-                  <Eye className="w-4 h-4" />
+                  <Eye className="size-4" />
                 )}
               </button>
             </div>
@@ -231,9 +231,9 @@ export default function SettingsPage() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-light"
               >
                 {showConfirm ? (
-                  <EyeOff className="w-4 h-4" />
+                  <EyeOff className="size-4" />
                 ) : (
-                  <Eye className="w-4 h-4" />
+                  <Eye className="size-4" />
                 )}
               </button>
             </div>
@@ -248,7 +248,7 @@ export default function SettingsPage() {
                 <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  <Save className="w-3.5 h-3.5" />
+                  <Save className="size-3.5" />
                   Update Password
                 </>
               )}

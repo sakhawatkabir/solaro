@@ -14,7 +14,7 @@ export default function ProductDetailHeader({ product }) {
         >
           Products
         </Link>
-        <ChevronRight className="w-4 h-4" />
+        <ChevronRight className="size-4" />
         <span className="text-emerald-400 font-medium">{product.name}</span>
       </div>
       <div className="flex items-center gap-2">
@@ -23,11 +23,11 @@ export default function ProductDetailHeader({ product }) {
           href={`/admin/products/${product.id}/edit`}
           className="flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 text-sm transition-colors"
         >
-          <Edit3 className="w-4 h-4" />
+          <Edit3 className="size-4" />
           Edit
         </Link>
         <button className="p-2 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors">
-          <Trash2 className="w-4 h-4" />
+          <Trash2 className="size-4" />
         </button>
       </div>
     </div>

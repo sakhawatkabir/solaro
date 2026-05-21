@@ -19,7 +19,7 @@ function Toggle({ checked, onChange, label, description }) {
         }`}
       >
         <div
-          className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+          className={`absolute top-0.5 left-0.5 size-5 bg-white rounded-full transition-transform ${
             checked ? "translate-x-5" : "translate-x-0"
           }`}
         />
@@ -102,7 +102,7 @@ export default function NotificationSettings() {
         </div>
         <div className="flex justify-end pt-4 border-t border-zinc-800">
           <button className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-medium transition-colors">
-            <Save className="w-4 h-4" />
+            <Save className="size-4" />
             Save Changes
           </button>
         </div>

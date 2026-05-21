@@ -22,7 +22,7 @@ export default function TwoFactorForm() {
   const [success, setSuccess] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const { push } = useRouter();
   const prefersReducedMotion = useReducedMotion();
   const { verify2FA, resend2FACode } = useAuth();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
@@ -65,9 +65,9 @@ export default function TwoFactorForm() {
     setIsLoading(false);
     setTimeout(() => {
       if (result.user.role === "VIEWER") {
-        router.push("/dashboard");
+        push("/dashboard");
       } else {
-        router.push("/admin");
+        push("/admin");
       }
     }, 1500);
   };
@@ -107,7 +107,7 @@ export default function TwoFactorForm() {
             Back to login
           </Link>
 
-          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 mb-6">
+          <div className="flex items-center justify-center size-16 rounded-full bg-accent/10 mb-6">
             <Shield size={32} className="text-accent" />
           </div>
 

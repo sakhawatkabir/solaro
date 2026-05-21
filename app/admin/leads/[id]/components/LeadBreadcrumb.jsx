@@ -9,7 +9,7 @@ export default function LeadBreadcrumb({ name }) {
       <Link href="/admin/leads" className="hover:text-white transition-colors">
         Leads
       </Link>
-      <ChevronRight className="w-4 h-4" />
+      <ChevronRight className="size-4" />
       <span className="text-emerald-400 font-medium">{name}</span>
     </div>
   );

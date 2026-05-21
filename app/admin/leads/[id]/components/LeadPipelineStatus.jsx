@@ -12,7 +12,7 @@ export default function LeadPipelineStatus({ lead }) {
         {lead.message && (
           <div className="bg-zinc-800/50 rounded-lg p-4">
             <div className="flex items-center gap-2 mb-2">
-              <MessageSquare className="w-4 h-4 text-emerald-400" />
+              <MessageSquare className="size-4 text-emerald-400" />
               <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
                 Customer Message
               </span>
@@ -25,7 +25,7 @@ export default function LeadPipelineStatus({ lead }) {
         {lead.notes && (
           <div className="bg-zinc-800/50 rounded-lg p-4">
             <div className="flex items-center gap-2 mb-2">
-              <FileText className="w-4 h-4 text-blue-400" />
+              <FileText className="size-4 text-blue-400" />
               <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
                 Internal Notes
               </span>

@@ -19,8 +19,8 @@ export default function OrderItems({ order }) {
             className="flex items-center justify-between p-4 rounded-lg bg-zinc-800/50"
           >
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-zinc-800 flex items-center justify-center">
-                <Package className="w-6 h-6 text-zinc-400" />
+              <div className="size-12 rounded-lg bg-zinc-800 flex items-center justify-center">
+                <Package className="size-6 text-zinc-400" />
               </div>
               <div>
                 <p className="text-sm font-medium text-white">{item.name}</p>

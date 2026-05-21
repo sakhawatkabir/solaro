@@ -108,8 +108,8 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
     <>
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 h-16 border-b border-zinc-800">
-        <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-emerald-500/10">
-          <Sun className="w-5 h-5 text-emerald-400" />
+        <div className="flex items-center justify-center size-9 rounded-lg bg-emerald-500/10">
+          <Sun className="size-5 text-emerald-400" />
         </div>
         {(!collapsed || mobileOpen) && (
           <span className="text-lg font-bold text-white tracking-tight">
@@ -122,7 +122,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
             onClick={() => setMobileOpen(false)}
             className="ml-auto lg:hidden text-zinc-400 hover:text-white"
           >
-            <X className="w-5 h-5" />
+            <X className="size-5" />
           </button>
         )}
       </div>
@@ -146,7 +146,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                   : "text-zinc-400 hover:text-white hover:bg-zinc-800",
               )}
             >
-              <item.icon className="w-5 h-5 flex-shrink-0" />
+              <item.icon className="size-5 flex-shrink-0" />
               {(!collapsed || mobileOpen) && <span>{item.label}</span>}
             </Link>
           );
@@ -160,9 +160,9 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
           className="flex items-center justify-center w-full py-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
         >
           {collapsed ? (
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="size-5" />
           ) : (
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="size-5" />
           )}
         </button>
       </div>
@@ -192,7 +192,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          "hidden lg:flex flex-col h-screen bg-zinc-950 border-r border-zinc-800 transition-all duration-300 sticky top-0",
+          "hidden lg:flex flex-col h-screen bg-zinc-950 border-r border-zinc-800 sticky top-0 flex-shrink-0",
           collapsed ? "w-[68px]" : "w-[260px]",
         )}
       >

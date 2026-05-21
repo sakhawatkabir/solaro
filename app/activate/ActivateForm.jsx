@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 export default function ActivateForm() {
-  const router = useRouter();
+  const { push } = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
@@ -47,7 +47,7 @@ export default function ActivateForm() {
     try {
       await activateUser(token, password);
       setSuccess(true);
-      setTimeout(() => router.push("/login"), 2000);
+      setTimeout(() => push("/login"), 2000);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,10 +59,10 @@ export default function ActivateForm() {
     return (
       <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
         <div className="w-full max-w-md text-center">
-          <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-8 h-8 text-emerald-400" />
+          <div className="size-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="size-8 text-emerald-400" />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">
+          <h1 className="text-2xl font-semibold text-white mb-2">
             Account Activated!
           </h1>
           <p className="text-zinc-400">Redirecting to login...</p>
@@ -76,10 +76,10 @@ export default function ActivateForm() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/10 mb-4">
-            <Sun className="w-6 h-6 text-emerald-400" />
+          <div className="inline-flex items-center justify-center size-12 rounded-xl bg-emerald-500/10 mb-4">
+            <Sun className="size-6 text-emerald-400" />
           </div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-semibold text-white">
             Activate Your Account
           </h1>
           <p className="text-zinc-400 mt-2">Set a password to get started</p>
@@ -90,7 +90,7 @@ export default function ActivateForm() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-red-400 text-sm">
-                <XCircle className="w-4 h-4 flex-shrink-0" />
+                <XCircle className="size-4 flex-shrink-0" />
                 {error}
               </div>
             )}
@@ -100,7 +100,7 @@ export default function ActivateForm() {
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
@@ -114,9 +114,9 @@ export default function ActivateForm() {
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
                 >
                   {showPassword ? (
-                    <EyeOff className="w-4 h-4" />
+                    <EyeOff className="size-4" />
                   ) : (
-                    <Eye className="w-4 h-4" />
+                    <Eye className="size-4" />
                   )}
                 </button>
               </div>
@@ -127,7 +127,7 @@ export default function ActivateForm() {
                 Confirm Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={confirmPassword}
@@ -144,7 +144,7 @@ export default function ActivateForm() {
               className="w-full flex items-center justify-center gap-2 py-2.5 bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-500/50 text-white rounded-xl text-sm font-medium transition-colors"
             >
               {loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="size-4 animate-spin" />
               ) : (
                 "Activate Account"
               )}

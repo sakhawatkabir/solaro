@@ -54,7 +54,7 @@ export default function CustomersTable({
                   colSpan={7}
                   className="px-6 py-12 text-center text-zinc-500"
                 >
-                  <Users className="w-10 h-10 mx-auto mb-3 text-zinc-700" />
+                  <Users className="size-10 mx-auto mb-3 text-zinc-700" />
                   <p className="text-sm">No customers found</p>
                 </td>
               </tr>
@@ -66,7 +66,7 @@ export default function CustomersTable({
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                      <div className="size-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
                         <span className="text-sm font-medium text-emerald-400">
                           {customer.name.charAt(0).toUpperCase()}
                         </span>
@@ -87,12 +87,12 @@ export default function CustomersTable({
                   <td className="px-6 py-4 hidden md:table-cell">
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                        <Mail className="w-3 h-3" />
+                        <Mail className="size-3" />
                         {customer.email}
                       </div>
                       {customer.phone && (
                         <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                          <Phone className="w-3 h-3" />
+                          <Phone className="size-3" />
                           {customer.phone}
                         </div>
                       )}
@@ -101,7 +101,7 @@ export default function CustomersTable({
                   <td className="px-6 py-4 hidden lg:table-cell">
                     {customer.city ? (
                       <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                        <MapPin className="w-3 h-3" />
+                        <MapPin className="size-3" />
                         {customer.city}
                         {customer.district && `, ${customer.district}`}
                       </div>
@@ -134,13 +134,13 @@ export default function CustomersTable({
                         href={`/admin/customers/${customer.id}`}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="size-4" />
                       </Link>
                       <Link
                         href={`/admin/customers/${customer.id}`}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 transition-colors"
                       >
-                        <Edit3 className="w-4 h-4" />
+                        <Edit3 className="size-4" />
                       </Link>
                     </div>
                   </td>

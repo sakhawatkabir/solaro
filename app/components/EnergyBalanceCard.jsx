@@ -8,7 +8,7 @@ export default function EnergyBalanceCard() {
       </h3>
 
       <div className="relative flex items-center justify-center mb-8">
-        <svg className="w-48 h-48 transform -rotate-90" viewBox="0 0 200 200">
+        <svg className="size-48 transform -rotate-90" viewBox="0 0 200 200">
           <circle
             cx="100"
             cy="100"

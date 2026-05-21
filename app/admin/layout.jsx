@@ -18,13 +18,20 @@ const allowedAdminRoles = [
 export default function AdminLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, loading } = useAuth();
-  const router = useRouter();
+  const { replace } = useRouter();
+
+  useEffect(() => {
+    document.body.style.backgroundColor = "#18181b";
+    return () => {
+      document.body.style.backgroundColor = "";
+    };
+  }, []);
 
   useEffect(() => {
     if (!loading && (!user || !allowedAdminRoles.includes(user.role))) {
-      router.replace("/dashboard");
+      replace("/dashboard");
     }
-  }, [user, loading, router]);
+  }, [user, loading, replace]);
 
   if (loading || !user || !allowedAdminRoles.includes(user.role)) {
     return (

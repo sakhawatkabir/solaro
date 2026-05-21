@@ -66,9 +66,9 @@ export default function QuickActions() {
               className="flex flex-col items-center gap-2 p-4 rounded-lg bg-zinc-800/50 hover:bg-zinc-800 transition-colors group"
             >
               <div
-                className={`w-10 h-10 rounded-lg ${colors.bg} flex items-center justify-center ${colors.hover} transition-colors`}
+                className={`size-10 rounded-lg ${colors.bg} flex items-center justify-center ${colors.hover} transition-colors`}
               >
-                <action.icon className={`w-5 h-5 ${colors.text}`} />
+                <action.icon className={`size-5 ${colors.text}`} />
               </div>
               <span className="text-sm text-zinc-300 group-hover:text-white">
                 {action.label}

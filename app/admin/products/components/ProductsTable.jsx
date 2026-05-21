@@ -50,7 +50,7 @@ export default function ProductsTable({
                   colSpan={7}
                   className="px-6 py-12 text-center text-zinc-500"
                 >
-                  <Package className="w-10 h-10 mx-auto mb-3 text-zinc-700" />
+                  <Package className="size-10 mx-auto mb-3 text-zinc-700" />
                   <p className="text-sm">No products found</p>
                 </td>
               </tr>
@@ -62,7 +62,7 @@ export default function ProductsTable({
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      <div className="size-10 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
                         {product.image || product.images?.[0] ? (
                           <img
                             src={product.image || product.images[0]}
@@ -70,7 +70,7 @@ export default function ProductsTable({
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <Package className="w-5 h-5 text-zinc-500" />
+                          <Package className="size-5 text-zinc-500" />
                         )}
                       </div>
                       <div>
@@ -104,7 +104,7 @@ export default function ProductsTable({
                         {product.stock}
                       </span>
                       {product.stock < 10 && (
-                        <AlertTriangle className="w-4 h-4 text-orange-400" />
+                        <AlertTriangle className="size-4 text-orange-400" />
                       )}
                     </div>
                   </td>
@@ -122,19 +122,19 @@ export default function ProductsTable({
                         href={`/admin/products/${product.id}`}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="size-4" />
                       </Link>
                       <Link
                         href={`/admin/products/${product.id}`}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 transition-colors"
                       >
-                        <Edit3 className="w-4 h-4" />
+                        <Edit3 className="size-4" />
                       </Link>
                       <button
                         onClick={() => onDelete(product.id)}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="size-4" />
                       </button>
                     </div>
                   </td>

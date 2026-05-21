@@ -97,7 +97,7 @@ export default function OrdersPage() {
               className="bg-white rounded-xl border border-ink-faint/50 p-4 animate-pulse"
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-ink/10"></div>
+                <div className="size-10 rounded-lg bg-ink/10"></div>
                 <div className="flex-1 space-y-2">
                   <div className="h-4 bg-ink/10 rounded w-32"></div>
                   <div className="h-3 bg-ink/10 rounded w-48"></div>
@@ -118,8 +118,8 @@ export default function OrdersPage() {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-cream flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-5 h-5 text-ink-light" />
+                    <div className="size-10 rounded-lg bg-cream flex items-center justify-center flex-shrink-0">
+                      <Icon className="size-5 text-ink-light" />
                     </div>
                     <div>
                       <div className="text-sm font-semibold text-ink">
@@ -150,7 +150,7 @@ export default function OrdersPage() {
           })}
           {orders.length === 0 && (
             <div className="text-center py-12 text-ink-light">
-              <Package className="w-10 h-10 mx-auto mb-3 text-ink-faint" />
+              <Package className="size-10 mx-auto mb-3 text-ink-faint" />
               <p className="text-sm">No orders found</p>
             </div>
           )}

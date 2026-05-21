@@ -16,8 +16,8 @@ export default function StatCard({
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6 hover:border-zinc-700 transition-colors">
       <div className="flex items-start justify-between mb-4">
-        <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-          <Icon className="w-5 h-5 text-emerald-400" />
+        <div className="size-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+          <Icon className="size-5 text-emerald-400" />
         </div>
         <div
           className={cn(
@@ -28,9 +28,9 @@ export default function StatCard({
           )}
         >
           {isUp ? (
-            <ArrowUpRight className="w-3 h-3" />
+            <ArrowUpRight className="size-3" />
           ) : (
-            <ArrowDownRight className="w-3 h-3" />
+            <ArrowDownRight className="size-3" />
           )}
           {change}
         </div>

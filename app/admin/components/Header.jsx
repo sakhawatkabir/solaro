@@ -69,10 +69,10 @@ export default function Header({ onMenuClick }) {
           className="lg:hidden text-zinc-400 hover:text-white"
           onClick={onMenuClick}
         >
-          <Menu className="w-5 h-5" />
+          <Menu className="size-5" />
         </Button>
         <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
           <Input
             placeholder="Search..."
             className="pl-10 bg-zinc-900 border-zinc-800 text-zinc-300 placeholder:text-zinc-500 focus-visible:ring-emerald-500/50"
@@ -88,7 +88,7 @@ export default function Header({ onMenuClick }) {
             onClick={() => setNotifOpen(!notifOpen)}
             className="relative text-zinc-400 hover:text-white"
           >
-            <Bell className="w-5 h-5" />
+            <Bell className="size-5" />
             {unreadCount > 0 && (
               <span className="absolute top-1 right-1 min-w-[16px] h-4 px-1 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                 {unreadCount}
@@ -156,7 +156,7 @@ export default function Header({ onMenuClick }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="flex items-center gap-2 text-zinc-300 hover:text-white px-2 py-1.5 rounded-lg transition-colors">
-              <Avatar className="w-8 h-8">
+              <Avatar className="size-8">
                 <AvatarFallback className="bg-emerald-500/20 text-emerald-400 text-xs font-semibold">
                   {initials}
                 </AvatarFallback>
@@ -164,7 +164,7 @@ export default function Header({ onMenuClick }) {
               <span className="hidden sm:inline text-sm font-medium">
                 {user?.name || "User"}
               </span>
-              <ChevronDown className="w-4 h-4 text-zinc-500" />
+              <ChevronDown className="size-4 text-zinc-500" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -183,20 +183,20 @@ export default function Header({ onMenuClick }) {
             </div>
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href="/admin/profile" className="flex items-center w-full">
-                <User className="w-4 h-4 mr-2" />
+                <User className="size-4 mr-2" />
                 Profile
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href="/admin/settings" className="flex items-center w-full">
-                <Settings className="w-4 h-4 mr-2" />
+                <Settings className="size-4 mr-2" />
                 Settings
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href="/" className="flex items-center w-full">
-                <ArrowUpRight className="w-4 h-4 mr-2" />
+                <ArrowUpRight className="size-4 mr-2" />
                 Back to Site
               </Link>
             </DropdownMenuItem>
@@ -206,7 +206,7 @@ export default function Header({ onMenuClick }) {
               variant="destructive"
               className="cursor-pointer"
             >
-              <LogOut className="w-4 h-4 mr-2" />
+              <LogOut className="size-4 mr-2" />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>

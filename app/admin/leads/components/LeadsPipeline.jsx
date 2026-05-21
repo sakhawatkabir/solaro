@@ -7,7 +7,7 @@ const statusIcons = {
   contacted: Clock,
   quoted: () => (
     <svg
-      className="w-5 h-5"
+      className="size-5"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -51,7 +51,7 @@ export default function LeadsPipeline({
                 : "bg-zinc-900 border-zinc-800 hover:border-zinc-700"
             }`}
           >
-            <Icon className={`w-5 h-5 ${statusColors[status]}`} />
+            <Icon className={`size-5 ${statusColors[status]}`} />
             <span className="text-xl font-bold text-white">{count}</span>
             <span className="text-xs text-zinc-400 capitalize">{status}</span>
           </button>

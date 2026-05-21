@@ -10,7 +10,7 @@ export default function UserActivityCard({ lastLogin, status }) {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-zinc-400">
-            <Activity className="w-4 h-4" />
+            <Activity className="size-4" />
             <span>Status</span>
           </div>
           <span
@@ -26,7 +26,7 @@ export default function UserActivityCard({ lastLogin, status }) {
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-zinc-400">
-            <Clock className="w-4 h-4" />
+            <Clock className="size-4" />
             <span>Last Login</span>
           </div>
           <span className="text-sm text-zinc-300">{lastLogin}</span>

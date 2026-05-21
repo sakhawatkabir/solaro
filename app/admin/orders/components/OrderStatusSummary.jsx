@@ -47,7 +47,7 @@ export default function OrderStatusSummary({
                 : "bg-zinc-900 border-zinc-800 hover:border-zinc-700"
             }`}
           >
-            <Icon className={`w-5 h-5 ${statusColors[status]}`} />
+            <Icon className={`size-5 ${statusColors[status]}`} />
             <span className="text-lg font-bold text-white">{count}</span>
             <span className="text-xs text-zinc-400 capitalize">
               {status.toLowerCase()}

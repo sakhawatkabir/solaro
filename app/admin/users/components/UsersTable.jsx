@@ -61,7 +61,7 @@ export default function UsersTable({
                   colSpan={6}
                   className="px-6 py-12 text-center text-zinc-500"
                 >
-                  <Users className="w-10 h-10 mx-auto mb-3 text-zinc-700" />
+                  <Users className="size-10 mx-auto mb-3 text-zinc-700" />
                   <p className="text-sm">No users found</p>
                 </td>
               </tr>
@@ -73,7 +73,7 @@ export default function UsersTable({
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      <div className="size-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
                         {user.image ? (
                           <img
                             src={user.image}
@@ -94,7 +94,7 @@ export default function UsersTable({
                           {user.name || "Unnamed User"}
                         </Link>
                         <div className="flex items-center gap-1 text-xs text-zinc-500">
-                          <Mail className="w-3 h-3" />
+                          <Mail className="size-3" />
                           {user.email}
                         </div>
                       </div>
@@ -129,7 +129,7 @@ export default function UsersTable({
                   </td>
                   <td className="px-6 py-4 hidden lg:table-cell">
                     <div className="flex items-center gap-1 text-xs text-zinc-400">
-                      <Calendar className="w-3 h-3" />
+                      <Calendar className="size-3" />
                       {new Date(user.createdAt).toLocaleDateString()}
                     </div>
                   </td>
@@ -139,19 +139,19 @@ export default function UsersTable({
                         href={`/admin/users/${user.id}`}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="size-4" />
                       </Link>
                       <Link
                         href={`/admin/users/${user.id}`}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 transition-colors"
                       >
-                        <Edit3 className="w-4 h-4" />
+                        <Edit3 className="size-4" />
                       </Link>
                       <button
                         onClick={() => onDelete(user.id)}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="size-4" />
                       </button>
                     </div>
                   </td>

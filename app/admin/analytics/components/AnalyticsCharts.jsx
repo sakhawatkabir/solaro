@@ -138,7 +138,7 @@ export default function AnalyticsCharts({ data }) {
               className="flex items-center gap-1.5 text-xs text-zinc-400"
             >
               <span
-                className="w-2.5 h-2.5 rounded-full"
+                className="size-2.5 rounded-full"
                 style={{ backgroundColor: COLORS[i % COLORS.length] }}
               />
               {item.name}

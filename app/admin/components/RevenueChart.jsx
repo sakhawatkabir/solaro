@@ -54,7 +54,7 @@ export default function RevenueChart({ data }) {
           className={`flex items-center gap-2 ${isPositive ? "text-emerald-400" : "text-red-400"}`}
         >
           <ArrowUpRight
-            className={`w-4 h-4 ${!isPositive ? "rotate-90" : ""}`}
+            className={`size-4 ${!isPositive ? "rotate-90" : ""}`}
           />
           <span className="text-sm font-semibold">
             {isPositive ? "+" : ""}

@@ -112,7 +112,7 @@ export default function DistrictBasicInfo({ formData, updateField }) {
           >
             <span
               className={`
-                absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform
+                absolute top-1 left-1 size-4 rounded-full bg-white transition-transform
                 ${formData.coverage ? "translate-x-5" : "translate-x-0"}
               `}
             />

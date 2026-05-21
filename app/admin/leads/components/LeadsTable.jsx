@@ -77,7 +77,7 @@ export default function LeadsTable({
                   colSpan={7}
                   className="px-6 py-12 text-center text-zinc-500"
                 >
-                  <Users className="w-10 h-10 mx-auto mb-3 text-zinc-700" />
+                  <Users className="size-10 mx-auto mb-3 text-zinc-700" />
                   <p className="text-sm">No leads found</p>
                 </td>
               </tr>
@@ -89,7 +89,7 @@ export default function LeadsTable({
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                      <div className="size-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
                         <span className="text-sm font-medium text-emerald-400">
                           {lead.name.charAt(0).toUpperCase()}
                         </span>
@@ -103,7 +103,7 @@ export default function LeadsTable({
                         </Link>
                         {lead.company && (
                           <div className="flex items-center gap-1 text-xs text-zinc-500">
-                            <Building className="w-3 h-3" />
+                            <Building className="size-3" />
                             {lead.company}
                           </div>
                         )}
@@ -113,11 +113,11 @@ export default function LeadsTable({
                   <td className="px-6 py-4 hidden md:table-cell">
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                        <Mail className="w-3 h-3" />
+                        <Mail className="size-3" />
                         {lead.email}
                       </div>
                       <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                        <Phone className="w-3 h-3" />
+                        <Phone className="size-3" />
                         {lead.phone}
                       </div>
                     </div>
@@ -156,13 +156,13 @@ export default function LeadsTable({
                         href={`/admin/leads/${lead.id}`}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="size-4" />
                       </Link>
                       <button
                         onClick={() => onDelete(lead.id)}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="size-4" />
                       </button>
                     </div>
                   </td>

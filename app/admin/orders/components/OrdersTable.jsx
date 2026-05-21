@@ -80,7 +80,7 @@ export default function OrdersTable({
                   colSpan={8}
                   className="px-6 py-12 text-center text-zinc-500"
                 >
-                  <Package className="w-10 h-10 mx-auto mb-3 text-zinc-700" />
+                  <Package className="size-10 mx-auto mb-3 text-zinc-700" />
                   <p className="text-sm">No orders found</p>
                 </td>
               </tr>
@@ -115,7 +115,7 @@ export default function OrdersTable({
                   </td>
                   <td className="px-6 py-4 hidden lg:table-cell">
                     <div className="flex items-center gap-1.5 text-sm text-zinc-400">
-                      <MapPin className="w-3.5 h-3.5" />
+                      <MapPin className="size-3.5" />
                       {order.district || "—"}
                     </div>
                   </td>
@@ -129,7 +129,7 @@ export default function OrdersTable({
                   </td>
                   <td className="px-6 py-4 hidden sm:table-cell">
                     <div className="flex items-center gap-1.5 text-sm text-zinc-400">
-                      <Calendar className="w-3.5 h-3.5" />
+                      <Calendar className="size-3.5" />
                       {formatDate(order.createdAt)}
                     </div>
                   </td>
@@ -139,14 +139,14 @@ export default function OrdersTable({
                         href={`/admin/orders/${order.id}`}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-emerald-400 transition-colors"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="size-4" />
                       </Link>
                       <button
                         onClick={() => setConfirmDelete(order)}
                         className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 transition-colors"
                         title="Delete order"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="size-4" />
                       </button>
                     </div>
                   </td>
@@ -200,7 +200,7 @@ export default function OrdersTable({
                   </>
                 ) : (
                   <>
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="size-4" />
                     Delete
                   </>
                 )}

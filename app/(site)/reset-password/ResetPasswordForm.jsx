@@ -25,7 +25,7 @@ export default function ResetPasswordForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const { push } = useRouter();
   const prefersReducedMotion = useReducedMotion();
   const { resetPassword } = useAuth();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
@@ -74,7 +74,7 @@ export default function ResetPasswordForm() {
     setSuccess(true);
     setIsLoading(false);
     setTimeout(() => {
-      router.push("/login");
+      push("/login");
     }, 3000);
   };
 

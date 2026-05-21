@@ -22,7 +22,7 @@ export default function DistrictRanking({ districts }) {
                     {index + 1}
                   </span>
                   <div className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-zinc-400" />
+                    <MapPin className="size-3.5 text-zinc-400" />
                     <span className="text-sm text-zinc-300">
                       {district.name}
                     </span>

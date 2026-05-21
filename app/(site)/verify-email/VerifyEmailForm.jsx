@@ -101,7 +101,7 @@ export default function VerifyEmailForm() {
           {/* Loading state */}
           {status === "loading" && (
             <>
-              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 mx-auto mb-6">
+              <div className="flex items-center justify-center size-16 rounded-full bg-accent/10 mx-auto mb-6">
                 <div className="size-8 border-3 border-accent/30 border-t-accent rounded-full animate-spin" />
               </div>
               <div className="flex items-center justify-center gap-2 text-accent font-semibold text-sm tracking-widest uppercase mb-4">
@@ -120,7 +120,7 @@ export default function VerifyEmailForm() {
           {/* Success state */}
           {status === "success" && (
             <>
-              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mx-auto mb-6">
+              <div className="flex items-center justify-center size-16 rounded-full bg-green-100 mx-auto mb-6">
                 <CheckCircle size={32} className="text-green-500" />
               </div>
               <div className="flex items-center justify-center gap-2 text-green-600 font-semibold text-sm tracking-widest uppercase mb-4">
@@ -144,7 +144,7 @@ export default function VerifyEmailForm() {
           {/* Error state (token present but invalid/expired) */}
           {status === "error" && (
             <>
-              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mx-auto mb-6">
+              <div className="flex items-center justify-center size-16 rounded-full bg-red-100 mx-auto mb-6">
                 <XCircle size={32} className="text-red-500" />
               </div>
               <div className="flex items-center justify-center gap-2 text-red-600 font-semibold text-sm tracking-widest uppercase mb-4">

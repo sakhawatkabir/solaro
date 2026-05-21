@@ -21,7 +21,7 @@ export default function ConversionMetrics({
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
         <div className="flex items-center gap-2 mb-2">
-          <ShoppingBag className="w-5 h-5 text-zinc-400" />
+          <ShoppingBag className="size-5 text-zinc-400" />
           <span className="text-sm text-zinc-400">Total Revenue</span>
         </div>
         <div className="text-2xl font-bold text-white">
@@ -29,9 +29,9 @@ export default function ConversionMetrics({
         </div>
         <div className="flex items-center gap-1 mt-1">
           {revenueGrowth >= 0 ? (
-            <TrendingUp className="w-3 h-3 text-emerald-400" />
+            <TrendingUp className="size-3 text-emerald-400" />
           ) : (
-            <TrendingDown className="w-3 h-3 text-red-400" />
+            <TrendingDown className="size-3 text-red-400" />
           )}
           <span
             className={`text-xs font-medium ${
@@ -46,15 +46,15 @@ export default function ConversionMetrics({
       </div>
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
         <div className="flex items-center gap-2 mb-2">
-          <ShoppingBag className="w-5 h-5 text-blue-400" />
+          <ShoppingBag className="size-5 text-blue-400" />
           <span className="text-sm text-zinc-400">Total Orders</span>
         </div>
         <div className="text-2xl font-bold text-white">{totalOrders}</div>
         <div className="flex items-center gap-1 mt-1">
           {orderGrowth >= 0 ? (
-            <TrendingUp className="w-3 h-3 text-emerald-400" />
+            <TrendingUp className="size-3 text-emerald-400" />
           ) : (
-            <TrendingDown className="w-3 h-3 text-red-400" />
+            <TrendingDown className="size-3 text-red-400" />
           )}
           <span
             className={`text-xs font-medium ${
@@ -69,7 +69,7 @@ export default function ConversionMetrics({
       </div>
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
         <div className="flex items-center gap-2 mb-2">
-          <ShoppingBag className="w-5 h-5 text-purple-400" />
+          <ShoppingBag className="size-5 text-purple-400" />
           <span className="text-sm text-zinc-400">Avg Order Value</span>
         </div>
         <div className="text-2xl font-bold text-white">
@@ -78,7 +78,7 @@ export default function ConversionMetrics({
       </div>
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
         <div className="flex items-center gap-2 mb-2">
-          <ShoppingBag className="w-5 h-5 text-amber-400" />
+          <ShoppingBag className="size-5 text-amber-400" />
           <span className="text-sm text-zinc-400">This Month</span>
         </div>
         <div className="text-2xl font-bold text-white">

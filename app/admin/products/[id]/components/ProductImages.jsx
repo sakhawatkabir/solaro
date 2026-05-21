@@ -88,7 +88,7 @@ export default function ProductImages({ value = [], onChange }) {
                 }}
                 className="absolute top-1 right-1 p-1 bg-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
               >
-                <X className="w-3 h-3 text-white" />
+                <X className="size-3 text-white" />
               </button>
             </div>
           ))}
@@ -120,13 +120,13 @@ export default function ProductImages({ value = [], onChange }) {
 
         {uploading || isUploading ? (
           <div className="flex flex-col items-center gap-3">
-            <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+            <Loader2 className="size-8 text-emerald-500 animate-spin" />
             <p className="text-sm text-zinc-400">Uploading...</p>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center">
-              <Upload className="w-5 h-5 text-zinc-400" />
+            <div className="size-12 rounded-full bg-zinc-800 flex items-center justify-center">
+              <Upload className="size-5 text-zinc-400" />
             </div>
             <div>
               <p className="text-sm text-zinc-300">

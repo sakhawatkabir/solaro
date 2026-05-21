@@ -22,7 +22,7 @@ export default function UserProfileCard({ user, role }) {
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
       <h2 className="text-lg font-semibold text-white mb-6">Profile</h2>
       <div className="flex items-start gap-4 mb-6">
-        <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+        <div className="size-16 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
           <span className="text-xl font-semibold text-emerald-400">
             {initials}
           </span>
@@ -30,7 +30,7 @@ export default function UserProfileCard({ user, role }) {
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-white">{user.name}</h3>
           <div className="flex items-center gap-1.5 text-sm text-zinc-400 mt-1">
-            <Mail className="w-3.5 h-3.5" />
+            <Mail className="size-3.5" />
             {user.email}
           </div>
           <div className="flex items-center gap-2 mt-3">
@@ -40,7 +40,7 @@ export default function UserProfileCard({ user, role }) {
                 roleBadgeMap[user.role] || "bg-zinc-500/10 text-zinc-400",
               )}
             >
-              <Shield className="w-3 h-3 mr-1" />
+              <Shield className="size-3 mr-1" />
               {role?.label || user.role}
             </span>
             <span

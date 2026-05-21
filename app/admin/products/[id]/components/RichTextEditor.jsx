@@ -99,7 +99,7 @@ export default function RichTextEditor({ value, onChange, placeholder }) {
           active={editor.isActive("heading", { level: 1 })}
           title="Heading 1"
         >
-          <Heading1 className="w-4 h-4" />
+          <Heading1 className="size-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() =>
@@ -108,7 +108,7 @@ export default function RichTextEditor({ value, onChange, placeholder }) {
           active={editor.isActive("heading", { level: 2 })}
           title="Heading 2"
         >
-          <Heading2 className="w-4 h-4" />
+          <Heading2 className="size-4" />
         </ToolbarButton>
         <div className="w-px h-6 bg-zinc-700 mx-1" />
         <ToolbarButton
@@ -116,28 +116,28 @@ export default function RichTextEditor({ value, onChange, placeholder }) {
           active={editor.isActive("bold")}
           title="Bold"
         >
-          <Bold className="w-4 h-4" />
+          <Bold className="size-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleItalic().run()}
           active={editor.isActive("italic")}
           title="Italic"
         >
-          <Italic className="w-4 h-4" />
+          <Italic className="size-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           active={editor.isActive("underline")}
           title="Underline"
         >
-          <UnderlineIcon className="w-4 h-4" />
+          <UnderlineIcon className="size-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleStrike().run()}
           active={editor.isActive("strike")}
           title="Strikethrough"
         >
-          <Strikethrough className="w-4 h-4" />
+          <Strikethrough className="size-4" />
         </ToolbarButton>
         <div className="w-px h-6 bg-zinc-700 mx-1" />
         <ToolbarButton
@@ -145,21 +145,21 @@ export default function RichTextEditor({ value, onChange, placeholder }) {
           active={editor.isActive("bulletList")}
           title="Bullet List"
         >
-          <List className="w-4 h-4" />
+          <List className="size-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           active={editor.isActive("orderedList")}
           title="Numbered List"
         >
-          <ListOrdered className="w-4 h-4" />
+          <ListOrdered className="size-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           active={editor.isActive("blockquote")}
           title="Quote"
         >
-          <Quote className="w-4 h-4" />
+          <Quote className="size-4" />
         </ToolbarButton>
         <div className="w-px h-6 bg-zinc-700 mx-1" />
         <ToolbarButton
@@ -167,21 +167,21 @@ export default function RichTextEditor({ value, onChange, placeholder }) {
           active={editor.isActive({ textAlign: "left" })}
           title="Align Left"
         >
-          <AlignLeft className="w-4 h-4" />
+          <AlignLeft className="size-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().setTextAlign("center").run()}
           active={editor.isActive({ textAlign: "center" })}
           title="Align Center"
         >
-          <AlignCenter className="w-4 h-4" />
+          <AlignCenter className="size-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().setTextAlign("right").run()}
           active={editor.isActive({ textAlign: "right" })}
           title="Align Right"
         >
-          <AlignRight className="w-4 h-4" />
+          <AlignRight className="size-4" />
         </ToolbarButton>
         <div className="w-px h-6 bg-zinc-700 mx-1" />
         <ToolbarButton
@@ -189,10 +189,10 @@ export default function RichTextEditor({ value, onChange, placeholder }) {
           active={editor.isActive("link")}
           title="Link"
         >
-          <LinkIcon className="w-4 h-4" />
+          <LinkIcon className="size-4" />
         </ToolbarButton>
         <ToolbarButton onClick={addImage} title="Image">
-          <ImageIcon className="w-4 h-4" />
+          <ImageIcon className="size-4" />
         </ToolbarButton>
         <div className="w-px h-6 bg-zinc-700 mx-1" />
         <ToolbarButton
@@ -200,14 +200,14 @@ export default function RichTextEditor({ value, onChange, placeholder }) {
           active={false}
           title="Undo"
         >
-          <Undo className="w-4 h-4" />
+          <Undo className="size-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().redo().run()}
           active={false}
           title="Redo"
         >
-          <Redo className="w-4 h-4" />
+          <Redo className="size-4" />
         </ToolbarButton>
       </div>
       <EditorContent editor={editor} />

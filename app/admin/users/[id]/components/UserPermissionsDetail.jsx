@@ -14,7 +14,7 @@ export default function UserPermissionsDetail({ permissions, role }) {
       {permissions.includes("all") ? (
         <div className="bg-purple-500/5 border border-purple-500/20 rounded-xl p-4">
           <div className="flex items-center gap-2">
-            <Shield className="w-4 h-4 text-purple-400" />
+            <Shield className="size-4 text-purple-400" />
             <span className="text-sm text-purple-300 font-medium">
               Full Access
             </span>
@@ -35,7 +35,7 @@ export default function UserPermissionsDetail({ permissions, role }) {
                 key={perm}
                 className="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-800/50 border border-zinc-800 text-sm text-zinc-300"
               >
-                <Shield className="w-3.5 h-3.5 text-emerald-400" />
+                <Shield className="size-3.5 text-emerald-400" />
                 {permissionLabels[perm]}
               </div>
             ))}

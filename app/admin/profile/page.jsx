@@ -116,7 +116,7 @@ export default function AdminProfilePage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Profile</h1>
+        <h1 className="text-2xl font-semibold text-white">Profile</h1>
         <p className="text-sm text-zinc-400 mt-1">
           Manage your account details and password
         </p>
@@ -139,7 +139,7 @@ export default function AdminProfilePage() {
       {/* Profile Info */}
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 overflow-hidden">
         <div className="flex items-center gap-4 p-6 border-b border-zinc-800">
-          <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center">
+          <div className="size-16 rounded-full bg-emerald-500/10 flex items-center justify-center">
             <span className="text-xl font-semibold text-emerald-400">
               {initials}
             </span>
@@ -181,7 +181,7 @@ export default function AdminProfilePage() {
               />
             ) : (
               <div className="flex items-center gap-2 text-sm text-white">
-                <User className="w-4 h-4 text-zinc-500" />
+                <User className="size-4 text-zinc-500" />
                 {user.name || "Not set"}
               </div>
             )}
@@ -192,7 +192,7 @@ export default function AdminProfilePage() {
               Email
             </label>
             <div className="flex items-center gap-2 text-sm text-white">
-              <Mail className="w-4 h-4 text-zinc-500" />
+              <Mail className="size-4 text-zinc-500" />
               {user.email}
             </div>
           </div>
@@ -202,7 +202,7 @@ export default function AdminProfilePage() {
               Permissions
             </label>
             <div className="flex items-center gap-2 text-sm text-white">
-              <Shield className="w-4 h-4 text-zinc-500" />
+              <Shield className="size-4 text-zinc-500" />
               {user.permissions?.length > 0
                 ? user.permissions.map((p) => p.replace(/_/g, " ")).join(", ")
                 : "No permissions"}
@@ -230,7 +230,7 @@ export default function AdminProfilePage() {
                     <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : (
                     <>
-                      <Save className="w-3.5 h-3.5" />
+                      <Save className="size-3.5" />
                       Save
                     </>
                   )}
@@ -254,7 +254,7 @@ export default function AdminProfilePage() {
       {/* Change Password */}
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
         <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-          <Lock className="w-5 h-5 text-zinc-400" />
+          <Lock className="size-5 text-zinc-400" />
           Change Password
         </h3>
 
@@ -290,15 +290,15 @@ export default function AdminProfilePage() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
               >
                 {showCurrent ? (
-                  <EyeOff className="w-4 h-4" />
+                  <EyeOff className="size-4" />
                 ) : (
-                  <Eye className="w-4 h-4" />
+                  <Eye className="size-4" />
                 )}
               </button>
             </div>
             {passwordFieldError && (
               <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" />
+                <AlertCircle className="size-3" />
                 {passwordFieldError}
               </p>
             )}
@@ -320,9 +320,9 @@ export default function AdminProfilePage() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
               >
                 {showNew ? (
-                  <EyeOff className="w-4 h-4" />
+                  <EyeOff className="size-4" />
                 ) : (
-                  <Eye className="w-4 h-4" />
+                  <Eye className="size-4" />
                 )}
               </button>
             </div>
@@ -351,15 +351,15 @@ export default function AdminProfilePage() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
               >
                 {showConfirm ? (
-                  <EyeOff className="w-4 h-4" />
+                  <EyeOff className="size-4" />
                 ) : (
-                  <Eye className="w-4 h-4" />
+                  <Eye className="size-4" />
                 )}
               </button>
             </div>
             {confirmFieldError && (
               <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" />
+                <AlertCircle className="size-3" />
                 {confirmFieldError}
               </p>
             )}
@@ -374,7 +374,7 @@ export default function AdminProfilePage() {
                 <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  <Lock className="w-3.5 h-3.5" />
+                  <Lock className="size-3.5" />
                   Update Password
                 </>
               )}
