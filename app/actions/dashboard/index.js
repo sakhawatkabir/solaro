@@ -1,8 +1,10 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/app/actions/server-auth";
 
 export async function getDashboardStats() {
+  await requireAdmin();
   const now = new Date();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
@@ -84,6 +86,7 @@ export async function getDashboardStats() {
 }
 
 export async function getRevenueChartData() {
+  await requireAdmin();
   const months = [];
   const now = new Date();
 
@@ -119,6 +122,7 @@ export async function getRevenueChartData() {
 }
 
 export async function getCategoryChartData() {
+  await requireAdmin();
   const products = await prisma.product.findMany({
     select: {
       category: true,
@@ -159,6 +163,7 @@ export async function getCategoryChartData() {
 }
 
 export async function getRecentOrders() {
+  await requireAdmin();
   return prisma.order.findMany({
     orderBy: { createdAt: "desc" },
     take: 8,
@@ -166,6 +171,7 @@ export async function getRecentOrders() {
 }
 
 export async function getRecentLeads() {
+  await requireAdmin();
   return prisma.lead.findMany({
     orderBy: { createdAt: "desc" },
     take: 5,

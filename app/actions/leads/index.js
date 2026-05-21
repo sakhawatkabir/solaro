@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { createNotification } from "@/app/actions/notifications";
+import { requireAdmin } from "@/app/actions/server-auth";
 
 export async function getLeads(
   page = 1,
@@ -12,6 +13,7 @@ export async function getLeads(
   source = "",
   priority = "",
 ) {
+  await requireAdmin();
   try {
     const where = {};
 
@@ -59,6 +61,7 @@ export async function getLeads(
 }
 
 export async function getLead(id) {
+  await requireAdmin();
   try {
     const lead = await prisma.lead.findUnique({ where: { id } });
     return lead;
@@ -69,6 +72,7 @@ export async function getLead(id) {
 }
 
 export async function createLead(data) {
+  await requireAdmin();
   try {
     const {
       name,
@@ -109,6 +113,7 @@ export async function createLead(data) {
 }
 
 export async function updateLead(id, data) {
+  await requireAdmin();
   try {
     const existing = await prisma.lead.findUnique({ where: { id } });
     if (!existing) throw new Error("Lead not found");
@@ -145,6 +150,7 @@ export async function updateLead(id, data) {
 }
 
 export async function deleteLead(id) {
+  await requireAdmin();
   try {
     const existing = await prisma.lead.findUnique({ where: { id } });
     if (!existing) throw new Error("Lead not found");

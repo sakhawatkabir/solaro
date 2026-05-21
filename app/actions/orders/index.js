@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { createNotification } from "@/app/actions/notifications";
+import { requireAdmin } from "@/app/actions/server-auth";
 
 export async function getOrders({
   page = 1,
@@ -11,6 +12,7 @@ export async function getOrders({
   status = "",
   paymentStatus = "",
 } = {}) {
+  await requireAdmin();
   const skip = (page - 1) * perPage;
   const where = {};
 
@@ -44,6 +46,7 @@ export async function getOrders({
 }
 
 export async function getOrderById(id) {
+  await requireAdmin();
   return prisma.order.findUnique({ where: { id } });
 }
 
@@ -91,6 +94,7 @@ export async function createOrder(data) {
 }
 
 export async function updateOrder(id, data) {
+  await requireAdmin();
   const order = await prisma.order.update({
     where: { id },
     data: {
@@ -108,12 +112,14 @@ export async function updateOrder(id, data) {
 }
 
 export async function deleteOrder(id) {
+  await requireAdmin();
   await prisma.order.delete({ where: { id } });
   revalidatePath("/admin/orders");
   return { success: true };
 }
 
 export async function getOrderStats() {
+  await requireAdmin();
   const [totalOrders, totalRevenue, statusBreakdown, recentOrders] =
     await Promise.all([
       prisma.order.count(),

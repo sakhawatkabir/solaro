@@ -1,8 +1,10 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/app/actions/server-auth";
 
 export async function getAnalytics() {
+  await requireAdmin();
   try {
     const [
       totalProducts,

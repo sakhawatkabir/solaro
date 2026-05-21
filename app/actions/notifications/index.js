@@ -4,8 +4,6 @@ import { prisma } from "@/lib/prisma";
 import { pusher } from "@/lib/pusher";
 
 export async function createNotification(data) {
-  console.log(`[Notification] Creating: ${data.type} - ${data.title}`);
-
   const notification = await prisma.notification.create({
     data: {
       type: data.type,
@@ -17,20 +15,20 @@ export async function createNotification(data) {
     },
   });
 
-  console.log(`[Notification] Created in DB: ${notification.id}`);
+  try {
+    await pusher.trigger("notifications", "new-notification", {
+      id: notification.id,
+      type: notification.type,
+      title: notification.title,
+      message: notification.message,
+      link: notification.link,
+      read: false,
+      createdAt: notification.createdAt,
+    });
+  } catch (pusherError) {
+    console.error("[Notification] Pusher error:", pusherError.message);
+  }
 
-  // Trigger Pusher event
-  await pusher.trigger("notifications", "new-notification", {
-    id: notification.id,
-    type: notification.type,
-    title: notification.title,
-    message: notification.message,
-    link: notification.link,
-    read: false,
-    createdAt: notification.createdAt,
-  });
-
-  console.log(`[Notification] Pusher event triggered`);
   return notification;
 }
 

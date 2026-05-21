@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/app/actions/server-auth";
 
 export async function getFeaturedProducts(count = 6) {
   try {
@@ -25,6 +26,7 @@ export async function getProducts(
   category = "",
   status = "",
 ) {
+  await requireAdmin();
   try {
     const where = {};
 
@@ -64,6 +66,7 @@ export async function getProducts(
 }
 
 export async function getProductsSummary() {
+  await requireAdmin();
   try {
     const allProducts = await prisma.product.findMany({
       orderBy: { createdAt: "desc" },
@@ -90,6 +93,7 @@ export async function getProduct(id) {
 }
 
 export async function createProduct(data) {
+  await requireAdmin();
   try {
     const {
       name,
@@ -147,6 +151,7 @@ export async function createProduct(data) {
 }
 
 export async function updateProduct(id, data) {
+  await requireAdmin();
   try {
     const existing = await prisma.product.findUnique({ where: { id } });
     if (!existing) throw new Error("Product not found");
@@ -195,6 +200,7 @@ export async function updateProduct(id, data) {
 }
 
 export async function deleteProduct(id) {
+  await requireAdmin();
   try {
     const existing = await prisma.product.findUnique({ where: { id } });
     if (!existing) throw new Error("Product not found");

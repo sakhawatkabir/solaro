@@ -2,39 +2,43 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/app/actions/server-auth";
 
-const defaultSettings = [
-  { key: "siteName", value: "Solaro", type: "string", group: "general" },
-  {
-    key: "siteTagline",
-    value: "Solar Energy Management",
-    type: "string",
-    group: "general",
-  },
-  {
-    key: "contactEmail",
-    value: "info@solaro.com",
-    type: "string",
-    group: "contact",
-  },
-  {
-    key: "contactPhone",
-    value: "+880 1700-000000",
-    type: "string",
-    group: "contact",
-  },
-  {
-    key: "contactAddress",
-    value: "Dhaka, Bangladesh",
-    type: "string",
-    group: "contact",
-  },
-  { key: "currency", value: "BDT", type: "string", group: "business" },
-  { key: "currencySymbol", value: "৳", type: "string", group: "business" },
-  { key: "vatRate", value: "0", type: "number", group: "business" },
-];
+function getDefaultSettings() {
+  return [
+    { key: "siteName", value: "Solaro", type: "string", group: "general" },
+    {
+      key: "siteTagline",
+      value: "Solar Energy Management",
+      type: "string",
+      group: "general",
+    },
+    {
+      key: "contactEmail",
+      value: "info@solaro.com",
+      type: "string",
+      group: "contact",
+    },
+    {
+      key: "contactPhone",
+      value: "+880 1700-000000",
+      type: "string",
+      group: "contact",
+    },
+    {
+      key: "contactAddress",
+      value: "Dhaka, Bangladesh",
+      type: "string",
+      group: "contact",
+    },
+    { key: "currency", value: "BDT", type: "string", group: "business" },
+    { key: "currencySymbol", value: "৳", type: "string", group: "business" },
+    { key: "vatRate", value: "0", type: "number", group: "business" },
+  ];
+}
 
 export async function getSettings(group = "") {
+  await requireAdmin();
   try {
     const where = group ? { group } : {};
     const settings = await prisma.setting.findMany({ where });
@@ -54,6 +58,7 @@ export async function getSettings(group = "") {
 }
 
 export async function updateSetting(key, value) {
+  await requireAdmin();
   try {
     const setting = await prisma.setting.upsert({
       where: { key },
@@ -70,6 +75,7 @@ export async function updateSetting(key, value) {
 }
 
 export async function updateSettings(updates) {
+  await requireAdmin();
   try {
     const results = [];
 
@@ -91,10 +97,11 @@ export async function updateSettings(updates) {
 }
 
 export async function resetSettings() {
+  await requireAdmin();
   try {
     await prisma.setting.deleteMany();
 
-    for (const setting of defaultSettings) {
+    for (const setting of getDefaultSettings()) {
       await prisma.setting.create({ data: setting });
     }
 

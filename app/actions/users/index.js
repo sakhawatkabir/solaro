@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 import { sendActivationEmail } from "@/app/actions/auth/activation";
+import { requireAdmin } from "@/app/actions/server-auth";
 
 export async function getUsers(
   page = 1,
@@ -12,6 +13,7 @@ export async function getUsers(
   role = "",
   status = "",
 ) {
+  await requireAdmin();
   try {
     const where = {};
 
@@ -65,6 +67,7 @@ export async function getUsers(
 }
 
 export async function getUser(id) {
+  await requireAdmin();
   try {
     const user = await prisma.user.findUnique({
       where: { id },
@@ -88,6 +91,7 @@ export async function getUser(id) {
 }
 
 export async function createUser(data) {
+  await requireAdmin();
   try {
     const { name, email, role, status, permissions } = data;
 
@@ -128,6 +132,7 @@ export async function createUser(data) {
 }
 
 export async function updateUser(id, data) {
+  await requireAdmin();
   try {
     const existing = await prisma.user.findUnique({ where: { id } });
     if (!existing) throw new Error("User not found");
@@ -163,6 +168,7 @@ export async function updateUser(id, data) {
 }
 
 export async function deleteUser(id) {
+  await requireAdmin();
   try {
     const existing = await prisma.user.findUnique({ where: { id } });
     if (!existing) throw new Error("User not found");

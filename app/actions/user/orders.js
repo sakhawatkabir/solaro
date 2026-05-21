@@ -1,8 +1,10 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { requireAuth } from "@/app/actions/server-auth";
 
 export async function getUserOrders(userId) {
+  await requireAuth();
   if (!userId) return { orders: [], stats: {} };
 
   const orders = await prisma.order.findMany({
@@ -21,6 +23,7 @@ export async function getUserOrders(userId) {
 }
 
 export async function getUserOrderStats(userId) {
+  await requireAuth();
   if (!userId) return { totalOrders: 0, totalSpent: 0, delivered: 0 };
 
   const [count, revenue, deliveredCount] = await Promise.all([

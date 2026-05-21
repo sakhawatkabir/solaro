@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/app/actions/server-auth";
 
 export async function getCustomers(
   page = 1,
@@ -9,6 +10,7 @@ export async function getCustomers(
   search = "",
   status = "",
 ) {
+  await requireAdmin();
   try {
     const where = {};
 
@@ -49,6 +51,7 @@ export async function getCustomers(
 }
 
 export async function getCustomer(id) {
+  await requireAdmin();
   try {
     const customer = await prisma.customer.findUnique({ where: { id } });
     return customer;
@@ -59,6 +62,7 @@ export async function getCustomer(id) {
 }
 
 export async function createCustomer(data) {
+  await requireAdmin();
   try {
     const { name, email, phone, address, city, district, postalCode, notes } =
       data;
@@ -92,6 +96,7 @@ export async function createCustomer(data) {
 }
 
 export async function updateCustomer(id, data) {
+  await requireAdmin();
   try {
     const existing = await prisma.customer.findUnique({ where: { id } });
     if (!existing) throw new Error("Customer not found");
@@ -126,6 +131,7 @@ export async function updateCustomer(id, data) {
 }
 
 export async function deleteCustomer(id) {
+  await requireAdmin();
   try {
     const existing = await prisma.customer.findUnique({ where: { id } });
     if (!existing) throw new Error("Customer not found");

@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { requireAdmin, requireAuth } from "@/app/actions/server-auth";
 
 export async function getDistricts(
   page = 1,
@@ -10,6 +11,7 @@ export async function getDistricts(
   division = "",
   coverage = "",
 ) {
+  await requireAdmin();
   try {
     const where = {};
 
@@ -51,6 +53,7 @@ export async function getDistricts(
 }
 
 export async function getDistrict(id) {
+  await requireAdmin();
   try {
     const district = await prisma.district.findUnique({ where: { id } });
     return district;
@@ -61,6 +64,7 @@ export async function getDistrict(id) {
 }
 
 export async function createDistrict(data) {
+  await requireAdmin();
   try {
     const {
       name,
@@ -98,6 +102,7 @@ export async function createDistrict(data) {
 }
 
 export async function updateDistrict(id, data) {
+  await requireAdmin();
   try {
     const existing = await prisma.district.findUnique({ where: { id } });
     if (!existing) throw new Error("District not found");
@@ -136,6 +141,7 @@ export async function updateDistrict(id, data) {
 }
 
 export async function deleteDistrict(id) {
+  await requireAdmin();
   try {
     const existing = await prisma.district.findUnique({ where: { id } });
     if (!existing) throw new Error("District not found");
