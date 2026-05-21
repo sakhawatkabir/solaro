@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { m, AnimatePresence } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,7 +23,6 @@ export default function Navigation() {
   const pathname = usePathname();
   const { totalItems, setIsOpen } = useCart();
   const { user, logout, loading } = useAuth();
-  const prefersReducedMotion = useReducedMotion();
 
   const navLinks = [
     { name: "Products", href: "/products" },
@@ -62,17 +60,11 @@ export default function Navigation() {
 
   return (
     <>
-      <m.nav
-        initial={prefersReducedMotion ? {} : { y: -100 }}
-        animate={{ y: 0 }}
-        transition={{
-          duration: prefersReducedMotion ? 0 : 0.5,
-          ease: "easeOut",
-        }}
-        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 lg:px-16 py-6 transition-all duration-300 font-body ${
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 lg:px-16 transition-all duration-300 font-body animate-nav-in bg-cream/95 backdrop-blur-md ${
           isScrolled
-            ? "bg-cream/95 backdrop-blur-md border-b border-black/5 shadow-sm py-4"
-            : "bg-transparent"
+            ? "border-b border-black/5 shadow-sm py-4"
+            : "py-6"
         }`}
       >
         <Link href="/">
@@ -222,7 +214,7 @@ export default function Navigation() {
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-      </m.nav>
+      </nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
