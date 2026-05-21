@@ -13,6 +13,23 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
+function Toggle({ checked, onChange }) {
+  return (
+    <button
+      onClick={() => onChange(!checked)}
+      className={`relative w-10 h-5 rounded-full transition-colors ${
+        checked ? "bg-accent" : "bg-ink-faint"
+      }`}
+    >
+      <div
+        className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
+          checked ? "translate-x-5" : "translate-x-0"
+        }`}
+      />
+    </button>
+  );
+}
+
 export default function SettingsPage() {
   const { user, updateProfile } = useAuth();
   const [emailNotif, setEmailNotif] = useState(true);
@@ -26,23 +43,6 @@ export default function SettingsPage() {
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-
-  function Toggle({ checked, onChange }) {
-    return (
-      <button
-        onClick={() => onChange(!checked)}
-        className={`relative w-10 h-5 rounded-full transition-colors ${
-          checked ? "bg-accent" : "bg-ink-faint"
-        }`}
-      >
-        <div
-          className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
-            checked ? "translate-x-5" : "translate-x-0"
-          }`}
-        />
-      </button>
-    );
-  }
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();

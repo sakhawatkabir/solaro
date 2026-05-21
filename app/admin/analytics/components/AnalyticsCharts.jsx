@@ -117,11 +117,8 @@ export default function AnalyticsCharts({ data }) {
                 paddingAngle={5}
                 dataKey="value"
               >
-                {statusChartData.map((_, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
+                {statusChartData.map((item, index) => (
+                  <Cell key={item.name} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip
