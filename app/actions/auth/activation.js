@@ -4,8 +4,10 @@ import { prisma } from "@/lib/prisma";
 import { resend } from "@/lib/resend";
 import { activationEmailTemplate } from "@/lib/email-templates/activation";
 import { randomBytes } from "crypto";
+import { requireAdmin } from "@/app/actions/server-auth";
 
 export async function sendActivationEmail(userId) {
+  await requireAdmin();
   try {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) throw new Error("User not found");

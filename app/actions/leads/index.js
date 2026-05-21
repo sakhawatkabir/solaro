@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { createNotification } from "@/app/actions/notifications";
+import { createNotificationInternal } from "@/app/actions/notifications";
 import { requireAdmin } from "@/app/actions/server-auth";
 
 export async function getLeads(
@@ -189,7 +189,7 @@ export async function submitContactLead(data) {
       },
     });
 
-    await createNotification({
+    await createNotificationInternal({
       type: "LEAD",
       title: `New Contact Lead`,
       message: `${firstName} ${lastName || ""} submitted a contact form inquiry`,

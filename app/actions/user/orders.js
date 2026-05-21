@@ -3,12 +3,11 @@
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/app/actions/server-auth";
 
-export async function getUserOrders(userId) {
-  await requireAuth();
-  if (!userId) return { orders: [], stats: {} };
+export async function getUserOrders() {
+  const user = await requireAuth();
 
   const orders = await prisma.order.findMany({
-    where: { userId },
+    where: { userId: user.id },
     orderBy: { createdAt: "desc" },
   });
 
@@ -22,18 +21,17 @@ export async function getUserOrders(userId) {
   };
 }
 
-export async function getUserOrderStats(userId) {
-  await requireAuth();
-  if (!userId) return { totalOrders: 0, totalSpent: 0, delivered: 0 };
+export async function getUserOrderStats() {
+  const user = await requireAuth();
 
   const [count, revenue, deliveredCount] = await Promise.all([
-    prisma.order.count({ where: { userId } }),
+    prisma.order.count({ where: { userId: user.id } }),
     prisma.order.aggregate({
-      where: { userId },
+      where: { userId: user.id },
       _sum: { total: true },
     }),
     prisma.order.count({
-      where: { userId, status: "DELIVERED" },
+      where: { userId: user.id, status: "DELIVERED" },
     }),
   ]);
 

@@ -2,8 +2,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { createNotification } from "@/app/actions/notifications";
-import { requireAdmin } from "@/app/actions/server-auth";
+import { createNotificationInternal } from "@/app/actions/notifications";
+import { requireAdmin, requireAuth } from "@/app/actions/server-auth";
 
 export async function getOrders({
   page = 1,
@@ -51,6 +51,7 @@ export async function getOrderById(id) {
 }
 
 export async function createOrder(data) {
+  await requireAuth();
   const orderNumber = `ORD-${Date.now().toString().slice(-6)}`;
 
   const subtotal = data.items.reduce(
@@ -82,7 +83,7 @@ export async function createOrder(data) {
     },
   });
 
-  await createNotification({
+  await createNotificationInternal({
     type: "ORDER",
     title: `New Order: ${orderNumber}`,
     message: `${data.customerName} placed an order for ৳${total.toLocaleString()}`,

@@ -2,8 +2,14 @@
 
 import { prisma } from "@/lib/prisma";
 import { pusher } from "@/lib/pusher";
+import { requireAdmin, requireAuth } from "@/app/actions/server-auth";
 
 export async function createNotification(data) {
+  await requireAdmin();
+  return createNotificationInternal(data);
+}
+
+export async function createNotificationInternal(data) {
   const notification = await prisma.notification.create({
     data: {
       type: data.type,
@@ -33,12 +39,14 @@ export async function createNotification(data) {
 }
 
 export async function getUnreadCount(userId) {
-  const where = userId ? { userId, read: false } : { read: false };
+  const user = await requireAuth();
+  const where = { userId: userId || user.id, read: false };
   return prisma.notification.count({ where });
 }
 
 export async function getNotifications(userId, limit = 20) {
-  const where = userId ? { userId } : {};
+  const user = await requireAuth();
+  const where = { userId: userId || user.id };
   return prisma.notification.findMany({
     where,
     orderBy: { createdAt: "desc" },
@@ -47,6 +55,7 @@ export async function getNotifications(userId, limit = 20) {
 }
 
 export async function markNotificationRead(id) {
+  await requireAuth();
   return prisma.notification.update({
     where: { id },
     data: { read: true },
@@ -54,7 +63,8 @@ export async function markNotificationRead(id) {
 }
 
 export async function markAllNotificationsRead(userId) {
-  const where = userId ? { userId } : {};
+  const user = await requireAuth();
+  const where = { userId: userId || user.id };
   return prisma.notification.updateMany({
     where,
     data: { read: true },
