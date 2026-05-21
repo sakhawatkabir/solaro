@@ -190,10 +190,15 @@ export default function ReviewsTable({
       {expandedId && (
         <div
           className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
+          role="button"
+          tabIndex={0}
           onClick={() => setExpandedId(null)}
+          onKeyDown={(e) => e.key === "Escape" && setExpandedId(null)}
         >
           <div
             className="bg-zinc-900 border border-zinc-700 rounded-xl p-6 max-w-lg w-full"
+            role="dialog"
+            aria-modal="true"
             onClick={(e) => e.stopPropagation()}
           >
             {(() => {

@@ -88,10 +88,14 @@ export default function NotificationSettings() {
           </div>
           {lowStockAlert && (
             <div className="mt-3">
-              <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+              <label
+                className="block text-sm font-medium text-zinc-300 mb-1.5"
+                htmlFor="field-low-stock-threshold-1"
+              >
                 Low Stock Threshold
               </label>
               <input
+                id="field-low-stock-threshold-1"
                 type="number"
                 value={lowStockThreshold}
                 onChange={(e) => setLowStockThreshold(e.target.value)}

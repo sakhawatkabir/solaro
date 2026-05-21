@@ -8,10 +8,14 @@ export default function ContactSettings({ settings, onChange }) {
       </h3>
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+            htmlFor="field-contact-email-1"
+          >
             Contact Email
           </label>
           <input
+            id="field-contact-email-1"
             type="email"
             value={settings.contactEmail || ""}
             onChange={(e) => onChange("contactEmail", e.target.value)}
@@ -19,10 +23,14 @@ export default function ContactSettings({ settings, onChange }) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+            htmlFor="field-contact-phone-2"
+          >
             Contact Phone
           </label>
           <input
+            id="field-contact-phone-2"
             type="tel"
             value={settings.contactPhone || ""}
             onChange={(e) => onChange("contactPhone", e.target.value)}
@@ -30,10 +38,14 @@ export default function ContactSettings({ settings, onChange }) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+            htmlFor="field-contact-address-3"
+          >
             Contact Address
           </label>
           <textarea
+            id="field-contact-address-3"
             value={settings.contactAddress || ""}
             onChange={(e) => onChange("contactAddress", e.target.value)}
             rows={3}

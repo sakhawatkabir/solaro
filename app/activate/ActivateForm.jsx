@@ -96,12 +96,13 @@ export default function ActivateForm() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+              <label htmlFor="activate-password" className="block text-sm font-medium text-zinc-300 mb-1.5">
                 Password
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
                 <input
+                  id="activate-password"
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -123,12 +124,13 @@ export default function ActivateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+              <label htmlFor="activate-confirm-password" className="block text-sm font-medium text-zinc-300 mb-1.5">
                 Confirm Password
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
                 <input
+                  id="activate-confirm-password"
                   type={showPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}

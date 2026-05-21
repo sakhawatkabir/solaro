@@ -15,10 +15,14 @@ export default function StoreSettings() {
       <div className="space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-currency-1"
+            >
               Currency
             </label>
             <select
+              id="field-currency-1"
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-200 text-sm focus:outline-none focus:border-emerald-500/50 appearance-none cursor-pointer"
@@ -29,10 +33,14 @@ export default function StoreSettings() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-timezone-2"
+            >
               Timezone
             </label>
             <select
+              id="field-timezone-2"
               value={timezone}
               onChange={(e) => setTimezone(e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-200 text-sm focus:outline-none focus:border-emerald-500/50 appearance-none cursor-pointer"
@@ -44,10 +52,14 @@ export default function StoreSettings() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-order-id-prefix-3"
+            >
               Order ID Prefix
             </label>
             <input
+              id="field-order-id-prefix-3"
               type="text"
               value={orderPrefix}
               onChange={(e) => setOrderPrefix(e.target.value)}
@@ -55,10 +67,14 @@ export default function StoreSettings() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-free-shipping-threshold-4"
+            >
               Free Shipping Threshold (৳)
             </label>
             <input
+              id="field-free-shipping-threshold-4"
               type="number"
               value={freeShippingThreshold}
               onChange={(e) => setFreeShippingThreshold(e.target.value)}

@@ -135,11 +135,15 @@ export default function ProfilePage() {
         {/* Fields */}
         <div className="space-y-4 p-5">
           <div>
-            <label className="block text-xs font-medium text-ink-light uppercase tracking-wider mb-1.5">
+            <label
+              htmlFor="profile-name"
+              className="block text-xs font-medium text-ink-light uppercase tracking-wider mb-1.5"
+            >
               Full Name
             </label>
             {editing ? (
               <input
+                id="profile-name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -155,30 +159,48 @@ export default function ProfilePage() {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-ink-light uppercase tracking-wider mb-1.5">
+            <label
+              id="profile-email-label"
+              className="block text-xs font-medium text-ink-light uppercase tracking-wider mb-1.5"
+            >
               Email
             </label>
-            <div className="flex items-center gap-2 text-sm text-ink">
+            <div
+              className="flex items-center gap-2 text-sm text-ink"
+              aria-labelledby="profile-email-label"
+            >
               <Mail className="size-4 text-ink-light" />
               {user.email}
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-ink-light uppercase tracking-wider mb-1.5">
+            <label
+              id="profile-role-label"
+              className="block text-xs font-medium text-ink-light uppercase tracking-wider mb-1.5"
+            >
               Role
             </label>
-            <div className="flex items-center gap-2 text-sm text-ink capitalize">
+            <div
+              className="flex items-center gap-2 text-sm text-ink capitalize"
+              aria-labelledby="profile-role-label"
+            >
               <Shield className="size-4 text-ink-light" />
               {user.role?.toLowerCase()}
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-ink-light uppercase tracking-wider mb-1.5">
+            <label
+              id="profile-status-label"
+              className="block text-xs font-medium text-ink-light uppercase tracking-wider mb-1.5"
+            >
               Status
             </label>
-            <div className="text-sm text-ink capitalize">
+            <div
+              className="text-sm text-ink capitalize"
+              aria-labelledby="profile-status-label"
+            >
               <span
                 className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ${
                   user.status === "ACTIVE"

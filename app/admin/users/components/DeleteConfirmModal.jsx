@@ -5,7 +5,7 @@ import { X, AlertTriangle, Trash2 } from "lucide-react";
 export default function DeleteConfirmModal({ user, onConfirm, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/60" role="button" tabIndex={0} onClick={onClose} onKeyDown={(e) => e.key === "Escape" && onClose()} />
       <div className="relative w-full max-w-md mx-4 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">

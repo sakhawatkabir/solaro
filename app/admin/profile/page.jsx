@@ -168,11 +168,15 @@ export default function AdminProfilePage() {
 
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5">
+            <label
+              htmlFor="admin-profile-name"
+              className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5"
+            >
               Full Name
             </label>
             {editing ? (
               <input
+                id="admin-profile-name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -188,20 +192,32 @@ export default function AdminProfilePage() {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5">
+            <label
+              id="admin-profile-email-label"
+              className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5"
+            >
               Email
             </label>
-            <div className="flex items-center gap-2 text-sm text-white">
+            <div
+              className="flex items-center gap-2 text-sm text-white"
+              aria-labelledby="admin-profile-email-label"
+            >
               <Mail className="size-4 text-zinc-500" />
               {user.email}
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5">
+            <label
+              id="admin-profile-permissions-label"
+              className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5"
+            >
               Permissions
             </label>
-            <div className="flex items-center gap-2 text-sm text-white">
+            <div
+              className="flex items-center gap-2 text-sm text-white"
+              aria-labelledby="admin-profile-permissions-label"
+            >
               <Shield className="size-4 text-zinc-500" />
               {user.permissions?.length > 0
                 ? user.permissions.map((p) => p.replace(/_/g, " ")).join(", ")
@@ -267,11 +283,15 @@ export default function AdminProfilePage() {
 
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5">
+            <label
+              htmlFor="admin-current-password"
+              className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5"
+            >
               Current Password
             </label>
             <div className="relative">
               <input
+                id="admin-current-password"
                 type={showCurrent ? "text" : "password"}
                 value={currentPassword}
                 onChange={(e) => {
@@ -304,11 +324,15 @@ export default function AdminProfilePage() {
             )}
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5">
+            <label
+              className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5"
+              htmlFor="admin-new-password"
+            >
               New Password
             </label>
             <div className="relative">
               <input
+                id="admin-new-password"
                 type={showNew ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -328,11 +352,15 @@ export default function AdminProfilePage() {
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5">
+            <label
+              className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5"
+              htmlFor="admin-confirm-password"
+            >
               Confirm New Password
             </label>
             <div className="relative">
               <input
+                id="admin-confirm-password"
                 type={showConfirm ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => {

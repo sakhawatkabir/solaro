@@ -31,16 +31,18 @@ const priorities = [
 export default function LeadDetails({ formData, updateField }) {
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
-      <h3 className="text-lg font-semibold text-white mb-4">
-        Lead Details
-      </h3>
+      <h3 className="text-lg font-semibold text-white mb-4">Lead Details</h3>
       <div className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-source-1"
+            >
               Source
             </label>
             <select
+              id="field-source-1"
               value={formData.source}
               onChange={(e) => updateField("source", e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
@@ -53,10 +55,14 @@ export default function LeadDetails({ formData, updateField }) {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-status-2"
+            >
               Status
             </label>
             <select
+              id="field-status-2"
               value={formData.status}
               onChange={(e) => updateField("status", e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
@@ -71,10 +77,14 @@ export default function LeadDetails({ formData, updateField }) {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-priority-3"
+            >
               Priority
             </label>
             <select
+              id="field-priority-3"
               value={formData.priority}
               onChange={(e) => updateField("priority", e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
@@ -87,10 +97,14 @@ export default function LeadDetails({ formData, updateField }) {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-estimated-value-4"
+            >
               Estimated Value (৳)
             </label>
             <input
+              id="field-estimated-value-4"
               type="number"
               value={formData.estimatedValue}
               onChange={(e) => updateField("estimatedValue", e.target.value)}
@@ -100,10 +114,14 @@ export default function LeadDetails({ formData, updateField }) {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+            htmlFor="field-assigned-to-5"
+          >
             Assigned To
           </label>
           <input
+            id="field-assigned-to-5"
             type="text"
             value={formData.assignedTo}
             onChange={(e) => updateField("assignedTo", e.target.value)}

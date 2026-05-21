@@ -130,6 +130,7 @@ export default function Navigation() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
+                    role="menu"
                     onClick={(e) => e.stopPropagation()}
                     className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-lg border border-ink/10 py-2"
                   >

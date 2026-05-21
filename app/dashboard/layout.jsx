@@ -54,7 +54,10 @@ export default function DashboardLayout({ children }) {
       {mobileOpen && (
         <div
           className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          role="button"
+          tabIndex={0}
           onClick={() => setMobileOpen(false)}
+          onKeyDown={(e) => e.key === "Escape" && setMobileOpen(false)}
         />
       )}
 

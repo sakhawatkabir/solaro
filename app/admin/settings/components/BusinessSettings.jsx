@@ -9,10 +9,14 @@ export default function BusinessSettings({ settings, onChange }) {
       <div className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-currency-1"
+            >
               Currency
             </label>
             <input
+              id="field-currency-1"
               type="text"
               value={settings.currency || ""}
               onChange={(e) => onChange("currency", e.target.value)}
@@ -21,10 +25,14 @@ export default function BusinessSettings({ settings, onChange }) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-currency-symbol-2"
+            >
               Currency Symbol
             </label>
             <input
+              id="field-currency-symbol-2"
               type="text"
               value={settings.currencySymbol || ""}
               onChange={(e) => onChange("currencySymbol", e.target.value)}
@@ -34,10 +42,14 @@ export default function BusinessSettings({ settings, onChange }) {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+            htmlFor="field-vat-rate-3"
+          >
             VAT Rate (%)
           </label>
           <input
+            id="field-vat-rate-3"
             type="number"
             value={settings.vatRate ?? 0}
             onChange={(e) => onChange("vatRate", e.target.value)}

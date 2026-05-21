@@ -175,7 +175,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
       {mobileOpen && (
         <div
           className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          role="button"
+          tabIndex={0}
           onClick={() => setMobileOpen(false)}
+          onKeyDown={(e) => e.key === "Escape" && setMobileOpen(false)}
         />
       )}
 

@@ -59,8 +59,9 @@ export default function ProductImages({ value = [], onChange }) {
       {value.length > 0 && (
         <div className="grid grid-cols-3 gap-2 mb-4">
           {value.map((url, i) => (
-            <div
+            <button
               key={i}
+              type="button"
               onClick={() => {
                 const reordered = [url, ...value.filter((_, idx) => idx !== i)];
                 onChange(reordered);
@@ -90,7 +91,7 @@ export default function ProductImages({ value = [], onChange }) {
               >
                 <X className="size-3 text-white" />
               </button>
-            </div>
+            </button>
           ))}
         </div>
       )}

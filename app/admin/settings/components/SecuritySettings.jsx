@@ -22,17 +22,22 @@ export default function SecuritySettings() {
         </h2>
         <div className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              htmlFor="settings-current-password"
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+            >
               Current Password
             </label>
             <div className="relative">
               <input
+                id="settings-current-password"
                 type={showCurrent ? "text" : "password"}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 className="w-full px-4 py-2.5 pr-10 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-200 text-sm focus:outline-none focus:border-emerald-500/50"
               />
               <button
+                type="button"
                 onClick={() => setShowCurrent(!showCurrent)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
               >
@@ -45,17 +50,22 @@ export default function SecuritySettings() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              htmlFor="settings-new-password"
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+            >
               New Password
             </label>
             <div className="relative">
               <input
+                id="settings-new-password"
                 type={showNew ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full px-4 py-2.5 pr-10 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-200 text-sm focus:outline-none focus:border-emerald-500/50"
               />
               <button
+                type="button"
                 onClick={() => setShowNew(!showNew)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
               >
@@ -68,17 +78,22 @@ export default function SecuritySettings() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              htmlFor="settings-confirm-password"
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+            >
               Confirm New Password
             </label>
             <div className="relative">
               <input
+                id="settings-confirm-password"
                 type={showConfirm ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full px-4 py-2.5 pr-10 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-200 text-sm focus:outline-none focus:border-emerald-500/50"
               />
               <button
+                type="button"
                 onClick={() => setShowConfirm(!showConfirm)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
               >
@@ -118,6 +133,7 @@ export default function SecuritySettings() {
               </div>
             </div>
             <button
+              type="button"
               onClick={() => setTwoFactor(!twoFactor)}
               className={`relative w-11 h-6 rounded-full transition-colors ${
                 twoFactor ? "bg-emerald-500" : "bg-zinc-700"
@@ -131,10 +147,14 @@ export default function SecuritySettings() {
             </button>
           </div>
           <div className="py-3 border-t border-zinc-800">
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              htmlFor="settings-session-timeout"
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+            >
               Session Timeout (minutes)
             </label>
             <select
+              id="settings-session-timeout"
               value={sessionTimeout}
               onChange={(e) => setSessionTimeout(e.target.value)}
               className="w-48 px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-200 text-sm focus:outline-none focus:border-emerald-500/50 appearance-none cursor-pointer"

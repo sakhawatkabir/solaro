@@ -3,13 +3,19 @@
 export default function GeneralSettings({ settings, onChange }) {
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6 mt-6">
-      <h3 className="text-lg font-semibold text-white mb-4">General Settings</h3>
+      <h3 className="text-lg font-semibold text-white mb-4">
+        General Settings
+      </h3>
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+            htmlFor="field-site-name-1"
+          >
             Site Name
           </label>
           <input
+            id="field-site-name-1"
             type="text"
             value={settings.siteName || ""}
             onChange={(e) => onChange("siteName", e.target.value)}
@@ -17,10 +23,14 @@ export default function GeneralSettings({ settings, onChange }) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+            htmlFor="field-site-tagline-2"
+          >
             Site Tagline
           </label>
           <input
+            id="field-site-tagline-2"
             type="text"
             value={settings.siteTagline || ""}
             onChange={(e) => onChange("siteTagline", e.target.value)}

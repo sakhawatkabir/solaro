@@ -14,10 +14,14 @@ export default function CustomerBasicInfo({ formData, updateField }) {
       </h3>
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+            htmlFor="field-full-name-1"
+          >
             Full Name
           </label>
           <input
+            id="field-full-name-1"
             type="text"
             value={formData.name}
             onChange={(e) => updateField("name", e.target.value)}
@@ -27,10 +31,14 @@ export default function CustomerBasicInfo({ formData, updateField }) {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-email-2"
+            >
               Email
             </label>
             <input
+              id="field-email-2"
               type="email"
               value={formData.email}
               onChange={(e) => updateField("email", e.target.value)}
@@ -39,10 +47,14 @@ export default function CustomerBasicInfo({ formData, updateField }) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-phone-3"
+            >
               Phone
             </label>
             <input
+              id="field-phone-3"
               type="tel"
               value={formData.phone}
               onChange={(e) => updateField("phone", e.target.value)}
@@ -52,10 +64,14 @@ export default function CustomerBasicInfo({ formData, updateField }) {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+            htmlFor="field-status-4"
+          >
             Status
           </label>
           <select
+            id="field-status-4"
             value={formData.status}
             onChange={(e) => updateField("status", e.target.value)}
             className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"

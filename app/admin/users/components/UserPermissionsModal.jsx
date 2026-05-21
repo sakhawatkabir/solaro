@@ -63,7 +63,7 @@ export default function UserPermissionsModal({ user, roles, onSave, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/60" role="button" tabIndex={0} onClick={onClose} onKeyDown={(e) => e.key === "Escape" && onClose()} />
       <div className="relative w-full max-w-lg mx-4 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-zinc-800">
@@ -93,10 +93,13 @@ export default function UserPermissionsModal({ user, roles, onSave, onClose }) {
         <div className="p-6 space-y-6 max-h-[60vh] overflow-y-auto">
           {/* Role Selection */}
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-3">
+            <label
+              id="user-role-label"
+              className="block text-sm font-medium text-zinc-300 mb-3"
+            >
               Role
             </label>
-            <div className="space-y-2">
+            <div className="space-y-2" role="radiogroup" aria-labelledby="user-role-label">
               {roles.map((role) => (
                 <button
                   key={role.id}
@@ -127,10 +130,17 @@ export default function UserPermissionsModal({ user, roles, onSave, onClose }) {
           {/* Custom Permissions */}
           {isCustom && (
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-3">
+              <label
+                id="permissions-label"
+                className="block text-sm font-medium text-zinc-300 mb-3"
+              >
                 Permissions
               </label>
-              <div className="grid grid-cols-2 gap-2">
+              <div
+                className="grid grid-cols-2 gap-2"
+                role="group"
+                aria-labelledby="permissions-label"
+              >
                 {allPermissions.map((perm) => (
                   <button
                     key={perm}
@@ -153,10 +163,10 @@ export default function UserPermissionsModal({ user, roles, onSave, onClose }) {
           {/* Current Permissions Preview */}
           {!isCustom && selectedRole !== "super-admin" && (
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-3">
+              <label id="current-permissions-label" className="block text-sm font-medium text-zinc-300 mb-3">
                 Current Permissions
               </label>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" role="group" aria-labelledby="current-permissions-label">
                 {selectedPermissions.map((perm) => (
                   <span
                     key={perm}

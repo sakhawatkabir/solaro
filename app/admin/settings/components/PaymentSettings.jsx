@@ -72,10 +72,14 @@ export default function PaymentSettings() {
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+                  <label
+                    className="block text-sm font-medium text-zinc-300 mb-1.5"
+                    htmlFor="field-account-name-1"
+                  >
                     Account Name
                   </label>
                   <input
+                    id="field-account-name-1"
                     type="text"
                     value={accountName}
                     onChange={(e) => setAccountName(e.target.value)}
@@ -83,10 +87,14 @@ export default function PaymentSettings() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+                  <label
+                    className="block text-sm font-medium text-zinc-300 mb-1.5"
+                    htmlFor="field-account-number-2"
+                  >
                     Account Number
                   </label>
                   <input
+                    id="field-account-number-2"
                     type="text"
                     value={accountNumber}
                     onChange={(e) => setAccountNumber(e.target.value)}
@@ -96,10 +104,14 @@ export default function PaymentSettings() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+                  <label
+                    className="block text-sm font-medium text-zinc-300 mb-1.5"
+                    htmlFor="field-bank-name-3"
+                  >
                     Bank Name
                   </label>
                   <input
+                    id="field-bank-name-3"
                     type="text"
                     value={bankName}
                     onChange={(e) => setBankName(e.target.value)}
@@ -107,10 +119,14 @@ export default function PaymentSettings() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+                  <label
+                    className="block text-sm font-medium text-zinc-300 mb-1.5"
+                    htmlFor="field-branch-4"
+                  >
                     Branch
                   </label>
                   <input
+                    id="field-branch-4"
                     type="text"
                     value={branch}
                     onChange={(e) => setBranch(e.target.value)}

@@ -28,10 +28,14 @@ export default function UserBasicInfo({ formData, updateField }) {
       <div className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-name-1"
+            >
               Name
             </label>
             <input
+              id="field-name-1"
               type="text"
               value={formData.name}
               disabled
@@ -39,10 +43,14 @@ export default function UserBasicInfo({ formData, updateField }) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-email-2"
+            >
               Email
             </label>
             <input
+              id="field-email-2"
               type="email"
               value={formData.email}
               disabled
@@ -52,10 +60,14 @@ export default function UserBasicInfo({ formData, updateField }) {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-role-3"
+            >
               Role
             </label>
             <select
+              id="field-role-3"
               value={formData.role}
               onChange={(e) => updateField("role", e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
@@ -68,10 +80,14 @@ export default function UserBasicInfo({ formData, updateField }) {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-status-4"
+            >
               Status
             </label>
             <select
+              id="field-status-4"
               value={formData.status}
               onChange={(e) => updateField("status", e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"

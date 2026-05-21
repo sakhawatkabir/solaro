@@ -167,11 +167,15 @@ export default function SettingsPage() {
             </div>
           )}
           <div>
-            <label className="block text-sm font-medium text-ink-mid mb-1">
+            <label
+              className="block text-sm font-medium text-ink-mid mb-1"
+              htmlFor="field-current-password-201"
+            >
               Current Password
             </label>
             <div className="relative">
               <input
+                id="field-current-password-201"
                 type={showCurrent ? "text" : "password"}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
@@ -191,11 +195,15 @@ export default function SettingsPage() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-ink-mid mb-1">
+            <label
+              className="block text-sm font-medium text-ink-mid mb-1"
+              htmlFor="field-new-password-202"
+            >
               New Password
             </label>
             <div className="relative">
               <input
+                id="field-new-password-202"
                 type={showNew ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -215,11 +223,15 @@ export default function SettingsPage() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-ink-mid mb-1">
+            <label
+              className="block text-sm font-medium text-ink-mid mb-1"
+              htmlFor="field-confirm-new-password-203"
+            >
               Confirm New Password
             </label>
             <div className="relative">
               <input
+                id="field-confirm-new-password-203"
                 type={showConfirm ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}

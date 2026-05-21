@@ -23,7 +23,9 @@ export default function ReviewForm({
             type="text"
             placeholder="Your Name"
             value={formData.name}
-            onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, name: e.target.value }))
+            }
             className="w-full px-4 py-3 rounded-xl border border-ink/10 focus:border-accent focus:outline-none"
             required
           />
@@ -43,18 +45,31 @@ export default function ReviewForm({
           type="text"
           placeholder="Review Title (optional)"
           value={formData.title || ""}
-          onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, title: e.target.value }))
+          }
           className="w-full px-4 py-3 rounded-xl border border-ink/10 focus:border-accent focus:outline-none"
         />
 
         <div>
-          <label className="text-sm text-ink-mid mb-2 block">Your Rating</label>
-          <div className="flex gap-2">
+          <label id="rating-label" className="text-sm text-ink-mid mb-2 block">
+            Your Rating
+          </label>
+          <div
+            className="flex gap-2"
+            role="radiogroup"
+            aria-labelledby="rating-label"
+          >
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
                 type="button"
-                onClick={() => setFormData((prev) => ({ ...prev, rating: star }))}
+                role="radio"
+                aria-checked={star === formData.rating}
+                aria-label={`${star} star${star > 1 ? "s" : ""}`}
+                onClick={() =>
+                  setFormData((prev) => ({ ...prev, rating: star }))
+                }
                 className="transition-transform hover:scale-110"
               >
                 <Star

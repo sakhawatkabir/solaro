@@ -23,10 +23,14 @@ export default function ProductBasicInfo({ formData, updateField }) {
       </h3>
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+            htmlFor="field-product-name-1"
+          >
             Product Name
           </label>
           <input
+            id="field-product-name-1"
             type="text"
             value={formData.name}
             onChange={(e) => updateField("name", e.target.value)}
@@ -36,10 +40,14 @@ export default function ProductBasicInfo({ formData, updateField }) {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-category-2"
+            >
               Category
             </label>
             <select
+              id="field-category-2"
               value={formData.category}
               onChange={(e) => updateField("category", e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
@@ -56,10 +64,14 @@ export default function ProductBasicInfo({ formData, updateField }) {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label
+              className="block text-sm font-medium text-zinc-300 mb-1.5"
+              htmlFor="field-status-3"
+            >
               Status
             </label>
             <select
+              id="field-status-3"
               value={formData.status}
               onChange={(e) => updateField("status", e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
@@ -73,10 +85,14 @@ export default function ProductBasicInfo({ formData, updateField }) {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+            htmlFor="field-badge-4"
+          >
             Badge
           </label>
           <input
+            id="field-badge-4"
             type="text"
             value={formData.badge}
             onChange={(e) => updateField("badge", e.target.value)}
@@ -85,7 +101,10 @@ export default function ProductBasicInfo({ formData, updateField }) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            id="product-description-label"
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+          >
             Description
           </label>
           <RichTextEditor

@@ -8,12 +8,16 @@ export default function ProductPricing({ formData, updateField }) {
       <h3 className="text-lg font-semibold text-white mb-4">Pricing & Stock</h3>
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            htmlFor="product-originalPrice"
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+          >
             Original Price (৳)
           </label>
           <div className="relative">
             <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
             <input
+              id="product-originalPrice"
               type="number"
               value={formData.originalPrice}
               onChange={(e) => updateField("originalPrice", e.target.value)}
@@ -23,12 +27,16 @@ export default function ProductPricing({ formData, updateField }) {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            htmlFor="product-price"
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+          >
             Price (৳)
           </label>
           <div className="relative">
             <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
             <input
+              id="product-price"
               type="number"
               value={formData.price}
               onChange={(e) => updateField("price", e.target.value)}
@@ -38,12 +46,16 @@ export default function ProductPricing({ formData, updateField }) {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+          <label
+            htmlFor="product-stock"
+            className="block text-sm font-medium text-zinc-300 mb-1.5"
+          >
             Stock Quantity
           </label>
           <div className="relative">
             <Hash className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
             <input
+              id="product-stock"
               type="number"
               value={formData.stock}
               onChange={(e) => updateField("stock", e.target.value)}
