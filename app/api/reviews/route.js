@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { createNotification } from "@/app/actions/notifications";
+import { createNotificationInternal } from "@/app/actions/notifications";
 
 export const dynamic = "force-dynamic";
 
@@ -86,7 +86,7 @@ export async function POST(request) {
       },
     });
 
-    await createNotification({
+    await createNotificationInternal({
       type: "REVIEW",
       title: `New Review: ${"★".repeat(parseInt(rating))}`,
       message: `${customerName} submitted a review${title ? ` - "${title}"` : ""}`,

@@ -106,7 +106,6 @@ export default function ProductReviews({ productId }) {
       title: formData.title || null,
       productId,
     };
-    console.log("Submitting review:", payload);
     submitMutation.mutate(payload);
   };
 
