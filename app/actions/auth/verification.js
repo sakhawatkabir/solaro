@@ -29,14 +29,15 @@ export async function verifyEmailAction(token) {
     return { error: "User not found" };
   }
 
-  await prisma.user.update({
-    where: { id: user.id },
-    data: { emailVerified: new Date() },
-  });
-
-  await prisma.verificationToken.delete({
-    where: { id: verificationToken.id },
-  });
+  await Promise.all([
+    prisma.user.update({
+      where: { id: user.id },
+      data: { emailVerified: new Date() },
+    }),
+    prisma.verificationToken.delete({
+      where: { id: verificationToken.id },
+    }),
+  ]);
 
   return { success: true, message: "Email verified successfully" };
 }

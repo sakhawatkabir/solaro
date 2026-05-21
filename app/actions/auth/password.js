@@ -72,12 +72,13 @@ export async function resetPasswordAction(password, token) {
 
   const hashedPassword = await hashPassword(password);
 
-  await prisma.user.update({
-    where: { id: user.id },
-    data: { password: hashedPassword },
-  });
-
-  await prisma.passwordResetToken.delete({ where: { id: resetToken.id } });
+  await Promise.all([
+    prisma.user.update({
+      where: { id: user.id },
+      data: { password: hashedPassword },
+    }),
+    prisma.passwordResetToken.delete({ where: { id: resetToken.id } }),
+  ]);
 
   return { success: true, message: "Password updated successfully" };
 }

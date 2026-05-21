@@ -57,14 +57,15 @@ export async function loginAction(email, password, code) {
   const sessionToken = crypto.randomUUID();
   const expires = new Date(Date.now() + SESSION_EXPIRY);
 
-  await prisma.session.create({
-    data: { sessionToken, userId: user.id, expires },
-  });
-
-  await prisma.user.update({
-    where: { id: user.id },
-    data: { lastLogin: new Date() },
-  });
+  await Promise.all([
+    prisma.session.create({
+      data: { sessionToken, userId: user.id, expires },
+    }),
+    prisma.user.update({
+      where: { id: user.id },
+      data: { lastLogin: new Date() },
+    }),
+  ]);
 
   const cookieStore = await cookies();
   await setSessionCookies(

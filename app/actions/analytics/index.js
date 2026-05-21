@@ -19,6 +19,7 @@ export async function getAnalytics() {
       topProducts,
       recentLeads,
       topDistricts,
+      totalRevenue,
     ] = await Promise.all([
       prisma.product.count(),
       prisma.customer.count(),
@@ -56,12 +57,11 @@ export async function getAnalytics() {
         orderBy: { population: "desc" },
         select: { id: true, name: true, division: true, population: true },
       }),
+      prisma.product.aggregate({
+        _sum: { price: true },
+        where: { sales: { gt: 0 } },
+      }),
     ]);
-
-    const totalRevenue = await prisma.product.aggregate({
-      _sum: { price: true },
-      where: { sales: { gt: 0 } },
-    });
 
     return {
       overview: {

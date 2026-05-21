@@ -23,7 +23,7 @@ export default function ReviewForm({
             type="text"
             placeholder="Your Name"
             value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
             className="w-full px-4 py-3 rounded-xl border border-ink/10 focus:border-accent focus:outline-none"
             required
           />
@@ -32,7 +32,7 @@ export default function ReviewForm({
             placeholder="Your Email"
             value={formData.email}
             onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
+              setFormData((prev) => ({ ...prev, email: e.target.value }))
             }
             className="w-full px-4 py-3 rounded-xl border border-ink/10 focus:border-accent focus:outline-none"
             required
@@ -43,7 +43,7 @@ export default function ReviewForm({
           type="text"
           placeholder="Review Title (optional)"
           value={formData.title || ""}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
           className="w-full px-4 py-3 rounded-xl border border-ink/10 focus:border-accent focus:outline-none"
         />
 
@@ -54,7 +54,7 @@ export default function ReviewForm({
               <button
                 key={star}
                 type="button"
-                onClick={() => setFormData({ ...formData, rating: star })}
+                onClick={() => setFormData((prev) => ({ ...prev, rating: star }))}
                 className="transition-transform hover:scale-110"
               >
                 <Star
@@ -73,7 +73,7 @@ export default function ReviewForm({
           placeholder="Share your experience with this product..."
           value={formData.comment}
           onChange={(e) =>
-            setFormData({ ...formData, comment: e.target.value })
+            setFormData((prev) => ({ ...prev, comment: e.target.value }))
           }
           rows={4}
           className="w-full px-4 py-3 rounded-xl border border-ink/10 focus:border-accent focus:outline-none resize-none"

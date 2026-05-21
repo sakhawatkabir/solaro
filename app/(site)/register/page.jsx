@@ -37,7 +37,8 @@ export default function RegisterPage() {
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleRegisterSubmit = async (e) => {

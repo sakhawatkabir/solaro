@@ -87,11 +87,10 @@ export async function getDashboardStats() {
 
 export async function getRevenueChartData() {
   await requireAdmin();
-  const months = [];
   const now = new Date();
 
-  for (let i = 5; i >= 0; i--) {
-    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+  const monthData = Array.from({ length: 6 }, (_, i) => {
+    const date = new Date(now.getFullYear(), now.getMonth() - (5 - i), 1);
     const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
     const endOfMonth = new Date(
       date.getFullYear(),
@@ -101,24 +100,27 @@ export async function getRevenueChartData() {
       59,
       59,
     );
+    return { date, startOfMonth, endOfMonth };
+  });
 
-    const result = await prisma.order.aggregate({
-      where: {
-        status: "DELIVERED",
-        createdAt: { gte: startOfMonth, lte: endOfMonth },
-      },
-      _sum: { total: true },
-      _count: true,
-    });
+  const results = await Promise.all(
+    monthData.map(({ startOfMonth, endOfMonth }) =>
+      prisma.order.aggregate({
+        where: {
+          status: "DELIVERED",
+          createdAt: { gte: startOfMonth, lte: endOfMonth },
+        },
+        _sum: { total: true },
+        _count: true,
+      }),
+    ),
+  );
 
-    months.push({
-      month: date.toLocaleString("en-US", { month: "short" }),
-      revenue: result._sum.total || 0,
-      orders: result._count,
-    });
-  }
-
-  return months;
+  return monthData.map(({ date }, i) => ({
+    month: date.toLocaleString("en-US", { month: "short" }),
+    revenue: results[i]._sum.total || 0,
+    orders: results[i]._count,
+  }));
 }
 
 export async function getCategoryChartData() {

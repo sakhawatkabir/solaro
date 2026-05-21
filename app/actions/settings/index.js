@@ -77,16 +77,15 @@ export async function updateSetting(key, value) {
 export async function updateSettings(updates) {
   await requireAdmin();
   try {
-    const results = [];
-
-    for (const [key, value] of Object.entries(updates)) {
-      const setting = await prisma.setting.upsert({
-        where: { key },
-        update: { value: String(value) },
-        create: { key, value: String(value) },
-      });
-      results.push(setting);
-    }
+    const results = await Promise.all(
+      Object.entries(updates).map(([key, value]) =>
+        prisma.setting.upsert({
+          where: { key },
+          update: { value: String(value) },
+          create: { key, value: String(value) },
+        }),
+      ),
+    );
 
     revalidatePath("/admin/settings");
     return { success: true, settings: results };
@@ -101,9 +100,11 @@ export async function resetSettings() {
   try {
     await prisma.setting.deleteMany();
 
-    for (const setting of getDefaultSettings()) {
-      await prisma.setting.create({ data: setting });
-    }
+    await Promise.all(
+      getDefaultSettings().map((setting) =>
+        prisma.setting.create({ data: setting }),
+      ),
+    );
 
     revalidatePath("/admin/settings");
     return { success: true };
