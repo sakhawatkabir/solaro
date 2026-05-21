@@ -25,18 +25,20 @@ export async function registerAction(name, email, password) {
 
   const hashedPassword = await hashPassword(password);
 
-  await prisma.user.create({
-    data: {
-      name,
-      email,
-      password: hashedPassword,
-      role: "VIEWER",
-      status: "ACTIVE",
-      permissions: ["analytics"],
-    },
-  });
+  const [user, verificationToken] = await Promise.all([
+    prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: "VIEWER",
+        status: "ACTIVE",
+        permissions: ["analytics"],
+      },
+    }),
+    createVerificationToken(email),
+  ]);
 
-  const verificationToken = await createVerificationToken(email);
   const verificationUrl = `${APP_URL}/verify-email?token=${verificationToken.token}`;
   const emailTemplate = generateVerificationEmail(name, verificationUrl);
   const emailResult = await sendEmail({ to: email, ...emailTemplate });
