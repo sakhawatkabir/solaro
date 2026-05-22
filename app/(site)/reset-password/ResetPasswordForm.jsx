@@ -10,20 +10,41 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useReducer, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { useAuth } from "../../context/AuthContext";
 
+const initialState = {
+  password: "",
+  confirmPassword: "",
+  showPassword: false,
+  showConfirm: false,
+  isLoading: false,
+  error: "",
+  success: false,
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_FIELD":
+      return { ...state, [action.field]: action.value };
+    case "SUBMIT_START":
+      return { ...state, isLoading: true, error: "" };
+    case "SUBMIT_SUCCESS":
+      return { ...state, isLoading: false, success: true };
+    case "SUBMIT_ERROR":
+      return { ...state, isLoading: false, error: action.error };
+    case "SET_ERROR":
+      return { ...state, error: action.error };
+    default:
+      return state;
+  }
+}
+
 export default function ResetPasswordForm() {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const searchParams = useSearchParams();
   const { push } = useRouter();
   const prefersReducedMotion = useReducedMotion();
@@ -34,48 +55,52 @@ export default function ResetPasswordForm() {
 
   useEffect(() => {
     if (!token) {
-      setError("Missing reset token. Please request a new password reset link.");
+      dispatch({
+        type: "SET_ERROR",
+        error: "Missing reset token. Please request a new password reset link.",
+      });
     }
   }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     if (!token) {
-      setError("Missing reset token. Please request a new password reset link.");
+      dispatch({
+        type: "SET_ERROR",
+        error: "Missing reset token. Please request a new password reset link.",
+      });
       return;
     }
 
-    if (!password) {
-      setError("Please enter a new password.");
+    if (!state.password) {
+      dispatch({ type: "SET_ERROR", error: "Please enter a new password." });
       return;
     }
 
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+    if (state.password.length < 8) {
+      dispatch({
+        type: "SET_ERROR",
+        error: "Password must be at least 8 characters.",
+      });
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+    if (state.password !== state.confirmPassword) {
+      dispatch({ type: "SET_ERROR", error: "Passwords do not match." });
       return;
     }
 
-    setIsLoading(true);
-    const result = await resetPassword(password, token);
+    dispatch({ type: "SUBMIT_START" });
+    const result = await resetPassword(state.password, token);
 
     if (result.error) {
-      setError(result.error);
-      setIsLoading(false);
+      dispatch({ type: "SUBMIT_ERROR", error: result.error });
       return;
     }
 
-    setSuccess(true);
-    setIsLoading(false);
-    setTimeout(() => {
-      push("/login");
-    }, 3000);
+    dispatch({ type: "SUBMIT_SUCCESS" });
+    setTimeout(() => push("/login"), 3000);
   };
 
   return (
@@ -107,23 +132,23 @@ export default function ResetPasswordForm() {
             Enter a new password for your account.
           </p>
 
-          {error && (
+          {state.error && (
             <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-center gap-3">
               <AlertCircle size={18} className="text-red-500 flex-shrink-0" />
-              <span className="text-red-700 text-sm">{error}</span>
+              <span className="text-red-700 text-sm">{state.error}</span>
             </div>
           )}
 
-          {success && (
+          {state.success && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-center gap-3">
               <CheckCircle size={18} className="text-green-500 flex-shrink-0" />
               <span className="text-green-700 text-sm">
-                Password updated successfully! Redirecting to login...
+                Password updated successfully! Redirecting to login…
               </span>
             </div>
           )}
 
-          {!success && token && (
+          {!state.success && token && (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label
@@ -139,18 +164,34 @@ export default function ResetPasswordForm() {
                   />
                   <input
                     id="reset-password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    type={state.showPassword ? "text" : "password"}
+                    value={state.password}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "SET_FIELD",
+                        field: "password",
+                        value: e.target.value,
+                      })
+                    }
                     className="w-full pl-12 pr-12 py-3.5 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                     placeholder="Min 8 characters"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() =>
+                      dispatch({
+                        type: "SET_FIELD",
+                        field: "showPassword",
+                        value: !state.showPassword,
+                      })
+                    }
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-light hover:text-ink transition-colors"
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {state.showPassword ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
                   </button>
                 </div>
               </div>
@@ -169,28 +210,44 @@ export default function ResetPasswordForm() {
                   />
                   <input
                     id="reset-confirm"
-                    type={showConfirm ? "text" : "password"}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    type={state.showConfirm ? "text" : "password"}
+                    value={state.confirmPassword}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "SET_FIELD",
+                        field: "confirmPassword",
+                        value: e.target.value,
+                      })
+                    }
                     className="w-full pl-12 pr-12 py-3.5 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                     placeholder="Re-enter password"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowConfirm(!showConfirm)}
+                    onClick={() =>
+                      dispatch({
+                        type: "SET_FIELD",
+                        field: "showConfirm",
+                        value: !state.showConfirm,
+                      })
+                    }
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-light hover:text-ink transition-colors"
                   >
-                    {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {state.showConfirm ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
                   </button>
                 </div>
               </div>
 
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={state.isLoading}
                 className="w-full py-4 bg-accent hover:bg-accent-mid disabled:bg-accent/50 text-white font-semibold rounded-full transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2"
               >
-                {isLoading ? (
+                {state.isLoading ? (
                   <div className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   "Reset Password"
@@ -199,7 +256,7 @@ export default function ResetPasswordForm() {
             </form>
           )}
 
-          {success && (
+          {state.success && (
             <div className="mt-6 text-center">
               <Link
                 href="/login"

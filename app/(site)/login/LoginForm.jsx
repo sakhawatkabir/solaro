@@ -10,59 +10,97 @@ import {
   Sun,
   AlertCircle,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useReducer, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { useAuth } from "../../context/AuthContext";
 
+const initialState = {
+  email: "",
+  password: "",
+  showPassword: false,
+  isLoading: false,
+  error: "",
+  requiresVerification: false,
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_FIELD":
+      return { ...state, [action.field]: action.value };
+    case "SUBMIT_START":
+      return {
+        ...state,
+        isLoading: true,
+        error: "",
+        requiresVerification: false,
+      };
+    case "SUBMIT_SUCCESS":
+      return { ...state, isLoading: false };
+    case "VERIFICATION_REQUIRED":
+      return {
+        ...state,
+        isLoading: false,
+        requiresVerification: true,
+        error: "",
+      };
+    case "SUBMIT_ERROR":
+      return {
+        ...state,
+        isLoading: false,
+        error: action.error,
+        requiresVerification: false,
+      };
+    case "SET_ERROR":
+      return { ...state, error: action.error };
+    default:
+      return state;
+  }
+}
+
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [requiresVerification, setRequiresVerification] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const searchParams = useSearchParams();
   const { push } = useRouter();
   const prefersReducedMotion = useReducedMotion();
   const { login } = useAuth();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
+  const callbackError = searchParams.get("error");
+
   useEffect(() => {
-    const callbackError = searchParams.get("error");
     if (callbackError === "SessionExpired") {
-      setError("Your session has expired. Please sign in again.");
+      dispatch({
+        type: "SET_ERROR",
+        error: "Your session has expired. Please sign in again.",
+      });
     }
-  }, [searchParams]);
+  }, [callbackError]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setIsLoading(true);
 
-    if (!email || !password) {
-      setError("Please fill in all fields.");
-      setIsLoading(false);
+    if (!state.email || !state.password) {
+      dispatch({ type: "SUBMIT_ERROR", error: "Please fill in all fields." });
       return;
     }
 
-    const result = await login(email, password);
+    dispatch({ type: "SUBMIT_START" });
+
+    const result = await login(state.email, state.password);
 
     if (result.error) {
       if (result.requiresVerification) {
-        setRequiresVerification(true);
-        setError("");
+        dispatch({ type: "VERIFICATION_REQUIRED" });
       } else {
-        setRequiresVerification(false);
-        setError(result.error);
+        dispatch({ type: "SUBMIT_ERROR", error: result.error });
       }
-      setIsLoading(false);
       return;
     }
 
-    setRequiresVerification(false);
+    dispatch({ type: "SUBMIT_SUCCESS" });
 
     const callbackUrl = searchParams.get("callbackUrl");
     if (callbackUrl) {
@@ -98,17 +136,17 @@ export default function LoginForm() {
                 system.
               </p>
 
-              {error && (
+              {state.error && (
                 <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-center gap-3">
                   <AlertCircle
                     size={18}
                     className="text-red-500 flex-shrink-0"
                   />
-                  <span className="text-red-700 text-sm">{error}</span>
+                  <span className="text-red-700 text-sm">{state.error}</span>
                 </div>
               )}
 
-              {requiresVerification && (
+              {state.requiresVerification && (
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-start gap-3">
                   <Mail
                     size={18}
@@ -123,7 +161,7 @@ export default function LoginForm() {
                       inbox for the verification link.
                     </p>
                     <Link
-                      href={`/verify-email?resend=${encodeURIComponent(email)}`}
+                      href={`/verify-email?resend=${encodeURIComponent(state.email)}`}
                       className="text-accent font-semibold hover:underline"
                     >
                       Resend verification email
@@ -148,8 +186,14 @@ export default function LoginForm() {
                     <input
                       id="login-email"
                       type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={state.email}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "SET_FIELD",
+                          field: "email",
+                          value: e.target.value,
+                        })
+                      }
                       className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                       placeholder="rahim@email.com"
                     />
@@ -170,18 +214,34 @@ export default function LoginForm() {
                     />
                     <input
                       id="login-password"
-                      type={showPassword ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      type={state.showPassword ? "text" : "password"}
+                      value={state.password}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "SET_FIELD",
+                          field: "password",
+                          value: e.target.value,
+                        })
+                      }
                       className="w-full pl-12 pr-12 py-3.5 rounded-xl border border-ink/10 bg-white text-ink placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                       placeholder="Enter your password"
                     />
                     <button
                       type="button"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={() =>
+                        dispatch({
+                          type: "SET_FIELD",
+                          field: "showPassword",
+                          value: !state.showPassword,
+                        })
+                      }
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-light hover:text-ink transition-colors"
                     >
-                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      {state.showPassword ? (
+                        <EyeOff size={18} />
+                      ) : (
+                        <Eye size={18} />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -204,10 +264,10 @@ export default function LoginForm() {
 
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={state.isLoading}
                   className="w-full py-4 bg-accent hover:bg-accent-mid disabled:bg-accent/50 text-white font-semibold rounded-full transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2"
                 >
-                  {isLoading ? (
+                  {state.isLoading ? (
                     <div className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : (
                     <>

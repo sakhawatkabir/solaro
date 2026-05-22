@@ -22,7 +22,7 @@ export default function TablePagination({
     pages.push(1);
 
     if (currentPage > 3) {
-      pages.push("...");
+      pages.push("ellipsis");
     }
 
     const start = Math.max(2, currentPage - 1);
@@ -33,7 +33,7 @@ export default function TablePagination({
     }
 
     if (currentPage < totalPages - 2) {
-      pages.push("...");
+      pages.push("ellipsis");
     }
 
     pages.push(totalPages);
@@ -57,12 +57,12 @@ export default function TablePagination({
         </Button>
 
         {getPages().map((page, i) =>
-          page === "..." ? (
+          page === "ellipsis" ? (
             <span
-              key={`ellipsis-${i}`}
+              key={i === 1 ? "ellipsis-start" : "ellipsis-end"}
               className="size-8 flex items-center justify-center text-sm text-zinc-500"
             >
-              ...
+              …
             </span>
           ) : (
             <Button
@@ -78,7 +78,7 @@ export default function TablePagination({
             >
               {page}
             </Button>
-          )
+          ),
         )}
 
         <Button

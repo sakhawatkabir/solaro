@@ -1,6 +1,11 @@
 import { Truck, MapPin } from "lucide-react";
 
-export default function ShippingAddress({ shipping, handleShippingChange, districts, districtsLoading }) {
+export default function ShippingAddress({
+  shipping,
+  handleShippingChange,
+  districts,
+  districtsLoading,
+}) {
   return (
     <div className="bg-white rounded-xl p-6 border border-ink/5">
       <h2 className="text-xl font-heading font-semibold text-ink mb-6 flex items-center gap-2">
@@ -9,7 +14,10 @@ export default function ShippingAddress({ shipping, handleShippingChange, distri
       </h2>
       <div className="space-y-5">
         <div>
-          <label htmlFor="checkout-address" className="block text-sm font-semibold text-ink mb-2">
+          <label
+            htmlFor="checkout-address"
+            className="block text-sm font-semibold text-ink mb-2"
+          >
             Street Address
           </label>
           <div className="relative">
@@ -31,7 +39,10 @@ export default function ShippingAddress({ shipping, handleShippingChange, distri
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <label htmlFor="checkout-district" className="block text-sm font-semibold text-ink mb-2">
+            <label
+              htmlFor="checkout-district"
+              className="block text-sm font-semibold text-ink mb-2"
+            >
               District
             </label>
             <select
@@ -45,7 +56,9 @@ export default function ShippingAddress({ shipping, handleShippingChange, distri
             >
               <option value="">Select district</option>
               {districtsLoading ? (
-                <option value="" disabled>Loading...</option>
+                <option value="" disabled>
+                  Loading…
+                </option>
               ) : (
                 districts.map((d) => (
                   <option key={d} value={d}>
@@ -56,7 +69,10 @@ export default function ShippingAddress({ shipping, handleShippingChange, distri
             </select>
           </div>
           <div>
-            <label htmlFor="checkout-city" className="block text-sm font-semibold text-ink mb-2">
+            <label
+              htmlFor="checkout-city"
+              className="block text-sm font-semibold text-ink mb-2"
+            >
               City / Area
             </label>
             <input
@@ -72,7 +88,10 @@ export default function ShippingAddress({ shipping, handleShippingChange, distri
           </div>
         </div>
         <div>
-          <label htmlFor="checkout-notes" className="block text-sm font-semibold text-ink mb-2">
+          <label
+            htmlFor="checkout-notes"
+            className="block text-sm font-semibold text-ink mb-2"
+          >
             Delivery Notes (Optional)
           </label>
           <textarea

@@ -7,20 +7,44 @@ import {
   Sun,
   AlertCircle,
   CheckCircle,
-  Mail,
 } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useReducer, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { useAuth } from "../../context/AuthContext";
 
-export default function TwoFactorForm() {
-  const [code, setCode] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [isResending, setIsResending] = useState(false);
+const initialState = {
+  code: "",
+  isLoading: false,
+  error: "",
+  success: false,
+  isResending: false,
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_CODE":
+      return { ...state, code: action.code };
+    case "SUBMIT_START":
+      return { ...state, isLoading: true, error: "" };
+    case "SUBMIT_SUCCESS":
+      return { ...state, isLoading: false, success: true };
+    case "SUBMIT_ERROR":
+      return { ...state, isLoading: false, error: action.error };
+    case "SET_ERROR":
+      return { ...state, error: action.error };
+    case "RESEND_START":
+      return { ...state, isResending: true, error: "" };
+    case "RESEND_END":
+      return { ...state, isResending: false };
+    default:
+      return state;
+  }
+}
+
+function TwoFactorFormContent() {
+  const [state, dispatch] = useReducer(reducer, initialState);
   const searchParams = useSearchParams();
   const { push } = useRouter();
   const prefersReducedMotion = useReducedMotion();
@@ -32,7 +56,7 @@ export default function TwoFactorForm() {
 
   useEffect(() => {
     if (!email) {
-      setError("No pending verification session. Please log in again.");
+      dispatch({ type: "SET_ERROR", error: "No pending verification session. Please log in again." });
     } else {
       inputRef.current?.focus();
     }
@@ -40,29 +64,26 @@ export default function TwoFactorForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     if (!email) {
-      setError("No pending verification session.");
+      dispatch({ type: "SET_ERROR", error: "No pending verification session." });
       return;
     }
 
-    if (code.length !== 6) {
-      setError("Please enter a 6-digit code.");
+    if (state.code.length !== 6) {
+      dispatch({ type: "SET_ERROR", error: "Please enter a 6-digit code." });
       return;
     }
 
-    setIsLoading(true);
-    const result = await verify2FA(code);
+    dispatch({ type: "SUBMIT_START" });
+    const result = await verify2FA(state.code);
 
     if (result.error) {
-      setError(result.error);
-      setIsLoading(false);
+      dispatch({ type: "SUBMIT_ERROR", error: result.error });
       return;
     }
 
-    setSuccess(true);
-    setIsLoading(false);
+    dispatch({ type: "SUBMIT_SUCCESS" });
     setTimeout(() => {
       if (result.user.role === "VIEWER") {
         push("/dashboard");
@@ -75,20 +96,18 @@ export default function TwoFactorForm() {
   const handleResend = async () => {
     if (!email) return;
 
-    setIsResending(true);
-    setError("");
+    dispatch({ type: "RESEND_START" });
     const result = await resend2FACode(email);
 
     if (result.error) {
-      setError(result.error);
+      dispatch({ type: "SUBMIT_ERROR", error: result.error });
     }
-
-    setIsResending(false);
+    dispatch({ type: "RESEND_END" });
   };
 
   const handleCodeChange = (e) => {
     const value = e.target.value.replace(/\D/g, "").slice(0, 6);
-    setCode(value);
+    dispatch({ type: "SET_CODE", code: value });
   };
 
   return (
@@ -125,23 +144,23 @@ export default function TwoFactorForm() {
             <span className="font-semibold text-ink">{email}</span>
           </p>
 
-          {error && (
+          {state.error && (
             <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-center gap-3">
               <AlertCircle size={18} className="text-red-500 flex-shrink-0" />
-              <span className="text-red-700 text-sm">{error}</span>
+              <span className="text-red-700 text-sm">{state.error}</span>
             </div>
           )}
 
-          {success && (
+          {state.success && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-center gap-3">
               <CheckCircle size={18} className="text-green-500 flex-shrink-0" />
               <span className="text-green-700 text-sm">
-                Verified! Redirecting to dashboard...
+                Verified! Redirecting to dashboard…
               </span>
             </div>
           )}
 
-          {!success && email && (
+          {!state.success && email && (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label
@@ -161,7 +180,7 @@ export default function TwoFactorForm() {
                     type="text"
                     inputMode="numeric"
                     autoComplete="one-time-code"
-                    value={code}
+                    value={state.code}
                     onChange={handleCodeChange}
                     className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-ink/10 bg-white text-ink text-center text-2xl tracking-widest font-mono placeholder:text-ink-light focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all"
                     placeholder="000000"
@@ -171,10 +190,10 @@ export default function TwoFactorForm() {
 
               <button
                 type="submit"
-                disabled={isLoading || code.length !== 6}
+                disabled={state.isLoading || state.code.length !== 6}
                 className="w-full py-4 bg-accent hover:bg-accent-mid disabled:bg-accent/50 text-white font-semibold rounded-full transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2"
               >
-                {isLoading ? (
+                {state.isLoading ? (
                   <div className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   "Verify"
@@ -189,15 +208,23 @@ export default function TwoFactorForm() {
               <button
                 type="button"
                 onClick={handleResend}
-                disabled={isResending}
+                disabled={state.isResending}
                 className="text-accent font-semibold hover:underline disabled:opacity-50"
               >
-                {isResending ? "Sending..." : "Resend"}
+                {state.isResending ? "Sending..." : "Resend"}
               </button>
             </p>
           </div>
         </m.div>
       </div>
     </section>
+  );
+}
+
+export default function TwoFactorForm() {
+  return (
+    <Suspense>
+      <TwoFactorFormContent />
+    </Suspense>
   );
 }
