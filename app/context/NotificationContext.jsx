@@ -6,8 +6,14 @@ import PusherClient from "pusher-js";
 
 const NotificationContext = createContext();
 
-let pusherInstance = null;
-let pusherRefCount = 0;
+function getPusher() {
+  if (!pusherInstance && process.env.NEXT_PUBLIC_PUSHER_KEY) {
+    pusherInstance = new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER || "ap2",
+    });
+  }
+  return pusherInstance;
+}
 
 export function NotificationProvider({ children, userId }) {
   const queryClient = useQueryClient();
@@ -33,23 +39,14 @@ export function NotificationProvider({ children, userId }) {
   }, [notificationData]);
 
   useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_PUSHER_KEY) {
-      return;
-    }
+    const pusher = getPusher();
+    if (!pusher) return;
 
-    let channel;
     let cancelled = false;
 
-    if (!pusherInstance) {
-      pusherInstance = new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY, {
-        cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER || "ap2",
-      });
-    }
-    pusherRefCount++;
-
-    const bindChannel = () => {
+    const subscribe = () => {
       if (cancelled) return;
-      channel = pusherInstance.subscribe("notifications");
+      const channel = pusher.subscribe("notifications");
       channel.bind("new-notification", (data) => {
         if (cancelled) return;
         setLocalNotifications((prev) => {
@@ -61,24 +58,14 @@ export function NotificationProvider({ children, userId }) {
       });
     };
 
-    if (pusherInstance.connection.state === "connected") {
-      bindChannel();
+    if (pusher.connection.state === "connected") {
+      subscribe();
     } else {
-      pusherInstance.connection.bind("connected", bindChannel);
+      pusher.connection.bind("connected", subscribe);
     }
 
     return () => {
       cancelled = true;
-      if (channel) {
-        channel.unbind_all();
-        channel.unsubscribe();
-      }
-      pusherRefCount--;
-      if (pusherRefCount <= 0 && pusherInstance) {
-        pusherInstance.disconnect();
-        pusherInstance = null;
-        pusherRefCount = 0;
-      }
     };
   }, [userId, queryClient]);
 
