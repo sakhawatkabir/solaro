@@ -7,6 +7,7 @@ import PusherClient from "pusher-js";
 const NotificationContext = createContext();
 
 let pusherInstance = null;
+let pusherRefCount = 0;
 
 export function NotificationProvider({ children, userId }) {
   const queryClient = useQueryClient();
@@ -36,26 +37,48 @@ export function NotificationProvider({ children, userId }) {
       return;
     }
 
-    pusherInstance = new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY, {
-      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER || "ap2",
-    });
+    let channel;
+    let cancelled = false;
 
-    const channel = pusherInstance.subscribe("notifications");
-
-    channel.bind("new-notification", (data) => {
-      setLocalNotifications((prev) => {
-        const exists = prev.some((n) => n.id === data.id);
-        if (exists) return prev;
-        return [data, ...prev];
+    if (!pusherInstance) {
+      pusherInstance = new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+        cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER || "ap2",
       });
+    }
+    pusherRefCount++;
 
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
-    });
+    const bindChannel = () => {
+      if (cancelled) return;
+      channel = pusherInstance.subscribe("notifications");
+      channel.bind("new-notification", (data) => {
+        if (cancelled) return;
+        setLocalNotifications((prev) => {
+          const exists = prev.some((n) => n.id === data.id);
+          if (exists) return prev;
+          return [data, ...prev];
+        });
+        queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      });
+    };
+
+    if (pusherInstance.connection.state === "connected") {
+      bindChannel();
+    } else {
+      pusherInstance.connection.bind("connected", bindChannel);
+    }
 
     return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-      pusherInstance.disconnect();
+      cancelled = true;
+      if (channel) {
+        channel.unbind_all();
+        channel.unsubscribe();
+      }
+      pusherRefCount--;
+      if (pusherRefCount <= 0 && pusherInstance) {
+        pusherInstance.disconnect();
+        pusherInstance = null;
+        pusherRefCount = 0;
+      }
     };
   }, [userId, queryClient]);
 
