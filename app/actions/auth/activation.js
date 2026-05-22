@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { resend } from "@/lib/resend";
+import { sendEmail } from "@/lib/email/send";
 import { activationEmailTemplate } from "@/lib/email-templates/activation";
 import { randomBytes } from "crypto";
 import { requireAdmin } from "@/app/actions/server-auth";
@@ -25,8 +25,7 @@ export async function sendActivationEmail(userId) {
 
     const activationUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/activate?token=${token}`;
 
-    await resend.emails.send({
-      from: "Solaro <noreply@solaro.com>",
+    await sendEmail({
       to: user.email,
       subject: "Activate Your Solaro Account",
       html: activationEmailTemplate({
