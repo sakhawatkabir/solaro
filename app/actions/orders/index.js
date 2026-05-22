@@ -83,12 +83,16 @@ export async function createOrder(data) {
     },
   });
 
-  await createNotificationInternal({
-    type: "ORDER",
-    title: `New Order: ${orderNumber}`,
-    message: `${data.customerName} placed an order for ৳${total.toLocaleString()}`,
-    link: `/admin/orders`,
-  });
+  try {
+    await createNotificationInternal({
+      type: "ORDER",
+      title: `New Order: ${orderNumber}`,
+      message: `${data.customerName} placed an order for ৳${total.toLocaleString()}`,
+      link: `/admin/orders`,
+    });
+  } catch (notifError) {
+    console.error("[Order] Notification error:", notifError.message);
+  }
 
   revalidatePath("/admin/orders");
   return { success: true, order };
