@@ -6,6 +6,8 @@ import PusherClient from "pusher-js";
 
 const NotificationContext = createContext();
 
+let pusherInstance = null;
+
 function getPusher() {
   if (!pusherInstance && process.env.NEXT_PUBLIC_PUSHER_KEY) {
     pusherInstance = new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY, {
