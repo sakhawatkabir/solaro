@@ -10,6 +10,7 @@ import {
   deleteProduct,
 } from "@/app/actions/products";
 import ProductFormHeader from "./components/ProductFormHeader";
+import FormSkeleton from "../../components/FormSkeleton";
 import ProductBasicInfo from "./components/ProductBasicInfo";
 import ProductSpecs from "./components/ProductSpecs";
 import ProductPricing from "./components/ProductPricing";
@@ -175,11 +176,7 @@ export default function ProductFormPage({ params }) {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-      </div>
-    );
+    return <FormSkeleton fields={5} />;
   }
 
   return (

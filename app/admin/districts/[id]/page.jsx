@@ -10,6 +10,7 @@ import {
   deleteDistrict,
 } from "@/app/actions/districts";
 import DistrictFormHeader from "./components/DistrictFormHeader";
+import FormSkeleton from "../../components/FormSkeleton";
 import DistrictBasicInfo from "./components/DistrictBasicInfo";
 import DistrictDangerZone from "./components/DistrictDangerZone";
 
@@ -120,11 +121,7 @@ export default function DistrictFormPage({ params }) {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-      </div>
-    );
+    return <FormSkeleton fields={6} />;
   }
 
   return (

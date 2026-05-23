@@ -6,6 +6,7 @@ import OrdersHeader from "./components/OrdersHeader";
 import OrderStatusSummary from "./components/OrderStatusSummary";
 import OrderFilters from "./components/OrderFilters";
 import OrdersTable from "./components/OrdersTable";
+import TableSkeleton from "../components/TableSkeleton";
 
 const allStatuses = [
   "all",
@@ -44,12 +45,30 @@ export default function OrdersPage() {
   const totalPages = ordersData?.pagination?.totalPages || 1;
 
   const statusCounts = [
-    { status: "PENDING", count: orders.filter((o) => o.status === "PENDING").length },
-    { status: "CONFIRMED", count: orders.filter((o) => o.status === "CONFIRMED").length },
-    { status: "PROCESSING", count: orders.filter((o) => o.status === "PROCESSING").length },
-    { status: "SHIPPED", count: orders.filter((o) => o.status === "SHIPPED").length },
-    { status: "DELIVERED", count: orders.filter((o) => o.status === "DELIVERED").length },
-    { status: "CANCELLED", count: orders.filter((o) => o.status === "CANCELLED").length },
+    {
+      status: "PENDING",
+      count: orders.filter((o) => o.status === "PENDING").length,
+    },
+    {
+      status: "CONFIRMED",
+      count: orders.filter((o) => o.status === "CONFIRMED").length,
+    },
+    {
+      status: "PROCESSING",
+      count: orders.filter((o) => o.status === "PROCESSING").length,
+    },
+    {
+      status: "SHIPPED",
+      count: orders.filter((o) => o.status === "SHIPPED").length,
+    },
+    {
+      status: "DELIVERED",
+      count: orders.filter((o) => o.status === "DELIVERED").length,
+    },
+    {
+      status: "CANCELLED",
+      count: orders.filter((o) => o.status === "CANCELLED").length,
+    },
   ].filter((s) => s.count > 0);
 
   return (
@@ -85,9 +104,7 @@ export default function OrdersPage() {
       />
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-        </div>
+        <TableSkeleton rows={5} cols={6} />
       ) : (
         <OrdersTable
           orders={orders}

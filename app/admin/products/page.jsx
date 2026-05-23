@@ -11,6 +11,7 @@ import ProductsHeader from "./components/ProductsHeader";
 import ProductsSummary from "./components/ProductsSummary";
 import ProductsFilters from "./components/ProductsFilters";
 import ProductsTable from "./components/ProductsTable";
+import TableSkeleton from "../components/TableSkeleton";
 
 const allStatuses = ["all", "ACTIVE", "DRAFT", "OUT_OF_STOCK"];
 
@@ -94,9 +95,7 @@ export default function ProductsPage() {
       />
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-        </div>
+        <TableSkeleton rows={5} cols={6} />
       ) : (
         <ProductsTable
           products={products}

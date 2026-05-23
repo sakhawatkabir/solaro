@@ -12,6 +12,7 @@ import SettingsTabs from "./components/SettingsTabs";
 import GeneralSettings from "./components/GeneralSettings";
 import ContactSettings from "./components/ContactSettings";
 import BusinessSettings from "./components/BusinessSettings";
+import FormSkeleton from "../components/FormSkeleton";
 
 const tabs = [
   { id: "general", label: "General" },
@@ -74,11 +75,7 @@ export default function SettingsPage() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-      </div>
-    );
+    return <FormSkeleton fields={8} />;
   }
 
   return (

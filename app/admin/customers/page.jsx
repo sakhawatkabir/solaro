@@ -6,6 +6,7 @@ import { getCustomers } from "@/app/actions/customers";
 import CustomersHeader from "./components/CustomersHeader";
 import CustomersFilters from "./components/CustomersFilters";
 import CustomersTable from "./components/CustomersTable";
+import TableSkeleton from "../components/TableSkeleton";
 
 const allStatuses = ["all", "ACTIVE", "INACTIVE", "BLACKLISTED"];
 
@@ -43,9 +44,7 @@ export default function CustomersPage() {
       />
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-        </div>
+        <TableSkeleton rows={5} cols={5} />
       ) : (
         <CustomersTable
           customers={customers}

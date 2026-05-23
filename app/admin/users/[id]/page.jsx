@@ -10,6 +10,7 @@ import {
   deleteUser,
 } from "@/app/actions/users";
 import UserFormHeader from "./components/UserFormHeader";
+import FormSkeleton from "../../components/FormSkeleton";
 import UserBasicInfo from "./components/UserBasicInfo";
 import UserPermissions from "./components/UserPermissions";
 import UserDangerZone from "./components/UserDangerZone";
@@ -119,11 +120,7 @@ export default function UserFormPage({ params }) {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-      </div>
-    );
+    return <FormSkeleton fields={4} />;
   }
 
   return (

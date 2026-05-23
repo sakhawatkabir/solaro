@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import ReviewsHeader from "./components/ReviewsHeader";
 import ReviewsFilters from "./components/ReviewsFilters";
 import ReviewsTable from "./components/ReviewsTable";
+import TableSkeleton from "../components/TableSkeleton";
 
 const allStatuses = ["all", "PENDING", "APPROVED", "REJECTED"];
 const allRatings = ["all", "5", "4", "3", "2", "1"];
@@ -18,7 +19,13 @@ export default function ReviewsPage() {
   const perPage = 10;
 
   const { data: reviewsData, isLoading } = useQuery({
-    queryKey: ["admin-reviews", currentPage, search, statusFilter, ratingFilter],
+    queryKey: [
+      "admin-reviews",
+      currentPage,
+      search,
+      statusFilter,
+      ratingFilter,
+    ],
     queryFn: async () => {
       const params = new URLSearchParams({
         page: currentPage,
@@ -90,9 +97,7 @@ export default function ReviewsPage() {
       />
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-        </div>
+        <TableSkeleton rows={5} cols={5} />
       ) : (
         <ReviewsTable
           reviews={reviews}

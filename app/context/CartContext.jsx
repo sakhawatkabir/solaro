@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 
 const CartContext = createContext();
 
@@ -36,7 +42,7 @@ export function CartProvider({ children }) {
         return prev.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + (product.quantity || 1) }
-            : item
+            : item,
         );
       }
       return [...prev, { ...product, quantity: product.quantity || 1 }];
@@ -55,8 +61,8 @@ export function CartProvider({ children }) {
     }
     setItems((prev) =>
       prev.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
-      )
+        item.id === productId ? { ...item, quantity } : item,
+      ),
     );
   }, []);
 
@@ -64,11 +70,12 @@ export function CartProvider({ children }) {
     setItems([]);
   }, []);
 
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const totalItems = Array.isArray(items)
+    ? items.reduce((sum, item) => sum + item.quantity, 0)
+    : 0;
+  const totalPrice = Array.isArray(items)
+    ? items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    : 0;
 
   return (
     <CartContext.Provider

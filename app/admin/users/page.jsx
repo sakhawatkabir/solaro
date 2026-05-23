@@ -6,6 +6,7 @@ import { getUsers, deleteUser } from "@/app/actions/users";
 import UsersHeader from "./components/UsersHeader";
 import UsersFilters from "./components/UsersFilters";
 import UsersTable from "./components/UsersTable";
+import TableSkeleton from "../components/TableSkeleton";
 
 const allRoles = [
   "all",
@@ -67,9 +68,7 @@ export default function UsersPage() {
       />
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-        </div>
+        <TableSkeleton rows={5} cols={5} />
       ) : (
         <UsersTable
           users={users}

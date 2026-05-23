@@ -5,6 +5,7 @@ import { getAnalytics } from "@/app/actions/analytics";
 import AnalyticsOverview from "./components/AnalyticsOverview";
 import AnalyticsCharts from "./components/AnalyticsCharts";
 import AnalyticsTables from "./components/AnalyticsTables";
+import FormSkeleton from "../components/FormSkeleton";
 
 export default function AnalyticsPage() {
   const { data, isLoading } = useQuery({
@@ -14,11 +15,7 @@ export default function AnalyticsPage() {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-      </div>
-    );
+    return <FormSkeleton fields={4} />;
   }
 
   if (!data) return null;

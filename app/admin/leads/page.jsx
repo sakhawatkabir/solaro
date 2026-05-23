@@ -6,6 +6,7 @@ import { getLeads, deleteLead } from "@/app/actions/leads";
 import LeadsHeader from "./components/LeadsHeader";
 import LeadsFilters from "./components/LeadsFilters";
 import LeadsTable from "./components/LeadsTable";
+import TableSkeleton from "../components/TableSkeleton";
 
 const allStatuses = [
   "all",
@@ -100,9 +101,7 @@ export default function LeadsPage() {
       />
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-        </div>
+        <TableSkeleton rows={5} cols={6} />
       ) : (
         <LeadsTable
           leads={leads}

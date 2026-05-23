@@ -6,6 +6,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Package } from "lucide-react";
 import { getOrderById, updateOrder } from "@/app/actions/orders";
 import OrderDetailHeader from "./components/OrderDetailHeader";
+import DetailSkeleton from "../../components/DetailSkeleton";
 import OrderStatusCard from "./components/OrderStatusCard";
 import OrderCustomerInfo from "./components/OrderCustomerInfo";
 import OrderItems from "./components/OrderItems";
@@ -37,11 +38,7 @@ export default function OrderDetailPage({ params }) {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-      </div>
-    );
+    return <DetailSkeleton />;
   }
 
   if (!order) {

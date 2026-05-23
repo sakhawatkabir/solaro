@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getLead, deleteLead } from "@/app/actions/leads";
 import LeadDetailHeader from "./components/LeadDetailHeader";
+import DetailSkeleton from "../../components/DetailSkeleton";
 import LeadInfoCard from "./components/LeadInfoCard";
 import LeadPipelineStatus from "./components/LeadPipelineStatus";
 import LeadDangerZone from "./components/LeadDangerZone";
@@ -28,11 +29,7 @@ export default function LeadDetailPage({ params }) {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-      </div>
-    );
+    return <DetailSkeleton />;
   }
 
   if (!leadData) {

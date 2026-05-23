@@ -36,22 +36,22 @@ export default function AdminDashboard() {
     queryFn: () => getDashboardStats(),
   });
 
-  const { data: revenueData } = useQuery({
+  const { data: revenueData, isLoading: revenueLoading } = useQuery({
     queryKey: ["dashboard-revenue"],
     queryFn: () => getRevenueChartData(),
   });
 
-  const { data: categoryData } = useQuery({
+  const { data: categoryData, isLoading: categoryLoading } = useQuery({
     queryKey: ["dashboard-categories"],
     queryFn: () => getCategoryChartData(),
   });
 
-  const { data: recentOrders } = useQuery({
+  const { data: recentOrders, isLoading: ordersLoading } = useQuery({
     queryKey: ["dashboard-recent-orders"],
     queryFn: () => getRecentOrders(),
   });
 
-  const { data: recentLeads } = useQuery({
+  const { data: recentLeads, isLoading: leadsLoading } = useQuery({
     queryKey: ["dashboard-recent-leads"],
     queryFn: () => getRecentLeads(),
   });
@@ -106,21 +106,97 @@ export default function AdminDashboard() {
                 <div className="h-3 w-20 bg-zinc-800 rounded" />
               </div>
             ))
-          : statCards.map((stat, i) => (
-              <StatCard key={stat.label} {...stat} icon={statIcons[i]} />
-            ))}
+          : Array.isArray(statCards)
+            ? statCards.map((stat, i) => (
+                <StatCard key={stat.label} {...stat} icon={statIcons[i]} />
+              ))
+            : null}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <RevenueChart data={revenueData || []} />
-        <CategoryChart data={categoryData || []} />
+        {revenueLoading ? (
+          <div className="lg:col-span-2 rounded-xl bg-zinc-900 border border-zinc-800 p-6 animate-pulse">
+            <div className="h-5 w-24 bg-zinc-800 rounded mb-1" />
+            <div className="h-4 w-32 bg-zinc-800 rounded mb-6" />
+            <div className="h-[280px] bg-zinc-800 rounded-lg" />
+          </div>
+        ) : (
+          <RevenueChart data={revenueData || []} />
+        )}
+        {categoryLoading ? (
+          <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6 animate-pulse">
+            <div className="h-5 w-28 bg-zinc-800 rounded mb-1" />
+            <div className="h-4 w-24 bg-zinc-800 rounded mb-6" />
+            <div className="h-[200px] bg-zinc-800 rounded-lg mb-4" />
+            <div className="space-y-2">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <div className="size-3 rounded-full bg-zinc-800" />
+                  <div className="h-4 flex-1 bg-zinc-800 rounded" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <CategoryChart data={categoryData || []} />
+        )}
       </div>
 
-      <RecentOrdersTable orders={recentOrders || []} />
+      {ordersLoading ? (
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 animate-pulse">
+          <div className="flex items-center justify-between p-6 border-b border-zinc-800">
+            <div className="space-y-1">
+              <div className="h-5 w-28 bg-zinc-800 rounded" />
+              <div className="h-4 w-20 bg-zinc-800 rounded" />
+            </div>
+            <div className="h-4 w-16 bg-zinc-800 rounded" />
+          </div>
+          <div className="divide-y divide-zinc-800">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex gap-6 px-6 py-4">
+                <div className="h-4 w-20 bg-zinc-800 rounded" />
+                <div className="h-4 w-32 bg-zinc-800 rounded" />
+                <div className="h-4 w-40 bg-zinc-800 rounded hidden md:block" />
+                <div className="h-4 w-16 bg-zinc-800 rounded hidden lg:block" />
+                <div className="h-4 w-16 bg-zinc-800 rounded" />
+                <div className="h-5 w-20 bg-zinc-800 rounded" />
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <RecentOrdersTable orders={recentOrders || []} />
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <QuickActions />
-        <RecentLeads leads={recentLeads || []} />
+        {leadsLoading ? (
+          <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6 animate-pulse">
+            <div className="flex items-center justify-between mb-4">
+              <div className="h-5 w-24 bg-zinc-800 rounded" />
+              <div className="h-4 w-16 bg-zinc-800 rounded" />
+            </div>
+            <div className="space-y-3">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="size-9 rounded-full bg-zinc-800" />
+                    <div className="space-y-1.5">
+                      <div className="h-4 w-28 bg-zinc-800 rounded" />
+                      <div className="h-3 w-20 bg-zinc-800 rounded" />
+                    </div>
+                  </div>
+                  <div className="h-5 w-16 bg-zinc-800 rounded" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <RecentLeads leads={recentLeads || []} />
+        )}
       </div>
     </div>
   );
