@@ -13,7 +13,7 @@ import {
   Settings,
   LayoutDashboard,
 } from "lucide-react";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../store/cart";
 import { useAuth } from "../context/AuthContext";
 
 export default function Navigation() {
@@ -62,9 +62,7 @@ export default function Navigation() {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 lg:px-16 transition-all duration-300 font-body animate-nav-in bg-cream/95 backdrop-blur-md ${
-          isScrolled
-            ? "border-b border-black/5 shadow-sm py-4"
-            : "py-6"
+          isScrolled ? "border-b border-black/5 shadow-sm py-4" : "py-6"
         }`}
       >
         <Link href="/">

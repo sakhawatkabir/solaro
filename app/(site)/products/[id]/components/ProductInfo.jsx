@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { formatPrice } from "@/app/data/products";
-import { useCart } from "@/app/context/CartContext";
+import { useCart } from "@/app/store/cart";
 
 function getCategoryLabel(category) {
   const labels = {

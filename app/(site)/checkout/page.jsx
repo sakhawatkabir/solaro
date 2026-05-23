@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../../store/cart";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import OrderSuccess from "./components/checkout/OrderSuccess";

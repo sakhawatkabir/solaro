@@ -1,7 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "./providers/ThemeProvider";
-import { CartProvider } from "./context/CartContext";
 import { MotionProvider } from "./components/MotionProvider";
 import { AuthProvider } from "./context/AuthContext";
 import NotificationWrapper from "./components/NotificationWrapper";
@@ -32,9 +31,7 @@ export default function RootLayout({ children }) {
           <ThemeProvider>
             <AuthProvider>
               <NotificationWrapper>
-                <CartProvider>
-                  <MotionProvider>{children}</MotionProvider>
-                </CartProvider>
+                <MotionProvider>{children}</MotionProvider>
               </NotificationWrapper>
             </AuthProvider>
           </ThemeProvider>

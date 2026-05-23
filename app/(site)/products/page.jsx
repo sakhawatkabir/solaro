@@ -2,7 +2,7 @@
 
 import { m } from "framer-motion";
 import { ShoppingCart, Search, ChevronRight, Star } from "lucide-react";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../../store/cart";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
