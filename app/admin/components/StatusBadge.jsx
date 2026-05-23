@@ -1,6 +1,5 @@
 "use client";
 
-import { memo } from "react";
 import { cn } from "@/lib/utils";
 
 const statusStyles = {
@@ -22,7 +21,7 @@ const statusStyles = {
   "out-of-stock": "bg-orange-500/10 text-orange-400 border-orange-500/20",
 };
 
-const StatusBadge = memo(function StatusBadge({ status }) {
+export default function StatusBadge({ status }) {
   const normalized = status ? status.toLowerCase().replace(/_/g, "-") : status;
   const style =
     statusStyles[normalized] ||
@@ -41,6 +40,4 @@ const StatusBadge = memo(function StatusBadge({ status }) {
       {label}
     </span>
   );
-});
-
-export default StatusBadge;
+}

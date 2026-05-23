@@ -1,6 +1,5 @@
 "use client";
 
-import { memo } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import StatusBadge from "./StatusBadge";
@@ -19,7 +18,7 @@ function getLeadInterest(lead) {
   return lead.source?.toLowerCase() || "website";
 }
 
-const RecentLeads = memo(function RecentLeads({ leads }) {
+export default function RecentLeads({ leads }) {
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
       <div className="flex items-center justify-between mb-4">
@@ -73,6 +72,4 @@ const RecentLeads = memo(function RecentLeads({ leads }) {
       </div>
     </div>
   );
-});
-
-export default RecentLeads;
+}

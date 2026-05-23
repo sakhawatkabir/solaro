@@ -13,6 +13,13 @@ import {
   resendVerificationAction,
   updateProfileAction,
 } from "@/app/actions/auth";
+import {
+  getDashboardStats,
+  getRevenueChartData,
+  getCategoryChartData,
+  getRecentOrders,
+  getRecentLeads,
+} from "@/app/actions/dashboard";
 
 const AuthContext = createContext(null);
 
@@ -62,6 +69,44 @@ export function AuthProvider({ children }) {
           authenticated: true,
           user: data.user,
         });
+
+        if (data.user?.role !== "VIEWER") {
+          queryClient.prefetchQuery({
+            queryKey: ["dashboard-stats"],
+            queryFn: getDashboardStats,
+            staleTime: 5 * 60 * 1000,
+          });
+          queryClient.prefetchQuery({
+            queryKey: ["dashboard-revenue"],
+            queryFn: getRevenueChartData,
+            staleTime: 5 * 60 * 1000,
+          });
+          queryClient.prefetchQuery({
+            queryKey: ["dashboard-categories"],
+            queryFn: getCategoryChartData,
+            staleTime: 5 * 60 * 1000,
+          });
+          queryClient.prefetchQuery({
+            queryKey: ["dashboard-recent-orders"],
+            queryFn: getRecentOrders,
+            staleTime: 5 * 60 * 1000,
+          });
+          queryClient.prefetchQuery({
+            queryKey: ["dashboard-recent-leads"],
+            queryFn: getRecentLeads,
+            staleTime: 5 * 60 * 1000,
+          });
+        } else {
+          queryClient.prefetchQuery({
+            queryKey: ["user-orders"],
+            queryFn: async () => {
+              const res = await fetch("/api/user/orders?limit=5");
+              if (!res.ok) throw new Error("Failed to fetch orders");
+              return res.json();
+            },
+            staleTime: 5 * 60 * 1000,
+          });
+        }
       }
     },
   });

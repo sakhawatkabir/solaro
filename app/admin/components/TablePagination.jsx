@@ -1,10 +1,10 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const TablePagination = memo(function TablePagination({
+export default function TablePagination({
   currentPage,
   totalPages,
   perPage,
@@ -93,6 +93,4 @@ const TablePagination = memo(function TablePagination({
       </div>
     </div>
   );
-});
-
-export default TablePagination;
+}

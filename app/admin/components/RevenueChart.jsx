@@ -1,6 +1,5 @@
 "use client";
 
-import { memo } from "react";
 import { ArrowUpRight } from "lucide-react";
 import {
   AreaChart,
@@ -29,7 +28,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const RevenueChart = memo(function RevenueChart({ data }) {
+export default function RevenueChart({ data }) {
   const currentMonthRevenue = data[data.length - 1]?.revenue || 0;
   const previousMonthRevenue = data[data.length - 2]?.revenue || 0;
   const percentageChange =
@@ -102,6 +101,4 @@ const RevenueChart = memo(function RevenueChart({ data }) {
       </ResponsiveContainer>
     </div>
   );
-});
-
-export default RevenueChart;
+}

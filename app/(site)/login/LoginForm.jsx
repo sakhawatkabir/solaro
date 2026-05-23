@@ -10,7 +10,7 @@ import {
   Sun,
   AlertCircle,
 } from "lucide-react";
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -63,10 +63,19 @@ function reducer(state, action) {
 export default function LoginForm() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const searchParams = useSearchParams();
-  const { push } = useRouter();
+  const { push, prefetch } = useRouter();
   const prefersReducedMotion = useReducedMotion();
   const { login } = useAuth();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+
+  const prefetchRoutes = useCallback(() => {
+    prefetch("/admin");
+    prefetch("/dashboard");
+  }, [prefetch]);
+
+  useEffect(() => {
+    prefetchRoutes();
+  }, [prefetchRoutes]);
 
   const callbackError = searchParams.get("error");
 

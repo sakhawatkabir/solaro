@@ -10,10 +10,9 @@ import {
   Truck,
   CheckCircle,
   Wallet,
-  Zap,
-  TrendingUp,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/app/context/AuthContext";
 
 const statusIcon = {
   DELIVERED: CheckCircle,
@@ -46,14 +45,7 @@ function formatDate(dateString) {
 }
 
 export default function DashboardPage() {
-  const { data: sessionData } = useQuery({
-    queryKey: ["session"],
-    queryFn: async () => {
-      const res = await fetch("/api/auth/session");
-      if (!res.ok) throw new Error("Failed to fetch session");
-      return res.json();
-    },
-  });
+  const { user } = useAuth();
 
   const { data, isLoading } = useQuery({
     queryKey: ["user-orders"],
@@ -62,10 +54,8 @@ export default function DashboardPage() {
       if (!res.ok) throw new Error("Failed to fetch orders");
       return res.json();
     },
-    enabled: !!sessionData?.authenticated,
+    enabled: !!user,
   });
-
-  const user = sessionData?.user;
   const orders = data?.orders || [];
   const stats = data?.stats || { totalOrders: 0, totalSpent: 0 };
   const delivered = orders.filter((o) => o.status === "DELIVERED").length;

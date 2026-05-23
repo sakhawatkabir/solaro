@@ -93,22 +93,26 @@ export default function AdminDashboard() {
     [stats],
   );
 
-  if (statsLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="size-8 border-3 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <DashboardHeader dateRange={dateRange} setDateRange={setDateRange} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {statCards.map((stat, i) => (
-          <StatCard key={stat.label} {...stat} icon={statIcons[i]} />
-        ))}
+        {statsLoading
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className="rounded-xl bg-zinc-900 border border-zinc-800 p-6 animate-pulse"
+              >
+                <div className="size-10 rounded-lg bg-zinc-800 mb-4" />
+                <div className="h-8 w-24 bg-zinc-800 rounded mb-2" />
+                <div className="h-4 w-16 bg-zinc-800 rounded mb-1" />
+                <div className="h-3 w-20 bg-zinc-800 rounded" />
+              </div>
+            ))
+          : statCards.map((stat, i) => (
+              <StatCard key={stat.label} {...stat} icon={statIcons[i]} />
+            ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

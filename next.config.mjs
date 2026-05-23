@@ -16,6 +16,27 @@ const nextConfig = {
       },
     ],
   },
+  modularizeImports: {
+    "lucide-react": {
+      transform: "lucide-react/dist/esm/icons/{{ kebabCase member }}",
+    },
+  },
+  experimental: {
+    webpackBuildWorker: true,
+    optimizePackageImports: [
+      "lucide-react",
+      "motion",
+      "recharts",
+      "radix-ui",
+      "@tiptap/react",
+      "@tiptap/starter-kit",
+      "@tiptap/extension-image",
+      "@tiptap/extension-link",
+      "@tiptap/extension-underline",
+      "@uploadthing/react",
+      "@tanstack/react-query",
+    ],
+  },
 };
 
 export default nextConfig;
