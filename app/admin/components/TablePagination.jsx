@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -14,7 +13,7 @@ export default function TablePagination({
   const start = (currentPage - 1) * perPage + 1;
   const end = Math.min(currentPage * perPage, totalFiltered);
 
-  const pages = useMemo(() => {
+  const pages = (() => {
     if (totalPages <= 7) {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
@@ -38,7 +37,7 @@ export default function TablePagination({
 
     result.push(totalPages);
     return result;
-  }, [currentPage, totalPages]);
+  })();
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-6 py-4 border-t border-zinc-800">

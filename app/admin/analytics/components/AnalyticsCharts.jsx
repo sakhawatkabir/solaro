@@ -1,6 +1,5 @@
 "use client";
 
-import { memo, useMemo } from "react";
 import {
   BarChart,
   Bar,
@@ -53,27 +52,27 @@ const sourceLabels = {
   OTHER: "Other",
 };
 
-const AnalyticsCharts = memo(function AnalyticsCharts({ data }) {
-  const categoryChartData = useMemo(() => data.categoryData.map((item) => ({
+export default function AnalyticsCharts({ data }) {
+  const categoryChartData = data.categoryData.map((item) => ({
     name: categoryLabels[item.category] || item.category,
     value: item.count,
-  })), [data.categoryData]);
+  }));
 
-  const statusChartData = useMemo(() => data.statusData.map((item) => ({
+  const statusChartData = data.statusData.map((item) => ({
     name: statusLabels[item.status] || item.status,
     value: item.count,
-  })), [data.statusData]);
+  }));
 
-  const sourceChartData = useMemo(() => data.sourceData.map((item) => ({
+  const sourceChartData = data.sourceData.map((item) => ({
     name: sourceLabels[item.source] || item.source,
     value: item.count,
-  })), [data.sourceData]);
+  }));
 
-  const divisionChartData = useMemo(() => data.divisionData.map((item) => ({
+  const divisionChartData = data.divisionData.map((item) => ({
     name: item.division,
     districts: item.count,
     population: item.population / 1000000,
-  })), [data.divisionData]);
+  }));
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -205,6 +204,4 @@ const AnalyticsCharts = memo(function AnalyticsCharts({ data }) {
       </div>
     </div>
   );
-});
-
-export default AnalyticsCharts;
+}

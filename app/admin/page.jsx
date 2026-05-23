@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { TrendingUp, LayoutDashboard, Users, Percent } from "lucide-react";
 import {
@@ -56,42 +56,38 @@ export default function AdminDashboard() {
     queryFn: () => getRecentLeads(),
   });
 
-  const statCards = useMemo(
-    () =>
-      stats
-        ? [
-            {
-              label: "Total Revenue",
-              value: formatBDT(stats.revenue),
-              change: `${stats.revenueChange >= 0 ? "+" : ""}${stats.revenueChange}%`,
-              trend: stats.revenueChange >= 0 ? "up" : "down",
-              description: "Last 30 days",
-            },
-            {
-              label: "Orders",
-              value: stats.totalOrders.toString(),
-              change: `${stats.ordersChange >= 0 ? "+" : ""}${stats.ordersChange}%`,
-              trend: stats.ordersChange >= 0 ? "up" : "down",
-              description: "Last 30 days",
-            },
-            {
-              label: "Customers",
-              value: stats.totalCustomers.toString(),
-              change: `+${stats.newCustomers}`,
-              trend: "up",
-              description: "Total registered",
-            },
-            {
-              label: "Conversion Rate",
-              value: `${stats.conversionRate}%`,
-              change: "—",
-              trend: "up",
-              description: "Lead to order",
-            },
-          ]
-        : [],
-    [stats],
-  );
+  const statCards = stats
+    ? [
+        {
+          label: "Total Revenue",
+          value: formatBDT(stats.revenue),
+          change: `${stats.revenueChange >= 0 ? "+" : ""}${stats.revenueChange}%`,
+          trend: stats.revenueChange >= 0 ? "up" : "down",
+          description: "Last 30 days",
+        },
+        {
+          label: "Orders",
+          value: stats.totalOrders.toString(),
+          change: `${stats.ordersChange >= 0 ? "+" : ""}${stats.ordersChange}%`,
+          trend: stats.ordersChange >= 0 ? "up" : "down",
+          description: "Last 30 days",
+        },
+        {
+          label: "Customers",
+          value: stats.totalCustomers.toString(),
+          change: `+${stats.newCustomers}`,
+          trend: "up",
+          description: "Total registered",
+        },
+        {
+          label: "Conversion Rate",
+          value: `${stats.conversionRate}%`,
+          change: "—",
+          trend: "up",
+          description: "Lead to order",
+        },
+      ]
+    : [];
 
   return (
     <div className="space-y-6">

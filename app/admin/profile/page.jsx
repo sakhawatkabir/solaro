@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import {
   User,
   Mail,
@@ -102,18 +102,14 @@ export default function AdminProfilePage() {
     setIsSaving(false);
   };
 
-  const initials = useMemo(
-    () =>
-      user?.name
-        ? user.name
-            .split(" ")
-            .map((n) => n[0])
-            .join("")
-            .toUpperCase()
-            .slice(0, 2)
-        : "U",
-    [user?.name],
-  );
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "U";
 
   if (!user) return null;
 
