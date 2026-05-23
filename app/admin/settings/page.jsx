@@ -40,7 +40,7 @@ export default function SettingsPage() {
   const updateMutation = useMutation({
     mutationFn: (data) => updateSettings(data),
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-settings"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-settings"] });
       setSuccess(true);
       setError(null);
       setTimeout(() => setSuccess(false), 3000);
@@ -54,7 +54,7 @@ export default function SettingsPage() {
   const resetMutation = useMutation({
     mutationFn: () => resetSettings(),
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-settings"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-settings"] });
       setSuccess(true);
       setError(null);
       setTimeout(() => setSuccess(false), 3000);

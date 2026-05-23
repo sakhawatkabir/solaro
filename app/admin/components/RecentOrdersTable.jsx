@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import Link from "next/link";
 import { ArrowUpRight, MapPin } from "lucide-react";
 import StatusBadge from "./StatusBadge";
@@ -13,7 +14,7 @@ function getOrderItems(items) {
   return items.map((item) => item.name).join(", ");
 }
 
-export default function RecentOrdersTable({ orders }) {
+const RecentOrdersTable = memo(function RecentOrdersTable({ orders }) {
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800">
       <div className="flex items-center justify-between p-6 border-b border-zinc-800">
@@ -114,4 +115,6 @@ export default function RecentOrdersTable({ orders }) {
       </div>
     </div>
   );
-}
+});
+
+export default RecentOrdersTable;

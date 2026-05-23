@@ -84,7 +84,7 @@ export default function UserFormPage({ params }) {
       setSaving(true);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-users"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
       push("/admin/users");
     },
     onError: (err) => {
@@ -100,8 +100,8 @@ export default function UserFormPage({ params }) {
       setSaving(true);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-user", params.id]);
-      queryClient.invalidateQueries(["admin-users"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-user", params.id] });
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
       push("/admin/users");
     },
     onError: (err) => {
@@ -113,7 +113,7 @@ export default function UserFormPage({ params }) {
   const deleteMutation = useMutation({
     mutationFn: () => deleteUser(params.id),
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-users"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
       push("/admin/users");
     },
   });

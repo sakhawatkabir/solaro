@@ -49,7 +49,7 @@ export default function DistrictsPage() {
   const deleteMutation = useMutation({
     mutationFn: (id) => deleteDistrict(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-districts"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-districts"] });
     },
   });
 

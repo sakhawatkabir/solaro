@@ -1,9 +1,10 @@
 "use client";
 
+import { memo } from "react";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export default function StatCard({
+const StatCard = memo(function StatCard({
   label,
   value,
   change,
@@ -40,4 +41,6 @@ export default function StatCard({
       <div className="text-xs text-zinc-500 mt-1">{description}</div>
     </div>
   );
-}
+});
+
+export default StatCard;

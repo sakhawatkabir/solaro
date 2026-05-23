@@ -94,7 +94,7 @@ export default function CustomerFormPage({ params }) {
       setSaving(true);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-customers"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-customers"] });
       push("/admin/customers");
     },
     onError: (err) => {
@@ -110,8 +110,10 @@ export default function CustomerFormPage({ params }) {
       setSaving(true);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-customer", params.id]);
-      queryClient.invalidateQueries(["admin-customers"]);
+      queryClient.invalidateQueries({
+        queryKey: ["admin-customer", params.id],
+      });
+      queryClient.invalidateQueries({ queryKey: ["admin-customers"] });
       push("/admin/customers");
     },
     onError: (err) => {
@@ -123,7 +125,7 @@ export default function CustomerFormPage({ params }) {
   const deleteMutation = useMutation({
     mutationFn: () => deleteCustomer(params.id),
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-customers"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-customers"] });
       push("/admin/customers");
     },
   });

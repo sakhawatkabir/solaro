@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
+import AdminShellSkeleton from "./components/AdminShellSkeleton";
+import ContentFallback from "./components/ContentFallback";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/app/context/AuthContext";
 
@@ -33,12 +35,14 @@ export default function AdminLayout({ children }) {
     }
   }, [user, loading, replace]);
 
-  if (loading || !user || !allowedAdminRoles.includes(user.role)) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-zinc-900">
-        <div className="size-8 border-3 border-white/20 border-t-white rounded-full animate-spin" />
-      </div>
-    );
+  const handleMenuClick = useCallback(() => setMobileOpen(true), []);
+
+  if (loading) {
+    return <AdminShellSkeleton />;
+  }
+
+  if (!user || !allowedAdminRoles.includes(user.role)) {
+    return null;
   }
 
   return (
@@ -46,8 +50,10 @@ export default function AdminLayout({ children }) {
       <div className="flex min-h-screen bg-zinc-900">
         <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
         <div className="flex-1 flex flex-col">
-          <Header onMenuClick={() => setMobileOpen(true)} />
-          <main className="flex-1 overflow-y-auto p-6">{children}</main>
+          <Header onMenuClick={handleMenuClick} />
+          <main className="flex-1 overflow-y-auto p-6">
+            <Suspense fallback={<ContentFallback />}>{children}</Suspense>
+          </main>
         </div>
       </div>
     </TooltipProvider>

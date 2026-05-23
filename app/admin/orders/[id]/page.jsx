@@ -31,7 +31,7 @@ export default function OrderDetailPage({ params }) {
   const updateMutation = useMutation({
     mutationFn: (data) => updateOrder(params.id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-order", params.id]);
+      queryClient.invalidateQueries({ queryKey: ["admin-order", params.id] });
       setShowStatusDropdown(false);
     },
   });

@@ -137,8 +137,8 @@ export default function ProductFormPage({ params }) {
       setSaving(true);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-products"]);
-      queryClient.invalidateQueries(["admin-products-summary"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-products-summary"] });
       push("/admin/products");
     },
     onError: (err) => {
@@ -154,9 +154,9 @@ export default function ProductFormPage({ params }) {
       setSaving(true);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-product", params.id]);
-      queryClient.invalidateQueries(["admin-products"]);
-      queryClient.invalidateQueries(["admin-products-summary"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-product", params.id] });
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-products-summary"] });
       push("/admin/products");
     },
     onError: (err) => {
@@ -168,8 +168,8 @@ export default function ProductFormPage({ params }) {
   const deleteMutation = useMutation({
     mutationFn: () => deleteProduct(params.id),
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-products"]);
-      queryClient.invalidateQueries(["admin-products-summary"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-products-summary"] });
       push("/admin/products");
     },
   });

@@ -1,9 +1,10 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function TablePagination({
+const TablePagination = memo(function TablePagination({
   currentPage,
   totalPages,
   perPage,
@@ -13,32 +14,31 @@ export default function TablePagination({
   const start = (currentPage - 1) * perPage + 1;
   const end = Math.min(currentPage * perPage, totalFiltered);
 
-  const getPages = () => {
+  const pages = useMemo(() => {
     if (totalPages <= 7) {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
 
-    const pages = [];
-    pages.push(1);
+    const result = [1];
 
     if (currentPage > 3) {
-      pages.push("ellipsis");
+      result.push("ellipsis");
     }
 
-    const start = Math.max(2, currentPage - 1);
-    const end = Math.min(totalPages - 1, currentPage + 1);
+    const rangeStart = Math.max(2, currentPage - 1);
+    const rangeEnd = Math.min(totalPages - 1, currentPage + 1);
 
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
+    for (let i = rangeStart; i <= rangeEnd; i++) {
+      result.push(i);
     }
 
     if (currentPage < totalPages - 2) {
-      pages.push("ellipsis");
+      result.push("ellipsis");
     }
 
-    pages.push(totalPages);
-    return pages;
-  };
+    result.push(totalPages);
+    return result;
+  }, [currentPage, totalPages]);
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-6 py-4 border-t border-zinc-800">
@@ -56,7 +56,7 @@ export default function TablePagination({
           <ChevronLeft className="size-4" />
         </Button>
 
-        {getPages().map((page, i) =>
+        {pages.map((page, i) =>
           page === "ellipsis" ? (
             <span
               key={i === 1 ? "ellipsis-start" : "ellipsis-end"}
@@ -93,4 +93,6 @@ export default function TablePagination({
       </div>
     </div>
   );
-}
+});
+
+export default TablePagination;

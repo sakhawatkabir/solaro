@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 const PieTooltip = ({ active, payload }) => {
@@ -14,7 +15,7 @@ const PieTooltip = ({ active, payload }) => {
   return null;
 };
 
-export default function CategoryChart({ data }) {
+const CategoryChart = memo(function CategoryChart({ data }) {
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
       <div className="mb-6">
@@ -57,4 +58,6 @@ export default function CategoryChart({ data }) {
       </div>
     </div>
   );
-}
+});
+
+export default CategoryChart;

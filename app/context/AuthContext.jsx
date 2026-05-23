@@ -44,10 +44,12 @@ export function AuthProvider({ children }) {
   } = useQuery({
     queryKey: ["session"],
     queryFn: fetchSession,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
     retry: false,
-    refetchOnMount: true,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const user = session?.authenticated ? session.user : null;

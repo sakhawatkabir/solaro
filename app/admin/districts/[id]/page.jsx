@@ -3,7 +3,12 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getDistrict, createDistrict, updateDistrict, deleteDistrict } from "@/app/actions/districts";
+import {
+  getDistrict,
+  createDistrict,
+  updateDistrict,
+  deleteDistrict,
+} from "@/app/actions/districts";
 import DistrictFormHeader from "./components/DistrictFormHeader";
 import DistrictBasicInfo from "./components/DistrictBasicInfo";
 import DistrictDangerZone from "./components/DistrictDangerZone";
@@ -78,7 +83,7 @@ export default function DistrictFormPage({ params }) {
       setSaving(true);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-districts"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-districts"] });
       push("/admin/districts");
     },
     onError: (err) => {
@@ -94,8 +99,10 @@ export default function DistrictFormPage({ params }) {
       setSaving(true);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-district", params.id]);
-      queryClient.invalidateQueries(["admin-districts"]);
+      queryClient.invalidateQueries({
+        queryKey: ["admin-district", params.id],
+      });
+      queryClient.invalidateQueries({ queryKey: ["admin-districts"] });
       push("/admin/districts");
     },
     onError: (err) => {
@@ -107,7 +114,7 @@ export default function DistrictFormPage({ params }) {
   const deleteMutation = useMutation({
     mutationFn: () => deleteDistrict(params.id),
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-districts"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-districts"] });
       push("/admin/districts");
     },
   });
@@ -125,8 +132,12 @@ export default function DistrictFormPage({ params }) {
       <DistrictFormHeader
         isEdit={isEdit}
         districtName={districtData?.name || ""}
-        onSave={() => (isEdit ? updateMutation.mutate() : createMutation.mutate())}
-        isSaving={saving || createMutation.isPending || updateMutation.isPending}
+        onSave={() =>
+          isEdit ? updateMutation.mutate() : createMutation.mutate()
+        }
+        isSaving={
+          saving || createMutation.isPending || updateMutation.isPending
+        }
       />
 
       {error && (

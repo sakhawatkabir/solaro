@@ -35,7 +35,7 @@ export default function UsersPage() {
   const deleteMutation = useMutation({
     mutationFn: (id) => deleteUser(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-users"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
     },
   });
 

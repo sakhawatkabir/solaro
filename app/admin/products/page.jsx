@@ -42,8 +42,8 @@ export default function ProductsPage() {
   const deleteMutation = useMutation({
     mutationFn: (id) => deleteProduct(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-products"]);
-      queryClient.invalidateQueries(["admin-products-summary"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-products-summary"] });
     },
   });
 

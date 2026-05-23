@@ -62,7 +62,7 @@ export default function LeadsPage() {
   const deleteMutation = useMutation({
     mutationFn: (id) => deleteLead(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-leads"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-leads"] });
     },
   });
 

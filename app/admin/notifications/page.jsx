@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Bell,
@@ -65,23 +65,26 @@ export default function AdminNotificationsPage() {
     },
   });
 
-  const handleMarkRead = async (id) => {
-    await fetch(`/api/admin/notifications/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ read: true }),
-    });
-    queryClient.invalidateQueries({ queryKey: ["admin-notifications"] });
-    queryClient.invalidateQueries({ queryKey: ["notifications"] });
-  };
+  const handleMarkRead = useCallback(
+    async (id) => {
+      await fetch(`/api/admin/notifications/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ read: true }),
+      });
+      queryClient.invalidateQueries({ queryKey: ["admin-notifications"] });
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+    [queryClient],
+  );
 
-  const handleMarkAllRead = async () => {
+  const handleMarkAllRead = useCallback(async () => {
     await fetch("/api/admin/notifications/mark-all-read", { method: "POST" });
     queryClient.invalidateQueries({ queryKey: ["admin-notifications"] });
     queryClient.invalidateQueries({ queryKey: ["notifications"] });
-  };
+  }, [queryClient]);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     if (!deleteTarget) return;
     await fetch(`/api/admin/notifications/${deleteTarget}`, {
       method: "DELETE",
@@ -89,14 +92,14 @@ export default function AdminNotificationsPage() {
     setDeleteTarget(null);
     queryClient.invalidateQueries({ queryKey: ["admin-notifications"] });
     queryClient.invalidateQueries({ queryKey: ["notifications"] });
-  };
+  }, [deleteTarget, queryClient]);
 
-  const handleDeleteAll = async () => {
+  const handleDeleteAll = useCallback(async () => {
     await fetch("/api/admin/notifications", { method: "DELETE" });
     setConfirmClearAll(false);
     queryClient.invalidateQueries({ queryKey: ["admin-notifications"] });
     queryClient.invalidateQueries({ queryKey: ["notifications"] });
-  };
+  }, [queryClient]);
 
   const notifications = data?.notifications || [];
   const total = data?.total || 0;
@@ -109,7 +112,9 @@ export default function AdminNotificationsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-white">Notifications</h1>
-          <p className="text-sm text-zinc-400 mt-1">{total} total notifications</p>
+          <p className="text-sm text-zinc-400 mt-1">
+            {total} total notifications
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1 text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-lg text-sm">
