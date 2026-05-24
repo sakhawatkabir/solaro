@@ -4,6 +4,21 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { requireAdmin, requireAuth } from "@/app/actions/server-auth";
 
+export async function getActiveDistricts(limit = 100) {
+  try {
+    const districts = await prisma.district.findMany({
+      where: { coverage: true },
+      orderBy: { name: "asc" },
+      take: limit,
+    });
+
+    return districts;
+  } catch (error) {
+    console.error("Get active districts error:", error);
+    return [];
+  }
+}
+
 export async function getDistricts(
   page = 1,
   limit = 20,

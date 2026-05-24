@@ -8,6 +8,7 @@ const useCartStore = create(
     (set, get) => ({
       items: [],
       isOpen: false,
+      hydrated: false,
       setIsOpen: (val) => set({ isOpen: val }),
       addItem: (product) => {
         const { items } = get();
@@ -50,11 +51,15 @@ const useCartStore = create(
     {
       name: "solaro-cart:v1",
       partialize: (state) => ({ items: state.items }),
+      onRehydrateStorage: () => () => {
+        useCartStore.setState({ hydrated: true });
+      },
     },
   ),
 );
 
 export function useCart() {
+  const hydrated = useCartStore((s) => s.hydrated);
   const items = useCartStore((s) => s.items);
   const isOpen = useCartStore((s) => s.isOpen);
   const setIsOpen = useCartStore((s) => s.setIsOpen);
@@ -70,6 +75,7 @@ export function useCart() {
   );
 
   return {
+    hydrated,
     items,
     isOpen,
     setIsOpen,
