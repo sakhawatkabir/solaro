@@ -14,6 +14,7 @@ const allowedAdminRoles = [
   "MANAGER",
   "EDITOR",
   "SUPPORT",
+  "VIEWER",
   "CUSTOM",
 ];
 

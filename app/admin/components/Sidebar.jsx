@@ -100,8 +100,12 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
   const { user } = useAuth();
 
   const userPermissions = user?.permissions || [];
+  const userRole = user?.role;
   const navItems = allNavItems.filter(
-    (item) => !item.permission || userPermissions.includes(item.permission),
+    (item) =>
+      !item.permission ||
+      userPermissions.includes(item.permission) ||
+      (userRole === "VIEWER" && item.permission === "customers"),
   );
 
   const sidebarContent = (

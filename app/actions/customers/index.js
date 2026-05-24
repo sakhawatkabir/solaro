@@ -12,28 +12,63 @@ export async function getCustomers(
 ) {
   await requireAdmin();
   try {
-    const where = {};
+    const where = {
+      role: "VIEWER",
+    };
 
     if (search) {
       where.OR = [
         { name: { contains: search, mode: "insensitive" } },
         { email: { contains: search, mode: "insensitive" } },
-        { phone: { contains: search, mode: "insensitive" } },
       ];
     }
     if (status && status !== "all") {
       where.status = status;
     }
 
-    const [customers, total] = await Promise.all([
-      prisma.customer.findMany({
+    const [viewerUsers, total] = await Promise.all([
+      prisma.user.findMany({
         where,
         skip: (page - 1) * limit,
         take: limit,
         orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          status: true,
+          role: true,
+          lastLogin: true,
+          createdAt: true,
+          _count: { select: { orders: true } },
+        },
       }),
-      prisma.customer.count({ where }),
+      prisma.user.count({ where }),
     ]);
+
+    const userIds = viewerUsers.map((u) => u.id);
+    const orderAggs =
+      userIds.length > 0
+        ? await prisma.order.groupBy({
+            by: ["userId"],
+            where: { userId: { in: userIds } },
+            _sum: { total: true },
+          })
+        : [];
+    const spentMap = {};
+    orderAggs.forEach((agg) => {
+      if (agg.userId) spentMap[agg.userId] = agg._sum.total || 0;
+    });
+
+    const customers = viewerUsers.map((u) => ({
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      status: u.status,
+      role: u.role,
+      totalOrders: u._count.orders,
+      totalSpent: spentMap[u.id] || 0,
+    }));
 
     return {
       customers,
@@ -45,19 +80,106 @@ export async function getCustomers(
       },
     };
   } catch (error) {
-    console.error("Get customers error:", error);
-    throw new Error("Failed to fetch customers");
+    console.error("Get viewer users error:", error);
+    throw new Error("Failed to fetch users");
   }
 }
 
 export async function getCustomer(id) {
   await requireAdmin();
   try {
-    const customer = await prisma.customer.findUnique({ where: { id } });
-    return customer;
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        status: true,
+        role: true,
+        lastLogin: true,
+        createdAt: true,
+        _count: { select: { orders: true } },
+      },
+    });
+    if (!user) return null;
+
+    const orderAgg = await prisma.order.groupBy({
+      by: ["userId"],
+      where: { userId: id },
+      _sum: { total: true },
+    });
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      status: user.status,
+      role: user.role,
+      lastLogin: user.lastLogin,
+      createdAt: user.createdAt,
+      totalOrders: user._count.orders,
+      totalSpent: orderAgg[0]?._sum.total || 0,
+    };
   } catch (error) {
     console.error("Get customer error:", error);
     return null;
+  }
+}
+
+export async function getCustomerOrders(id) {
+  await requireAdmin();
+  try {
+    const orders = await prisma.order.findMany({
+      where: { userId: id },
+      orderBy: { createdAt: "desc" },
+    });
+    return orders;
+  } catch (error) {
+    console.error("Get customer orders error:", error);
+    return [];
+  }
+}
+
+export async function updateCustomerStatus(id, status) {
+  await requireAdmin();
+  try {
+    const existing = await prisma.user.findUnique({ where: { id } });
+    if (!existing) throw new Error("Customer not found");
+
+    const user = await prisma.user.update({
+      where: { id },
+      data: { status },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        status: true,
+        role: true,
+      },
+    });
+
+    revalidatePath("/admin/customers");
+    revalidatePath(`/admin/customers/${id}`);
+    return { success: true, user };
+  } catch (error) {
+    console.error("Update customer status error:", error);
+    throw new Error("Failed to update status");
+  }
+}
+
+export async function deleteCustomerUser(id) {
+  await requireAdmin();
+  try {
+    const existing = await prisma.user.findUnique({ where: { id } });
+    if (!existing) throw new Error("Customer not found");
+
+    await prisma.user.delete({ where: { id } });
+
+    revalidatePath("/admin/customers");
+    return { success: true };
+  } catch (error) {
+    console.error("Delete customer user error:", error);
+    throw new Error("Failed to delete customer");
   }
 }
 
@@ -123,9 +245,6 @@ export async function updateCustomer(id, data) {
     return { success: true, customer };
   } catch (error) {
     console.error("Update customer error:", error);
-    if (error.code === "P2002") {
-      throw new Error("A customer with this email already exists");
-    }
     throw new Error("Failed to update customer");
   }
 }
