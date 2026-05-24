@@ -2,21 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Eye, MapPin, Calendar, Package, Trash2 } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Eye, MapPin, Package, Trash2 } from "lucide-react";
 import StatusBadge from "../../components/StatusBadge";
 import TablePagination from "../../components/TablePagination";
 import { deleteOrder } from "@/app/actions/orders";
 
 function formatBDT(amount) {
   return `৳${amount.toLocaleString("en-BD")}`;
-}
-
-function formatDate(date) {
-  return new Date(date).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
 }
 
 export default function OrdersTable({
@@ -26,20 +19,43 @@ export default function OrdersTable({
   perPage,
   totalFiltered,
   onPageChange,
-  onDeleteSuccess,
+  search,
+  statusFilter,
 }) {
-  const [deletingId, setDeletingId] = useState(null);
+  const queryClient = useQueryClient();
   const [confirmDelete, setConfirmDelete] = useState(null);
 
-  const handleDelete = async (order) => {
-    setDeletingId(order.id);
-    const result = await deleteOrder(order.id);
-    if (result.success) {
+  const deleteMutation = useMutation({
+    mutationFn: (id) => deleteOrder(id),
+    onMutate: async (orderId) => {
+      const queryKey = ["admin-orders", currentPage, search, statusFilter];
+      await queryClient.cancelQueries({ queryKey });
+      const previousData = queryClient.getQueryData(queryKey);
+
+      queryClient.setQueryData(queryKey, (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          orders: old.orders.filter((o) => o.id !== orderId),
+          pagination: {
+            ...old.pagination,
+            total: Math.max(0, old.pagination.total - 1),
+          },
+        };
+      });
+
       setConfirmDelete(null);
-      if (onDeleteSuccess) onDeleteSuccess();
-    }
-    setDeletingId(null);
-  };
+      return { previousData, queryKey };
+    },
+    onError: (_err, _orderId, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(context.queryKey, context.previousData);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
+    },
+  });
 
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 overflow-hidden">
@@ -53,9 +69,6 @@ export default function OrdersTable({
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3">
                 Customer
               </th>
-              <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3 hidden md:table-cell">
-                Items
-              </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3 hidden lg:table-cell">
                 District
               </th>
@@ -64,9 +77,6 @@ export default function OrdersTable({
               </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3">
                 Status
-              </th>
-              <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3 hidden sm:table-cell">
-                Date
               </th>
               <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-3">
                 Actions
@@ -77,7 +87,7 @@ export default function OrdersTable({
             {orders.length === 0 ? (
               <tr>
                 <td
-                  colSpan={8}
+                  colSpan={6}
                   className="px-6 py-12 text-center text-zinc-500"
                 >
                   <Package className="size-10 mx-auto mb-3 text-zinc-700" />
@@ -108,11 +118,7 @@ export default function OrdersTable({
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 hidden md:table-cell">
-                    <span className="text-sm text-zinc-300 max-w-xs truncate block">
-                      {order.itemsSummary || "—"}
-                    </span>
-                  </td>
+
                   <td className="px-6 py-4 hidden lg:table-cell">
                     <div className="flex items-center gap-1.5 text-sm text-zinc-400">
                       <MapPin className="size-3.5" />
@@ -127,12 +133,7 @@ export default function OrdersTable({
                   <td className="px-6 py-4">
                     <StatusBadge status={order.status.toLowerCase()} />
                   </td>
-                  <td className="px-6 py-4 hidden sm:table-cell">
-                    <div className="flex items-center gap-1.5 text-sm text-zinc-400">
-                      <Calendar className="size-3.5" />
-                      {formatDate(order.createdAt)}
-                    </div>
-                  </td>
+
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-1">
                       <Link
@@ -189,11 +190,11 @@ export default function OrdersTable({
                 Cancel
               </button>
               <button
-                onClick={() => handleDelete(confirmDelete)}
-                disabled={deletingId === confirmDelete.id}
+                onClick={() => deleteMutation.mutate(confirmDelete.id)}
+                disabled={deleteMutation.isPending}
                 className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-500 disabled:opacity-50 transition-colors flex items-center gap-2"
               >
-                {deletingId === confirmDelete.id ? (
+                {deleteMutation.isPending ? (
                   <>
                     <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     Deleting...

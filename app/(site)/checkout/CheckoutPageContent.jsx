@@ -71,6 +71,7 @@ export default function CheckoutPageContent({
         productId: item.id,
         title: item.title,
         price: item.price,
+        image: item.image,
         quantity: item.quantity,
       }));
 

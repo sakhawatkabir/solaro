@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Package } from "lucide-react";
 
 function formatBDT(amount) {
@@ -18,9 +19,19 @@ export default function OrderItems({ order }) {
             key={index}
             className="flex items-center justify-between p-4 rounded-lg bg-zinc-800/50"
           >
-            <div className="flex items-center gap-4">
-              <div className="size-12 rounded-lg bg-zinc-800 flex items-center justify-center">
-                <Package className="size-6 text-zinc-400" />
+            <div className="flex items-center gap-3">
+              <div className="size-16 rounded-xl bg-zinc-800 flex items-center justify-center overflow-hidden shrink-0">
+                {item.image ? (
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={64}
+                    height={64}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <Package className="size-7 text-zinc-500" />
+                )}
               </div>
               <div>
                 <p className="text-sm font-medium text-white">{item.name}</p>

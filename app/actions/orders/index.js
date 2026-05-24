@@ -42,12 +42,52 @@ export async function getOrders({
     prisma.order.count({ where }),
   ]);
 
-  return { orders, total, totalPages: Math.ceil(total / perPage) };
+  const enrichedOrders = orders.map((order) => {
+    const items = Array.isArray(order.items) ? order.items : [];
+    const enrichedItems = items.map((item) => ({
+      ...item,
+      name: item.title || item.name || item.productName || "Unknown Product",
+      quantity: item.quantity || 1,
+      price: item.price || 0,
+    }));
+
+    return {
+      ...order,
+      items: enrichedItems,
+      itemsSummary: enrichedItems
+        .map((i) => `${i.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}`)
+        .join(", "),
+    };
+  });
+
+  return {
+    orders: enrichedOrders,
+    pagination: {
+      page,
+      perPage,
+      total,
+      totalPages: Math.ceil(total / perPage),
+    },
+  };
 }
 
 export async function getOrderById(id) {
   await requireAdmin();
-  return prisma.order.findUnique({ where: { id } });
+  const order = await prisma.order.findUnique({ where: { id } });
+  if (!order) return null;
+
+  const items = Array.isArray(order.items) ? order.items : [];
+  const enrichedItems = items.map((item) => ({
+    ...item,
+    name: item.title || item.name || item.productName || "Unknown Product",
+    quantity: item.quantity || 1,
+    price: item.price || 0,
+  }));
+
+  return {
+    ...order,
+    items: enrichedItems,
+  };
 }
 
 export async function createOrder(data) {
