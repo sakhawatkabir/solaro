@@ -1,6 +1,8 @@
 import { getOrders } from "@/app/actions/orders";
 import OrdersPageContent from "./OrdersPageContent";
 
+export const dynamic = "force-dynamic";
+
 export default async function OrdersPage() {
   const initialData = await getOrders({
     page: 1,

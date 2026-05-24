@@ -1,6 +1,8 @@
 import { getReviews } from "@/app/actions/reviews";
 import ReviewsPageContent from "./ReviewsPageContent";
 
+export const dynamic = "force-dynamic";
+
 export default async function ReviewsPage() {
   const initialData = await getReviews({
     page: 1,

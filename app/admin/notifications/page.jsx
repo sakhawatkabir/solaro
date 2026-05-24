@@ -1,6 +1,8 @@
 import { getAdminNotifications } from "@/app/actions/notifications";
 import NotificationsPageContent from "./NotificationsPageContent";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminNotificationsPage() {
   const initialData = await getAdminNotifications({
     page: 1,
