@@ -3,11 +3,10 @@
 import { m } from "framer-motion";
 import { ShoppingCart, Search, ChevronRight, Star } from "lucide-react";
 import { useCart } from "../../store/cart";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
-import { useQuery } from "@tanstack/react-query";
 
 const categories = [
   { id: "all", label: "All Products" },
@@ -29,26 +28,24 @@ export default function ProductsPageContent({ initialData = [] }) {
   const prefersReducedMotion = useReducedMotion();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
-  const { data: products = [] } = useQuery({
-    queryKey: ["products", activeCategory],
-    queryFn: async () => {
-      const categoryParam =
-        activeCategory === "all" ? "" : `&category=${activeCategory}`;
-      const res = await fetch(`/api/products?status=ACTIVE${categoryParam}`);
-      const data = await res.json();
-      return data.products || [];
-    },
-    initialData: activeCategory === "all" ? initialData : undefined,
-  });
+  const filtered = useMemo(() => {
+    let result = initialData;
 
-  const filtered = products.filter((p) => {
-    if (!searchQuery) return true;
-    return (
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (p.description &&
-        p.description.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-  });
+    if (activeCategory !== "all") {
+      result = result.filter((p) => p.category === activeCategory);
+    }
+
+    if (searchQuery) {
+      result = result.filter(
+        (p) =>
+          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (p.description &&
+            p.description.toLowerCase().includes(searchQuery.toLowerCase())),
+      );
+    }
+
+    return result;
+  }, [initialData, activeCategory, searchQuery]);
 
   const handleAddToCart = (product) => {
     addItem({
