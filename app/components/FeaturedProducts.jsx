@@ -14,15 +14,16 @@ function formatPrice(price) {
   return `৳${price.toLocaleString("en-BD")}`;
 }
 
-export default function FeaturedProducts() {
+export default function FeaturedProducts({ initialData }) {
   const { addItem } = useCart();
   const [addedId, setAddedId] = useState(null);
   const prefersReducedMotion = useReducedMotion();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["featured-products"],
     queryFn: () => getFeaturedProducts(6),
+    initialData: initialData,
   });
 
   const products = data?.products || [];
@@ -37,40 +38,6 @@ export default function FeaturedProducts() {
     setAddedId(product.id);
     setTimeout(() => setAddedId(null), 2000);
   };
-
-  if (isLoading) {
-    return (
-      <section className="py-20 px-8 lg:px-16">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="text-center mb-12">
-            <div className="h-4 w-32 bg-zinc-200 rounded mx-auto mb-3 animate-pulse" />
-            <div className="h-8 w-80 bg-zinc-200 rounded mx-auto mb-4 animate-pulse" />
-            <div className="h-4 w-96 bg-zinc-200 rounded mx-auto animate-pulse" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div
-                key={i}
-                className="bg-white rounded-2xl border border-zinc-200 overflow-hidden animate-pulse"
-              >
-                <div className="aspect-[4/3] bg-zinc-100" />
-                <div className="p-5 space-y-3">
-                  <div className="h-5 w-3/4 bg-zinc-200 rounded" />
-                  <div className="h-4 w-1/2 bg-zinc-200 rounded" />
-                  <div className="h-8 w-full bg-zinc-200 rounded" />
-                  <div className="h-4 w-full bg-zinc-200 rounded" />
-                  <div className="flex justify-between pt-4">
-                    <div className="h-6 w-24 bg-zinc-200 rounded" />
-                    <div className="h-10 w-24 bg-zinc-200 rounded-full" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   if (products.length === 0) return null;
 
