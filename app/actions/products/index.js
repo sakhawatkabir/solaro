@@ -4,6 +4,26 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/app/actions/server-auth";
 
+export async function getActiveProducts(category = "") {
+  try {
+    const where = { status: "ACTIVE" };
+
+    if (category && category !== "all") {
+      where.category = category;
+    }
+
+    const products = await prisma.product.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+    });
+
+    return products;
+  } catch (error) {
+    console.error("Get active products error:", error);
+    return [];
+  }
+}
+
 export async function getFeaturedProducts(count = 6) {
   try {
     const products = await prisma.product.findMany({
