@@ -13,13 +13,7 @@ import {
   resendVerificationAction,
   updateProfileAction,
 } from "@/app/actions/auth";
-import {
-  getDashboardStats,
-  getRevenueChartData,
-  getCategoryChartData,
-  getRecentOrders,
-  getRecentLeads,
-} from "@/app/actions/dashboard";
+import { getDashboardData } from "@/app/actions/dashboard";
 
 const AuthContext = createContext(null);
 
@@ -72,28 +66,8 @@ export function AuthProvider({ children }) {
 
         if (data.user?.role !== "VIEWER") {
           queryClient.prefetchQuery({
-            queryKey: ["dashboard-stats"],
-            queryFn: getDashboardStats,
-            staleTime: 5 * 60 * 1000,
-          });
-          queryClient.prefetchQuery({
-            queryKey: ["dashboard-revenue"],
-            queryFn: getRevenueChartData,
-            staleTime: 5 * 60 * 1000,
-          });
-          queryClient.prefetchQuery({
-            queryKey: ["dashboard-categories"],
-            queryFn: getCategoryChartData,
-            staleTime: 5 * 60 * 1000,
-          });
-          queryClient.prefetchQuery({
-            queryKey: ["dashboard-recent-orders"],
-            queryFn: getRecentOrders,
-            staleTime: 5 * 60 * 1000,
-          });
-          queryClient.prefetchQuery({
-            queryKey: ["dashboard-recent-leads"],
-            queryFn: getRecentLeads,
+            queryKey: ["dashboard-data"],
+            queryFn: () => getDashboardData(),
             staleTime: 5 * 60 * 1000,
           });
         } else {

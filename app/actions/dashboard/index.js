@@ -179,3 +179,184 @@ export async function getRecentLeads() {
     take: 5,
   });
 }
+
+export async function getDashboardData() {
+  await requireAdmin();
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+  const monthData = Array.from({ length: 6 }, (_, i) => {
+    const date = new Date(now.getFullYear(), now.getMonth() - (5 - i), 1);
+    const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    const endOfMonth = new Date(
+      date.getFullYear(),
+      date.getMonth() + 1,
+      0,
+      23,
+      59,
+      59,
+    );
+    return { date, startOfMonth, endOfMonth };
+  });
+
+  const [
+    totalRevenue,
+    previousRevenue,
+    totalOrders,
+    previousOrders,
+    totalCustomers,
+    newCustomers,
+    totalLeads,
+    conversionRateOrders,
+    revenueResults,
+    categoryProducts,
+    recentOrders,
+    recentLeads,
+  ] = await Promise.all([
+    prisma.order.aggregate({
+      where: {
+        status: "DELIVERED",
+        createdAt: { gte: thirtyDaysAgo },
+      },
+      _sum: { total: true },
+    }),
+
+    prisma.order.aggregate({
+      where: {
+        status: "DELIVERED",
+        createdAt: {
+          lt: thirtyDaysAgo,
+          gte: new Date(thirtyDaysAgo.getTime() - 30 * 24 * 60 * 60 * 1000),
+        },
+      },
+      _sum: { total: true },
+    }),
+
+    prisma.order.count({
+      where: { createdAt: { gte: thirtyDaysAgo } },
+    }),
+
+    prisma.order.count({
+      where: {
+        createdAt: {
+          lt: thirtyDaysAgo,
+          gte: new Date(thirtyDaysAgo.getTime() - 30 * 24 * 60 * 60 * 1000),
+        },
+      },
+    }),
+
+    prisma.customer.count(),
+
+    prisma.customer.count({
+      where: { createdAt: { gte: thirtyDaysAgo } },
+    }),
+
+    prisma.lead.count(),
+
+    prisma.order.count({
+      where: { status: "DELIVERED" },
+    }),
+
+    Promise.all(
+      monthData.map(({ startOfMonth, endOfMonth }) =>
+        prisma.order.aggregate({
+          where: {
+            status: "DELIVERED",
+            createdAt: { gte: startOfMonth, lte: endOfMonth },
+          },
+          _sum: { total: true },
+          _count: true,
+        }),
+      ),
+    ),
+
+    prisma.product.findMany({
+      select: {
+        category: true,
+        sales: true,
+      },
+    }),
+
+    prisma.order.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 8,
+    }),
+
+    prisma.lead.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 5,
+    }),
+  ]);
+
+  const revenue = totalRevenue._sum.total || 0;
+  const prevRevenue = previousRevenue._sum.total || 0;
+  const revenueChange =
+    prevRevenue > 0
+      ? (((revenue - prevRevenue) / prevRevenue) * 100).toFixed(1)
+      : "0.0";
+
+  const ordersChange =
+    totalOrders > 0 && previousOrders > 0
+      ? (((totalOrders - previousOrders) / previousOrders) * 100).toFixed(1)
+      : "0.0";
+
+  const conversionRateValue =
+    totalOrders > 0
+      ? ((conversionRateOrders / (totalOrders + totalLeads)) * 100).toFixed(1)
+      : "0.0";
+
+  const stats = {
+    revenue,
+    revenueChange: parseFloat(revenueChange),
+    totalOrders,
+    ordersChange: parseFloat(ordersChange),
+    totalCustomers,
+    newCustomers,
+    totalLeads,
+    conversionRate: parseFloat(conversionRateValue),
+  };
+
+  const revenueData = monthData.map(({ date }, i) => ({
+    month: date.toLocaleString("en-US", { month: "short" }),
+    revenue: revenueResults[i]._sum.total || 0,
+    orders: revenueResults[i]._count,
+  }));
+
+  const categoryTotals = {};
+  let totalSales = 0;
+  for (const product of categoryProducts) {
+    const cat = product.category;
+    categoryTotals[cat] = (categoryTotals[cat] || 0) + product.sales;
+    totalSales += product.sales;
+  }
+
+  const colors = {
+    HOME_KIT: "#10b981",
+    PANEL: "#34d399",
+    BATTERY: "#6ee7b7",
+    INVERTER: "#a7f3d0",
+    ACCESSORY: "#d1fae5",
+  };
+
+  const labels = {
+    HOME_KIT: "Home Kits",
+    PANEL: "Panels",
+    BATTERY: "Batteries",
+    INVERTER: "Inverters",
+    ACCESSORY: "Accessories",
+  };
+
+  const categoryData = Object.entries(categoryTotals).map(([name, value]) => ({
+    name: labels[name] || name,
+    value: totalSales > 0 ? Math.round((value / totalSales) * 100) : 0,
+    fill: colors[name] || "#10b981",
+  }));
+
+  return {
+    stats,
+    revenueData,
+    categoryData,
+    recentOrders,
+    recentLeads,
+  };
+}

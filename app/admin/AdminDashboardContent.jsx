@@ -3,13 +3,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { TrendingUp, LayoutDashboard, Users, Percent } from "lucide-react";
-import {
-  getDashboardStats,
-  getRevenueChartData,
-  getCategoryChartData,
-  getRecentOrders,
-  getRecentLeads,
-} from "@/app/actions/dashboard";
+import { getDashboardData } from "@/app/actions/dashboard";
 import DashboardHeader from "./components/DashboardHeader";
 import StatCard from "./components/StatCard";
 import RevenueChart from "./components/RevenueChart";
@@ -31,35 +25,17 @@ function formatBDT(amount) {
 export default function AdminDashboardContent() {
   const [dateRange, setDateRange] = useState("30d");
 
-  const { data: stats, isLoading: statsLoading } = useQuery({
-    queryKey: ["dashboard-stats"],
-    queryFn: () => getDashboardStats(),
+  const { data, isLoading } = useQuery({
+    queryKey: ["dashboard-data"],
+    queryFn: () => getDashboardData(),
     staleTime: 5 * 60 * 1000,
   });
 
-  const { data: revenueData, isLoading: revenueLoading } = useQuery({
-    queryKey: ["dashboard-revenue"],
-    queryFn: () => getRevenueChartData(),
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const { data: categoryData, isLoading: categoryLoading } = useQuery({
-    queryKey: ["dashboard-categories"],
-    queryFn: () => getCategoryChartData(),
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const { data: recentOrders, isLoading: ordersLoading } = useQuery({
-    queryKey: ["dashboard-recent-orders"],
-    queryFn: () => getRecentOrders(),
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const { data: recentLeads, isLoading: leadsLoading } = useQuery({
-    queryKey: ["dashboard-recent-leads"],
-    queryFn: () => getRecentLeads(),
-    staleTime: 5 * 60 * 1000,
-  });
+  const stats = data?.stats;
+  const revenueData = data?.revenueData;
+  const categoryData = data?.categoryData;
+  const recentOrders = data?.recentOrders;
+  const recentLeads = data?.recentLeads;
 
   const statCards = stats
     ? [
@@ -99,7 +75,7 @@ export default function AdminDashboardContent() {
       <DashboardHeader dateRange={dateRange} setDateRange={setDateRange} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {statsLoading
+        {isLoading
           ? Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
@@ -119,7 +95,7 @@ export default function AdminDashboardContent() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {revenueLoading ? (
+        {isLoading ? (
           <div className="lg:col-span-2 rounded-xl bg-zinc-900 border border-zinc-800 p-6 animate-pulse">
             <div className="h-5 w-24 bg-zinc-800 rounded mb-1" />
             <div className="h-4 w-32 bg-zinc-800 rounded mb-6" />
@@ -128,7 +104,7 @@ export default function AdminDashboardContent() {
         ) : (
           <RevenueChart data={revenueData || []} />
         )}
-        {categoryLoading ? (
+        {isLoading ? (
           <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6 animate-pulse">
             <div className="h-5 w-28 bg-zinc-800 rounded mb-1" />
             <div className="h-4 w-24 bg-zinc-800 rounded mb-6" />
@@ -147,7 +123,7 @@ export default function AdminDashboardContent() {
         )}
       </div>
 
-      {ordersLoading ? (
+      {isLoading ? (
         <div className="rounded-xl bg-zinc-900 border border-zinc-800 animate-pulse">
           <div className="flex items-center justify-between p-6 border-b border-zinc-800">
             <div className="space-y-1">
@@ -175,7 +151,7 @@ export default function AdminDashboardContent() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <QuickActions />
-        {leadsLoading ? (
+        {isLoading ? (
           <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6 animate-pulse">
             <div className="flex items-center justify-between mb-4">
               <div className="h-5 w-24 bg-zinc-800 rounded" />
