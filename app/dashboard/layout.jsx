@@ -44,13 +44,18 @@ export default function DashboardLayout({ children }) {
   if (loading || !user) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-white">
-        <div className="size-8 border-3 border-accent/30 border-t-accent rounded-full animate-spin" />
+        <div className="flex flex-col items-center gap-3">
+          <div className="size-8 border-3 border-accent/30 border-t-accent rounded-full animate-spin" />
+          <p className="text-sm text-ink-light animate-pulse">
+            Loading dashboard...
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white flex">
+    <div className="min-h-screen bg-white flex animate-fadeIn">
       {mobileOpen && (
         <div
           className="fixed inset-0 bg-black/40 z-40 lg:hidden"

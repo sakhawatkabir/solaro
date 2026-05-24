@@ -55,9 +55,9 @@ export default function OrdersPageContent({ initialData }) {
   const stats = data?.stats || { totalOrders: 0, totalSpent: 0 };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-2xl font-heading font-semibold text-ink">
+    <div className="max-w-5xl mx-auto space-y-6 animate-fadeIn">
+      <div className="animate-slide-up">
+        <h1 className="text-2xl font-heading font-semibold text-ink text-balance">
           My Orders
         </h1>
         <p className="text-ink-mid text-sm mt-1">
@@ -67,7 +67,7 @@ export default function OrdersPageContent({ initialData }) {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-1 bg-cream rounded-lg p-1 w-fit">
+      <div className="flex gap-1 bg-cream rounded-lg p-1 w-fit animate-slide-up animate-stagger-1">
         {[
           "all",
           "pending",
@@ -79,10 +79,10 @@ export default function OrdersPageContent({ initialData }) {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 active:scale-[0.95] ${
               filter === f
                 ? "bg-white text-ink shadow-sm"
-                : "text-ink-light hover:text-ink"
+                : "text-ink-light hover:text-ink hover:shadow-sm"
             }`}
           >
             {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -111,12 +111,13 @@ export default function OrdersPageContent({ initialData }) {
         </div>
       ) : (
         <div className="space-y-3">
-          {orders.map((order) => {
+          {orders.map((order, idx) => {
             const Icon = statusIcon[order.status] || Package;
             return (
               <div
                 key={order.id}
-                className="bg-white rounded-xl border border-ink-faint/50 p-4"
+                className="bg-white rounded-xl border border-ink-faint/50 p-4 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-accent/20 active:scale-[0.99] animate-slide-up"
+                style={{ animationDelay: `${idx * 60}ms` }}
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-3">

@@ -53,7 +53,9 @@ export default function AdminLayout({ children }) {
         <div className="flex-1 flex flex-col">
           <Header onMenuClick={handleMenuClick} />
           <main className="flex-1 overflow-y-auto p-6">
-            <Suspense fallback={<ContentFallback />}>{children}</Suspense>
+            <Suspense fallback={<ContentFallback />}>
+              <div className="animate-fadeIn">{children}</div>
+            </Suspense>
           </main>
         </div>
       </div>

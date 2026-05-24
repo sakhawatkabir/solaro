@@ -142,9 +142,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
             <Link
               key={item.href}
               href={item.href}
+              prefetch={true}
               onClick={() => mobileOpen && setMobileOpen(false)}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                 isActive
                   ? "bg-emerald-500/10 text-emerald-400"
                   : "text-zinc-400 hover:text-white hover:bg-zinc-800",

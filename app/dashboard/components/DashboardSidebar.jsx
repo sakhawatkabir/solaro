@@ -69,12 +69,13 @@ export default function DashboardSidebar({
             <Link
               key={item.href}
               href={item.href}
+              prefetch={true}
               onClick={() => mobileOpen && setMobileOpen(false)}
               className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 active:scale-[0.97]",
                 isActive
-                  ? "bg-accent/10 text-accent"
-                  : "text-ink-light hover:text-ink hover:bg-cream",
+                  ? "bg-accent/10 text-accent shadow-sm"
+                  : "text-ink-light hover:text-ink hover:bg-cream hover:shadow-sm",
               )}
             >
               <item.icon className="size-4 flex-shrink-0" />
@@ -87,14 +88,14 @@ export default function DashboardSidebar({
       <div className="p-2 border-t border-ink-faint space-y-0.5">
         <Link
           href="/"
-          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ink-light hover:text-ink hover:bg-cream transition-colors w-full"
+          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ink-light hover:text-ink hover:bg-cream active:scale-[0.97] transition-all duration-200 w-full"
         >
           <ArrowLeft className="size-4 flex-shrink-0" />
           {(!collapsed || mobileOpen) && <span>Back to Site</span>}
         </Link>
         <button
           onClick={handleSignOut}
-          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ink-light hover:text-red-600 hover:bg-red-50 transition-colors w-full"
+          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ink-light hover:text-red-600 hover:bg-red-50 active:scale-[0.97] transition-all duration-200 w-full"
         >
           <LogOut className="size-4 flex-shrink-0" />
           {(!collapsed || mobileOpen) && <span>Sign Out</span>}
@@ -102,7 +103,7 @@ export default function DashboardSidebar({
         <div className="hidden lg:block">
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="flex items-center justify-center w-full py-2 rounded-lg text-ink-light hover:text-ink hover:bg-cream transition-colors"
+            className="flex items-center justify-center w-full py-2 rounded-lg text-ink-light hover:text-ink hover:bg-cream active:scale-[0.95] transition-all duration-200"
           >
             {collapsed ? (
               <ChevronRight className="size-4" />
