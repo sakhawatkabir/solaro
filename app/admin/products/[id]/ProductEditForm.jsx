@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -17,18 +17,37 @@ import ProductPricing from "./components/ProductPricing";
 import ProductImages from "./components/ProductImages";
 import ProductDangerZone from "./components/ProductDangerZone";
 
-const defaultFormData = {
-  name: "",
-  category: "HOME_KIT",
-  price: "",
-  stock: "",
-  originalPrice: "",
-  status: "ACTIVE",
-  description: "",
-  badge: "",
-  images: [],
-  specs: [],
-};
+function getFormData(product) {
+  if (!product) {
+    return {
+      name: "",
+      category: "HOME_KIT",
+      price: "",
+      stock: "",
+      originalPrice: "",
+      status: "ACTIVE",
+      description: "",
+      badge: "",
+      images: [],
+      specs: [],
+    };
+  }
+
+  return {
+    name: product.name || "",
+    category: product.category || "HOME_KIT",
+    price: product.price?.toString() || "",
+    stock: product.stock?.toString() || "",
+    originalPrice: product.originalPrice?.toString() || "",
+    status: product.status || "ACTIVE",
+    description: product.description || "",
+    badge: product.badge || "",
+    images: product.images || [],
+    specs: product.specs
+      ? Object.entries(product.specs).map(([key, value]) => ({ key, value }))
+      : [],
+  };
+}
 
 export default function ProductEditForm({
   initialData = null,
@@ -39,7 +58,7 @@ export default function ProductEditForm({
   const queryClient = useQueryClient();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-  const [formData, setFormData] = useState(defaultFormData);
+  const [formData, setFormData] = useState(() => getFormData(initialData));
   const [newSpec, setNewSpec] = useState({ key: "", value: "" });
 
   const { data: productData, isLoading } = useQuery({
@@ -49,35 +68,6 @@ export default function ProductEditForm({
     initialData: initialData,
     retry: false,
   });
-
-  useEffect(() => {
-    if (!productData) return;
-
-    setFormData({
-      name: productData.name || "",
-      category: productData.category || "HOME_KIT",
-      price: productData.price?.toString() || "",
-      stock: productData.stock?.toString() || "",
-      originalPrice: productData.originalPrice?.toString() || "",
-      status: productData.status || "ACTIVE",
-      description: productData.description || "",
-      badge: productData.badge || "",
-      images: productData.images || [],
-      specs: productData.specs
-        ? Object.entries(productData.specs).map(([key, value]) => ({
-            key,
-            value,
-          }))
-        : [],
-    });
-  }, [productData]);
-
-  useEffect(() => {
-    if (isLoading) return;
-    if (isEdit && !productData) {
-      push("/admin/products");
-    }
-  }, [isEdit, productData, isLoading, push]);
 
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));

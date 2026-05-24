@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import PusherClient from "pusher-js";
 
@@ -20,7 +27,7 @@ function getPusher() {
 export function NotificationProvider({ children, userId }) {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
-  const [localNotifications, setLocalNotifications] = useState([]);
+  const [localOverrides, setLocalOverrides] = useState([]);
 
   const { data: notificationData } = useQuery({
     queryKey: ["notifications"],
@@ -34,61 +41,94 @@ export function NotificationProvider({ children, userId }) {
     enabled: !!userId,
   });
 
-  useEffect(() => {
-    if (notificationData?.notifications) {
-      setLocalNotifications(notificationData.notifications);
+  const localNotifications = useMemo(() => {
+    const server = notificationData?.notifications || [];
+    const overrideMap = new Map(localOverrides.map((n) => [n.id, n]));
+
+    const merged = server.map((n) => overrideMap.get(n.id) || n);
+
+    for (const n of localOverrides) {
+      if (!merged.some((m) => m.id === n.id)) {
+        merged.push(n);
+      }
     }
-  }, [notificationData]);
+
+    return merged;
+  }, [notificationData, localOverrides]);
 
   useEffect(() => {
     const pusher = getPusher();
     if (!pusher) return;
 
-    let cancelled = false;
+    const channel = pusher.subscribe("notifications");
 
-    const subscribe = () => {
-      if (cancelled) return;
-      const channel = pusher.subscribe("notifications");
-      channel.bind("new-notification", (data) => {
-        if (cancelled) return;
-        setLocalNotifications((prev) => {
-          const exists = prev.some((n) => n.id === data.id);
-          if (exists) return prev;
-          return [data, ...prev];
-        });
-        queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    const handler = (data) => {
+      setLocalOverrides((prev) => {
+        const exists = prev.some((n) => n.id === data.id);
+        if (exists) return prev;
+        return [data, ...prev];
       });
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    };
+
+    const onConnected = () => {
+      channel.bind("new-notification", handler);
     };
 
     if (pusher.connection.state === "connected") {
-      subscribe();
+      channel.bind("new-notification", handler);
     } else {
-      pusher.connection.bind("connected", subscribe);
+      pusher.connection.bind("connected", onConnected);
     }
 
     return () => {
-      cancelled = true;
+      channel.unbind("new-notification", handler);
+      pusher.connection.unbind("connected", onConnected);
+      pusher.unsubscribe("notifications");
     };
   }, [userId, queryClient]);
 
-  const markAsRead = async (id) => {
-    setLocalNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n)),
-    );
-
-    try {
-      await fetch(`/api/notifications/${id}`, {
-        method: "PATCH",
-        credentials: "include",
+  const markAsRead = useCallback(
+    async (id) => {
+      setLocalOverrides((prev) => {
+        const exists = prev.some((n) => n.id === id);
+        if (exists) {
+          return prev.map((n) => (n.id === id ? { ...n, read: true } : n));
+        }
+        const serverItem = notificationData?.notifications?.find(
+          (n) => n.id === id,
+        );
+        if (serverItem) {
+          return [...prev, { ...serverItem, read: true }];
+        }
+        return prev;
       });
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
-    } catch (e) {
-      console.error("[Notification] Failed to mark as read:", e);
-    }
-  };
 
-  const markAllAsRead = async () => {
-    setLocalNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+      try {
+        await fetch(`/api/notifications/${id}`, {
+          method: "PATCH",
+          credentials: "include",
+        });
+        queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      } catch (e) {
+        console.error("[Notification] Failed to mark as read:", e);
+      }
+    },
+    [notificationData, queryClient],
+  );
+
+  const markAllAsRead = useCallback(async () => {
+    setLocalOverrides((prev) => {
+      const server = notificationData?.notifications || [];
+      const alreadyOverridden = new Set(prev.map((n) => n.id));
+      const unreadServerItems = [];
+      for (const n of server) {
+        if (!n.read && !alreadyOverridden.has(n.id)) {
+          unreadServerItems.push({ ...n, read: true });
+        }
+      }
+      return [...prev.map((n) => ({ ...n, read: true })), ...unreadServerItems];
+    });
 
     try {
       await fetch("/api/notifications/mark-all-read", {
@@ -101,21 +141,31 @@ export function NotificationProvider({ children, userId }) {
     } catch (e) {
       console.error("[Notification] Failed to mark all as read:", e);
     }
-  };
+  }, [notificationData, userId, queryClient]);
 
   const unreadCount = localNotifications.filter((n) => !n.read).length;
 
+  const contextValue = useMemo(
+    () => ({
+      notifications: localNotifications,
+      unreadCount,
+      isOpen,
+      setIsOpen,
+      markAsRead,
+      markAllAsRead,
+    }),
+    [
+      localNotifications,
+      unreadCount,
+      isOpen,
+      markAsRead,
+      markAllAsRead,
+      setIsOpen,
+    ],
+  );
+
   return (
-    <NotificationContext.Provider
-      value={{
-        notifications: localNotifications,
-        unreadCount,
-        isOpen,
-        setIsOpen,
-        markAsRead,
-        markAllAsRead,
-      }}
-    >
+    <NotificationContext.Provider value={contextValue}>
       {children}
     </NotificationContext.Provider>
   );

@@ -1,7 +1,8 @@
 "use client";
 
 import { useCart } from "../../store/cart";
-import { useState } from "react";
+import { useCheckout } from "../../store/checkout";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import OrderSuccess from "./components/checkout/OrderSuccess";
 import EmptyCart from "./components/checkout/EmptyCart";
@@ -12,15 +13,27 @@ import PaymentMethod from "./components/checkout/PaymentMethod";
 import OrderSummary from "./components/checkout/OrderSummary";
 import { createOrder } from "@/app/actions/orders";
 
+const EMPTY_DISTRICTS = [];
+
 export default function CheckoutPageContent({
   initialSession,
-  initialDistricts = [],
+  initialDistricts = EMPTY_DISTRICTS,
 }) {
   const { hydrated, items, updateQuantity, totalPrice, clearCart } = useCart();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [orderPlaced, setOrderPlaced] = useState(false);
-  const [orderId, setOrderId] = useState("");
-  const [error, setError] = useState("");
+  const {
+    isProcessing,
+    orderPlaced,
+    orderId,
+    error,
+    setProcessing,
+    setSuccess,
+    setError,
+    reset,
+  } = useCheckout();
+
+  useEffect(() => {
+    return () => reset();
+  }, [reset]);
 
   const [shipping, setShipping] = useState({
     name: "",
@@ -63,8 +76,7 @@ export default function CheckoutPageContent({
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
-    setError("");
-    setIsProcessing(true);
+    setProcessing();
 
     try {
       const orderItems = items.map((item) => ({
@@ -98,17 +110,14 @@ export default function CheckoutPageContent({
       });
 
       if (result.success) {
-        setOrderId(result.order.orderNumber);
         clearCart();
-        setOrderPlaced(true);
+        setSuccess(result.order.orderNumber);
       } else {
         setError(result.error || "Failed to place order. Please try again.");
       }
     } catch (err) {
       console.error("Checkout error:", err);
       setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setIsProcessing(false);
     }
   };
 
