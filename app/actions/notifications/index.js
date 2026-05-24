@@ -70,3 +70,80 @@ export async function markAllNotificationsRead(userId) {
     data: { read: true },
   });
 }
+
+export async function getAdminNotifications({
+  page = 1,
+  perPage = 20,
+  type = "",
+  read = "",
+  search = "",
+}) {
+  await requireAdmin();
+
+  const where = {};
+  if (type && type !== "all") where.type = type;
+  if (read === "true") where.read = true;
+  if (read === "false") where.read = false;
+  if (search) {
+    where.OR = [
+      { title: { contains: search, mode: "insensitive" } },
+      { message: { contains: search, mode: "insensitive" } },
+    ];
+  }
+
+  const [notifications, total, stats, unreadCount] = await Promise.all([
+    prisma.notification.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * perPage,
+      take: perPage,
+    }),
+    prisma.notification.count({ where }),
+    prisma.notification.groupBy({
+      by: ["type"],
+      _count: { _all: true },
+    }),
+    prisma.notification.count({ where: { read: false } }),
+  ]);
+
+  const typeStats = {};
+  stats.forEach((s) => {
+    typeStats[s.type] = s._count._all;
+  });
+  typeStats.unread = unreadCount;
+
+  return {
+    notifications,
+    total,
+    stats: typeStats,
+  };
+}
+
+export async function updateNotificationRead(id) {
+  await requireAdmin();
+  return prisma.notification.update({
+    where: { id },
+    data: { read: true },
+  });
+}
+
+export async function deleteNotification(id) {
+  await requireAdmin();
+  await prisma.notification.delete({ where: { id } });
+  return { success: true };
+}
+
+export async function deleteAllNotifications() {
+  await requireAdmin();
+  await prisma.notification.deleteMany({});
+  return { success: true };
+}
+
+export async function markAllNotificationsReadAdmin() {
+  await requireAdmin();
+  await prisma.notification.updateMany({
+    where: {},
+    data: { read: true },
+  });
+  return { success: true };
+}
