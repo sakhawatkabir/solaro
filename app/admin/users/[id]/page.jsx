@@ -38,6 +38,8 @@ export default function UserFormPage({ params }) {
     retry: false,
   });
 
+  const isSuperAdmin = userData?.role === "SUPER_ADMIN";
+
   useEffect(() => {
     if (!userData) return;
 
@@ -147,15 +149,17 @@ export default function UserFormPage({ params }) {
           <UserBasicInfo
             formData={{ ...formData, id: userData?.id }}
             updateField={updateField}
+            readOnly={isSuperAdmin}
           />
           <UserPermissions
             permissions={formData.permissions}
             onToggle={togglePermission}
+            readOnly={isSuperAdmin}
           />
         </div>
 
         <div className="space-y-6">
-          {isEdit && (
+          {isEdit && !isSuperAdmin && (
             <UserDangerZone
               onDelete={() => {
                 if (confirm("Are you sure you want to delete this user?")) {
@@ -163,6 +167,36 @@ export default function UserFormPage({ params }) {
                 }
               }}
             />
+          )}
+
+          {isSuperAdmin && (
+            <div className="rounded-xl bg-zinc-900 border border-amber-500/20 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="size-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                  <svg
+                    className="size-5 text-amber-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white">
+                    Protected
+                  </h3>
+                  <p className="text-sm text-zinc-400">
+                    SUPER_ADMIN cannot be deleted or modified
+                  </p>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>

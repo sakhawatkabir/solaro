@@ -19,7 +19,11 @@ const statuses = [
   { value: "SUSPENDED", label: "Suspended" },
 ];
 
-export default function UserBasicInfo({ formData, updateField }) {
+export default function UserBasicInfo({
+  formData,
+  updateField,
+  readOnly = false,
+}) {
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
       <h3 className="text-lg font-semibold text-white mb-4">
@@ -66,18 +70,25 @@ export default function UserBasicInfo({ formData, updateField }) {
             >
               Role
             </label>
-            <select
-              id="field-role-3"
-              value={formData.role}
-              onChange={(e) => updateField("role", e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
-            >
-              {roles.map((r) => (
-                <option key={r.value} value={r.value} className="bg-zinc-900">
-                  {r.label}
-                </option>
-              ))}
-            </select>
+            {readOnly ? (
+              <div className="w-full px-4 py-2.5 rounded-xl bg-zinc-800/50 border border-zinc-700 text-zinc-400 text-sm">
+                {roles.find((r) => r.value === formData.role)?.label ||
+                  formData.role}
+              </div>
+            ) : (
+              <select
+                id="field-role-3"
+                value={formData.role}
+                onChange={(e) => updateField("role", e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
+              >
+                {roles.map((r) => (
+                  <option key={r.value} value={r.value} className="bg-zinc-900">
+                    {r.label}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
           <div>
             <label
@@ -86,18 +97,25 @@ export default function UserBasicInfo({ formData, updateField }) {
             >
               Status
             </label>
-            <select
-              id="field-status-4"
-              value={formData.status}
-              onChange={(e) => updateField("status", e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
-            >
-              {statuses.map((s) => (
-                <option key={s.value} value={s.value} className="bg-zinc-900">
-                  {s.label}
-                </option>
-              ))}
-            </select>
+            {readOnly ? (
+              <div className="w-full px-4 py-2.5 rounded-xl bg-zinc-800/50 border border-zinc-700 text-zinc-400 text-sm">
+                {statuses.find((s) => s.value === formData.status)?.label ||
+                  formData.status}
+              </div>
+            ) : (
+              <select
+                id="field-status-4"
+                value={formData.status}
+                onChange={(e) => updateField("status", e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-emerald-500/50 text-sm cursor-pointer"
+              >
+                {statuses.map((s) => (
+                  <option key={s.value} value={s.value} className="bg-zinc-900">
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
         </div>
         <div className="pt-4 border-t border-zinc-800">

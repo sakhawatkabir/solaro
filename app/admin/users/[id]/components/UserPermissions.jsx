@@ -23,7 +23,11 @@ const availablePermissions = [
   { key: "settings", label: "Settings", description: "Access system settings" },
 ];
 
-export default function UserPermissions({ permissions, onToggle }) {
+export default function UserPermissions({
+  permissions,
+  onToggle,
+  readOnly = false,
+}) {
   return (
     <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
       <h3 className="text-lg font-semibold text-white mb-4">Permissions</h3>
@@ -34,14 +38,15 @@ export default function UserPermissions({ permissions, onToggle }) {
             <button
               key={perm.key}
               type="button"
-              onClick={() => onToggle(perm.key)}
+              onClick={() => !readOnly && onToggle(perm.key)}
               className={`
                 flex items-start gap-3 p-3 rounded-lg border text-left transition-colors
                 ${
                   isActive
                     ? "bg-emerald-500/10 border-emerald-500/30"
-                    : "bg-zinc-800/50 border-zinc-700 hover:border-zinc-600"
+                    : "bg-zinc-800/50 border-zinc-700"
                 }
+                ${readOnly ? "cursor-not-allowed opacity-70" : "hover:border-zinc-600 cursor-pointer"}
               `}
             >
               <div

@@ -137,6 +137,29 @@ export async function updateUser(id, data) {
     const existing = await prisma.user.findUnique({ where: { id } });
     if (!existing) throw new Error("User not found");
 
+    if (existing.role === "SUPER_ADMIN") {
+      if (data.status !== undefined) {
+        const user = await prisma.user.update({
+          where: { id },
+          data: { status: data.status },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            status: true,
+            permissions: true,
+            updatedAt: true,
+          },
+        });
+
+        revalidatePath("/admin/users");
+        revalidatePath(`/admin/users/${id}`);
+        return { success: true, user };
+      }
+      throw new Error("Cannot modify a SUPER_ADMIN user");
+    }
+
     const updateData = {};
 
     if (data.role !== undefined) updateData.role = data.role;
@@ -172,6 +195,10 @@ export async function deleteUser(id) {
   try {
     const existing = await prisma.user.findUnique({ where: { id } });
     if (!existing) throw new Error("User not found");
+
+    if (existing.role === "SUPER_ADMIN") {
+      throw new Error("Cannot delete a SUPER_ADMIN user");
+    }
 
     await prisma.user.delete({ where: { id } });
 

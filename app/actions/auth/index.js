@@ -6,3 +6,4 @@ export { forgotPasswordAction, resetPasswordAction } from "./password";
 export { verifyEmailAction, resendVerificationAction } from "./verification";
 export { verify2FAAction, send2FACodeAction } from "./two-factor";
 export { updateProfileAction } from "./profile";
+export { demoLoginAction } from "./demo-login";

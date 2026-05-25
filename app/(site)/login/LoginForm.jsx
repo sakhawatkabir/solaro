@@ -10,7 +10,7 @@ import {
   Sun,
   AlertCircle,
 } from "lucide-react";
-import { useReducer, useEffect, useCallback } from "react";
+import { useReducer, useEffect, useCallback, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -65,7 +65,8 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const { push, prefetch } = useRouter();
   const prefersReducedMotion = useReducedMotion();
-  const { login } = useAuth();
+  const { login, demoLogin } = useAuth();
+  const [demoLoggingIn, setDemoLoggingIn] = useState(null);
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
 
   const prefetchRoutes = useCallback(() => {
@@ -287,7 +288,70 @@ export default function LoginForm() {
                 </button>
               </form>
 
-              <div className="mt-8 text-center">
+              {/* Demo Login Buttons */}
+              <div className="mt-8 pt-6 border-t border-ink/10">
+                <p className="text-xs font-semibold text-ink-mid uppercase tracking-widest text-center mb-4">
+                  Quick Demo Access
+                </p>
+                <div className="grid grid-cols-2 gap-2.5">
+                  {[
+                    { role: "admin", label: "Super Admin", badge: "full" },
+                    { role: "manager", label: "Manager", badge: "mgmt" },
+                    { role: "editor", label: "Editor", badge: "edit" },
+                    { role: "support", label: "Support", badge: "help" },
+                    { role: "viewer", label: "User", badge: "view" },
+                    { role: "custom", label: "Custom", badge: "cust" },
+                  ].map(({ role, label, badge }) => (
+                    <button
+                      key={role}
+                      type="button"
+                      disabled={demoLoggingIn !== null}
+                      onClick={async () => {
+                        setDemoLoggingIn(role);
+                        const result = await demoLogin(role);
+                        if (result.success) {
+                          const callbackUrl = searchParams.get("callbackUrl");
+                          if (callbackUrl) {
+                            push(callbackUrl);
+                          } else if (result.user.role === "VIEWER") {
+                            push("/dashboard");
+                          } else {
+                            push("/admin");
+                          }
+                        }
+                        setDemoLoggingIn(null);
+                      }}
+                      className="flex items-center justify-center gap-2.5 px-3 py-2.5 rounded-full border border-accent/20 bg-accent/[0.04] text-accent hover:bg-accent/10 hover:border-accent/30 text-sm font-medium transition-all disabled:opacity-50"
+                    >
+                      {demoLoggingIn === role ? (
+                        <div className="size-4 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
+                      ) : (
+                        <>
+                          <span className="inline-flex items-center justify-center size-5 rounded-full bg-accent/10 text-accent text-[10px] font-bold">
+                            {badge === "full"
+                              ? "SA"
+                              : badge === "mgmt"
+                                ? "M"
+                                : badge === "edit"
+                                  ? "E"
+                                  : badge === "help"
+                                    ? "S"
+                                    : badge === "view"
+                                      ? "U"
+                                      : "C"}
+                          </span>
+                          {label}
+                        </>
+                      )}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-ink-light text-center mt-3">
+                  One-click access to explore the platform
+                </p>
+              </div>
+
+              <div className="mt-6 text-center">
                 <span className="text-ink-mid">
                   Don&apos;t have an account?{" "}
                 </span>

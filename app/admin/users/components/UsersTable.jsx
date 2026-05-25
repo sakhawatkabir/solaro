@@ -147,12 +147,14 @@ export default function UsersTable({
                       >
                         <Edit3 className="size-4" />
                       </Link>
-                      <button
-                        onClick={() => onDelete(user.id)}
-                        className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors"
-                      >
-                        <Trash2 className="size-4" />
-                      </button>
+                      {user.role !== "SUPER_ADMIN" && (
+                        <button
+                          onClick={() => onDelete(user.id)}
+                          className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors"
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>

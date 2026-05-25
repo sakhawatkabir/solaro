@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import {
   loginAction,
+  demoLoginAction,
   registerAction,
   forgotPasswordAction,
   resetPasswordAction,
@@ -54,6 +55,36 @@ export function AuthProvider({ children }) {
   });
 
   const user = session?.authenticated ? session.user : null;
+
+  const demoLoginMutation = useMutation({
+    mutationFn: (roleKey) => demoLoginAction(roleKey),
+    onSuccess: (data) => {
+      if (data.success) {
+        queryClient.setQueryData(["session"], {
+          authenticated: true,
+          user: data.user,
+        });
+
+        if (data.user?.role !== "VIEWER") {
+          queryClient.prefetchQuery({
+            queryKey: ["dashboard-data"],
+            queryFn: () => getDashboardData(),
+            staleTime: 5 * 60 * 1000,
+          });
+        } else {
+          queryClient.prefetchQuery({
+            queryKey: ["user-orders"],
+            queryFn: async () => {
+              const res = await fetch("/api/user/orders?limit=5");
+              if (!res.ok) throw new Error("Failed to fetch orders");
+              return res.json();
+            },
+            staleTime: 5 * 60 * 1000,
+          });
+        }
+      }
+    },
+  });
 
   const loginMutation = useMutation({
     mutationFn: ({ email, password }) => loginAction(email, password),
@@ -157,6 +188,10 @@ export function AuthProvider({ children }) {
     return loginMutation.mutateAsync({ email, password });
   };
 
+  const demoLogin = async (roleKey) => {
+    return demoLoginMutation.mutateAsync(roleKey);
+  };
+
   const register = async (name, email, password) => {
     return registerMutation.mutateAsync({ name, email, password });
   };
@@ -195,6 +230,7 @@ export function AuthProvider({ children }) {
         user,
         loading: isLoading,
         login,
+        demoLogin,
         register,
         logout,
         forgotPassword,
