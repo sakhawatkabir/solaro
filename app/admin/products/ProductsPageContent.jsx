@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Trash2 } from "lucide-react";
 import {
   getProducts,
   getProductsSummary,
@@ -22,6 +23,7 @@ export default function ProductsPageContent({ initialData }) {
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 8;
+  const [confirmDelete, setConfirmDelete] = useState(null);
 
   const { data: productsData, isLoading } = useQuery({
     queryKey: [
@@ -50,6 +52,7 @@ export default function ProductsPageContent({ initialData }) {
   const deleteMutation = useMutation({
     mutationFn: (id) => deleteProduct(id),
     onSuccess: () => {
+      setConfirmDelete(null);
       queryClient.invalidateQueries({ queryKey: ["admin-products"] });
       queryClient.invalidateQueries({ queryKey: ["admin-products-summary"] });
     },
@@ -69,51 +72,107 @@ export default function ProductsPageContent({ initialData }) {
   ];
 
   return (
-    <div className="space-y-6">
-      <ProductsHeader
-        totalProducts={pagination.total}
-        totalStock={summary.totalStock}
-        totalSales={summary.totalSales}
-      />
-
-      <ProductsSummary
-        products={summary.allProducts}
-        totalStock={summary.totalStock}
-      />
-
-      <ProductsFilters
-        search={search}
-        onSearchChange={(val) => {
-          setSearch(val);
-          setCurrentPage(1);
-        }}
-        categoryFilter={categoryFilter}
-        onCategoryChange={(val) => {
-          setCategoryFilter(val);
-          setCurrentPage(1);
-        }}
-        statusFilter={statusFilter}
-        onStatusChange={(val) => {
-          setStatusFilter(val);
-          setCurrentPage(1);
-        }}
-        allCategories={categories}
-        allStatuses={allStatuses}
-      />
-
-      {isLoading ? (
-        <TableSkeleton rows={5} cols={6} />
-      ) : (
-        <ProductsTable
-          products={products}
-          currentPage={currentPage}
-          totalPages={pagination.totalPages}
-          perPage={perPage}
-          totalFiltered={pagination.total}
-          onPageChange={setCurrentPage}
-          onDelete={(id) => deleteMutation.mutate(id)}
+    <>
+      <div className="space-y-6">
+        <ProductsHeader
+          totalProducts={pagination.total}
+          totalStock={summary.totalStock}
+          totalSales={summary.totalSales}
         />
+
+        <ProductsSummary
+          products={summary.allProducts}
+          totalStock={summary.totalStock}
+        />
+
+        <ProductsFilters
+          search={search}
+          onSearchChange={(val) => {
+            setSearch(val);
+            setCurrentPage(1);
+          }}
+          categoryFilter={categoryFilter}
+          onCategoryChange={(val) => {
+            setCategoryFilter(val);
+            setCurrentPage(1);
+          }}
+          statusFilter={statusFilter}
+          onStatusChange={(val) => {
+            setStatusFilter(val);
+            setCurrentPage(1);
+          }}
+          allCategories={categories}
+          allStatuses={allStatuses}
+        />
+
+        {isLoading ? (
+          <TableSkeleton rows={5} cols={6} />
+        ) : (
+          <ProductsTable
+            products={products}
+            currentPage={currentPage}
+            totalPages={pagination.totalPages}
+            perPage={perPage}
+            totalFiltered={pagination.total}
+            onPageChange={setCurrentPage}
+            onDelete={(id) => {
+              const product = products.find((p) => p.id === id);
+              setConfirmDelete(product || id);
+            }}
+          />
+        )}
+      </div>
+
+      {confirmDelete && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-xl p-6 max-w-sm w-full">
+            <h3 className="text-lg font-semibold text-white mb-2">
+              Delete Product
+            </h3>
+            <p className="text-sm text-zinc-400 mb-6">
+              Are you sure you want to delete{" "}
+              <span className="text-white font-medium">
+                {typeof confirmDelete === "object"
+                  ? confirmDelete?.name
+                  : "this product"}
+              </span>
+              ? This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setConfirmDelete(null)}
+                disabled={deleteMutation.isPending}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  const id =
+                    typeof confirmDelete === "object"
+                      ? confirmDelete.id
+                      : confirmDelete;
+                  deleteMutation.mutate(id);
+                }}
+                disabled={deleteMutation.isPending}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-500 transition-colors disabled:opacity-50 flex items-center gap-2"
+              >
+                {deleteMutation.isPending ? (
+                  <>
+                    <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="size-4" />
+                    Delete
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 }
