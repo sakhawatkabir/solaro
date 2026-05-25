@@ -135,6 +135,8 @@ export async function createOrder(data) {
   }
 
   revalidatePath("/admin/orders");
+  revalidatePath("/dashboard/orders");
+  revalidatePath("/dashboard");
   return { success: true, order };
 }
 
@@ -153,6 +155,8 @@ export async function updateOrder(id, data) {
   });
 
   revalidatePath("/admin/orders");
+  revalidatePath("/dashboard/orders");
+  revalidatePath("/dashboard");
   return { success: true, order };
 }
 
@@ -160,6 +164,8 @@ export async function deleteOrder(id) {
   await requireAdmin();
   await prisma.order.delete({ where: { id } });
   revalidatePath("/admin/orders");
+  revalidatePath("/dashboard/orders");
+  revalidatePath("/dashboard");
   return { success: true };
 }
 

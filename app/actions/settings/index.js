@@ -67,6 +67,7 @@ export async function updateSetting(key, value) {
     });
 
     revalidatePath("/admin/settings");
+    revalidatePath("/admin");
     return { success: true, setting };
   } catch (error) {
     console.error("Update setting error:", error);
@@ -88,6 +89,7 @@ export async function updateSettings(updates) {
     );
 
     revalidatePath("/admin/settings");
+    revalidatePath("/admin");
     return { success: true, settings: results };
   } catch (error) {
     console.error("Update settings error:", error);
@@ -107,6 +109,7 @@ export async function resetSettings() {
     );
 
     revalidatePath("/admin/settings");
+    revalidatePath("/admin");
     return { success: true };
   } catch (error) {
     console.error("Reset settings error:", error);

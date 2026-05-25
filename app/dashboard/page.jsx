@@ -1,6 +1,8 @@
 import { getUserOrders } from "@/app/actions/user/orders";
 import DashboardPageContent from "./DashboardPageContent";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   let initialData = null;
   try {

@@ -11,7 +11,8 @@ import {
   CheckCircle,
   Wallet,
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/app/context/AuthContext";
 
 const statusIcon = {
@@ -45,7 +46,13 @@ function formatDate(dateString) {
 }
 
 export default function DashboardPageContent({ initialData }) {
+  const queryClient = useQueryClient();
   const { user } = useAuth();
+
+  // Invalidate cached orders on mount so fresh server initialData is used
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["user-orders"] });
+  }, [queryClient]);
 
   const { data, isLoading } = useQuery({
     queryKey: ["user-orders"],

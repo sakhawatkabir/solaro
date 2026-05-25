@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Package, Truck, Clock, CheckCircle, XCircle } from "lucide-react";
 
 const statusIcon = {
@@ -35,7 +35,13 @@ function formatDate(dateString) {
 }
 
 export default function OrdersPageContent({ initialData }) {
+  const queryClient = useQueryClient();
   const [filter, setFilter] = useState("all");
+
+  // Invalidate cached orders on mount so fresh server initialData is used
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["user-orders"] });
+  }, [queryClient]);
 
   const { data, isLoading } = useQuery({
     queryKey: ["user-orders", filter],
