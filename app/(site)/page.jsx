@@ -7,6 +7,8 @@ import ProcessSection from "../components/ProcessSection";
 import TestimonialSection from "../components/TestimonialSection";
 import CTASection from "../components/CTASection";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const initialProducts = await getFeaturedProducts(6);
 

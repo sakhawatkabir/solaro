@@ -3,11 +3,11 @@
 import { m } from "framer-motion";
 import { Star, ArrowRight, ShoppingCart } from "lucide-react";
 import { useCart } from "../store/cart";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getFeaturedProducts } from "@/app/actions/products";
 
 function formatPrice(price) {
@@ -19,6 +19,11 @@ export default function FeaturedProducts({ initialData }) {
   const [addedId, setAddedId] = useState(null);
   const prefersReducedMotion = useReducedMotion();
   const transitionDuration = prefersReducedMotion ? 0 : 0.6;
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["featured-products"] });
+  }, [queryClient]);
 
   const { data } = useQuery({
     queryKey: ["featured-products"],
