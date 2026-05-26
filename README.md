@@ -45,10 +45,8 @@ A full-stack e-commerce and business management platform for selling solar panel
 | Auth | Custom session-based auth with bcryptjs |
 | State | Zustand (cart, checkout), TanStack Query (server state) |
 | Rich Text | Tiptap |
-| File Uploads | UploadThing, ImageKit |
-| Real-time | Pusher |
+| File Uploads | UploadThing |
 | Email | Nodemailer (Gmail) |
-| Caching | Upstash Redis |
 | Charts | Recharts |
 
 ---
